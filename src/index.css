@@ -1,10 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+html,
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b0b0b;
-  color: #acaaaa;
+  @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+  font-family: "Inter", sans-serif;
 }
 
-h1 {
-  color: #adacac;
+.exercise-img {
+  @apply w-full rounded-lg object-cover;
 }
