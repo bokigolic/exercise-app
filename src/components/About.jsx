@@ -150,23 +150,6 @@ function About() {
           </a>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="py-6 bg-gray-100 dark:bg-gray-900 text-center text-gray-600 dark:text-gray-400">
-        <div className="flex items-center justify-center gap-2">
-          <p>
-            © 2025 GymMaster – Designed & Developed by{" "}
-            <span className="font-semibold text-blue-600">BG</span>
-          </p>
-          <br></br>
-          <br></br>
-          <img
-            src="./public/icons/BG.png"
-            alt="BG Logo"
-            className="w-20 h-20 opacity-80 hover:opacity-100 transition"
-          />
-        </div>
-      </footer>
     </div>
   );
 }

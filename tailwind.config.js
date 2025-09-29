@@ -7,6 +7,9 @@ export default {
   darkMode: "class", // omogućava ručno menjanje dark moda
   theme: {
     extend: {
+      animation: {
+        'spin-slow': 'spin 12s linear infinite',
+      },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },
