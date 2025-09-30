@@ -1,6 +1,4 @@
-// public/sw.js
-// why: jednostavan offline cache (app shell + runtime assets)
-const CACHE_NAME = "bokigym-v1";
+const CACHE = "bokigym-v1";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -10,71 +8,66 @@ const APP_SHELL = [
   "/icons/pwa-512.png"
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  );
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(APP_SHELL)));
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k === CACHE_NAME ? null : caches.delete(k))))
+      Promise.all(keys.map((k) => (k === CACHE ? null : caches.delete(k))))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+self.addEventListener("fetch", (e) => {
+  const { request } = e;
 
-  // Navigate requests → SPA fallback
+  // SPA navigacije: mreža → fallback index/offline
   if (request.mode === "navigate") {
-    event.respondWith(
+    e.respondWith(
       fetch(request).catch(async () => {
-        const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match("/index.html");
-        return cached || caches.match("/offline.html");
+        const cache = await caches.open(CACHE);
+        return (await cache.match("/index.html")) || cache.match("/offline.html");
       })
     );
     return;
   }
 
-  // Static assets: scripts/styles/images → SWR or cache-first
-  if (request.destination === "script" || request.destination === "style") {
-    event.respondWith(staleWhileRevalidate(request));
-    return;
-  }
-  if (request.destination === "image") {
-    event.respondWith(cacheFirst(request));
+  // Stilovi/script: SWR
+  if (request.destination === "style" || request.destination === "script") {
+    e.respondWith(staleWhileRevalidate(request));
     return;
   }
 
-  // Default: try network, fallback cache
-  event.respondWith(
-    fetch(request).catch(() => caches.match(request))
-  );
+  // Slike: cache-first
+  if (request.destination === "image") {
+    e.respondWith(cacheFirst(request));
+    return;
+  }
+
+  // Ostalo: mreža → cache fallback
+  e.respondWith(fetch(request).catch(() => caches.match(request)));
 });
 
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cached = await cache.match(request);
-  const network = fetch(request)
-    .then((resp) => {
-      if (resp && resp.status === 200) cache.put(request, resp.clone());
-      return resp;
+async function staleWhileRevalidate(req) {
+  const cache = await caches.open(CACHE);
+  const cached = await cache.match(req);
+  const net = fetch(req)
+    .then((res) => {
+      if (res && res.status === 200) cache.put(req, res.clone());
+      return res;
     })
     .catch(() => cached);
-  return cached || network;
+  return cached || net;
 }
-
-async function cacheFirst(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cached = await cache.match(request);
+async function cacheFirst(req) {
+  const cache = await caches.open(CACHE);
+  const cached = await cache.match(req);
   if (cached) return cached;
-  const resp = await fetch(request);
-  if (resp && resp.status === 200) cache.put(request, resp.clone());
-  return resp;
+  const res = await fetch(req);
+  if (res && res.status === 200) cache.put(req, res.clone());
+  return res;
 }
