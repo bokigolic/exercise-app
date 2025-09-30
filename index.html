@@ -1,11 +1,58 @@
-<!DOCTYPE html>
+<!-- public/index.html -->
+<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon / Touch icon -->
+  <link rel="icon" type="image/png" href="/icons/BG.png" />
+  <link rel="apple-touch-icon" href="/icons/pwa-180.png" />
+
+  <!-- ✅ manifest (Android install) -->
+  <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <!-- ✅ iPhone notch & full-bleed -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- ✅ status bar colors (light/dark) -->
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0b0c" />
+
+  <!-- ✅ iOS PWA meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- ✅ Apple splash screens (najčešći modeli) -->
+  <!-- iPhone 15/14 Pro/13 Pro (1179x2556 @3x) -->
+  <link rel="apple-touch-startup-image" href="/splash/iphone-1179x2556.png"
+    media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+  <!-- iPhone 15/14 Plus/Pro Max (1290x2796 @3x) -->
+  <link rel="apple-touch-startup-image" href="/splash/iphone-1290x2796.png"
+    media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+  <!-- fallback generički splash -->
+  <link rel="apple-touch-startup-image" href="/splash/iphone-default.png" />
+
   <title>BokiGym 💪</title>
+
+  <!-- small global fixes -->
+  <style>
+    :root {
+      --safe-left: env(safe-area-inset-left);
+      --safe-right: env(safe-area-inset-right);
+    }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
 </head>
 
 <body>
