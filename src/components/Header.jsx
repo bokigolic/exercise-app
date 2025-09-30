@@ -32,6 +32,9 @@ function Header({ darkMode, setDarkMode }) {
           <Link to="/about" className="hover:text-blue-500">
             About
           </Link>
+          <Link to="/anatomy" className="hover:text-blue-500">
+            Anatomy
+          </Link>
         </nav>
 
         {/* Dark mode toggle */}
