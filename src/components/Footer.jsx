@@ -105,15 +105,6 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="mailto:bokigolic32@gmail.com?subject=GymMaster%20Contact"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
-            aria-label="Contact via email"
-            title="Contact"
-            style={{ minHeight: 32 }}
-          >
-            <Mail size={14} /> Contact
-          </a>
           <button
             onClick={scrollToTop}
             className="px-2.5 py-1.5 rounded-md text-xs bg-gray-900 text-white hover:bg-black/80"

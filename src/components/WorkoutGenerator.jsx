@@ -6,20 +6,20 @@ import {
   Flame,
   Target,
   Clock,
-  Home,
+  Home as HomeIcon,
   Activity,
   RefreshCcw,
   Clipboard,
   X,
   CheckCircle2,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import programsData from "../data/programs.json";
 
 /* ---------- small utils ---------- */
 const cn = (...c) => c.filter(Boolean).join(" ");
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const shuffleBySeed = (arr) => {
-  // why: razbijanje tie-ova bez menjanja logike
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -38,7 +38,7 @@ const GOALS = [
 
 const LEVELS = ["beginner", "intermediate", "advanced"];
 const LOCATIONS = [
-  { key: "home", label: "Home", icon: Home },
+  { key: "home", label: "Home", icon: HomeIcon },
   { key: "gym", label: "Gym", icon: Dumbbell },
   { key: "outdoor", label: "Outdoor", icon: Activity },
 ];
@@ -76,11 +76,47 @@ const STEPS = [
   "Days",
 ];
 
-/* ---------- UI bits ---------- */
+/* ---------- shared UI ---------- */
+const PageShell = ({ children }) => (
+  <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100">
+    <header className="sticky top-0 z-30 bg-black/40 backdrop-blur supports-[backdrop-filter]:backdrop-blur border-b border-white/10">
+      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+        <Link to="/" className="inline-flex items-center gap-2">
+          {/* simple logo */}
+          <div className="h-7 w-7 rounded-xl bg-white/10 ring-1 ring-white/15 grid place-items-center">
+            <Dumbbell className="w-4 h-4 text-white/90" />
+          </div>
+        </Link>
+        <nav className="hidden sm:flex items-center gap-4 text-sm">
+          <Link to="/" className="text-slate-300 hover:text-white">
+            Home
+          </Link>
+          <Link to="/exercises" className="text-slate-300 hover:text-white">
+            Exercises
+          </Link>
+          <Link to="/generator" className="text-white font-semibold">
+            Generator
+          </Link>
+          <Link to="/about" className="text-slate-300 hover:text-white">
+            About
+          </Link>
+        </nav>
+      </div>
+    </header>
+    {children}
+    <footer className="mt-16 border-t border-white/10">
+      <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-400">
+        © {new Date().getFullYear()} GymMaster • Built for clarity & consistency
+      </div>
+    </footer>
+  </div>
+);
+
 const Card = ({ children, className = "" }) => (
   <div
     className={cn(
-      "bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8",
+      "rounded-2xl bg-white/5 ring-1 ring-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]",
+      "backdrop-blur p-6",
       className
     )}
   >
@@ -93,60 +129,70 @@ const OptionButton = ({ active, onClick, children }) => (
     onClick={onClick}
     aria-pressed={!!active}
     className={cn(
-      "p-4 rounded-xl border-2 transition text-sm",
+      "relative group p-4 rounded-xl text-sm transition",
+      "ring-1",
       active
-        ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30"
-        : "border-gray-200 dark:border-gray-700 hover:border-blue-400"
+        ? "bg-blue-600 text-white ring-blue-700"
+        : "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10 hover:ring-white/20"
     )}
   >
+    {/* hover glow */}
+    <span
+      className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition"
+      style={{
+        boxShadow:
+          "0 0 0 1px rgba(255,255,255,0.04), 0 10px 30px rgba(0,0,0,0.25)",
+      }}
+    />
     {children}
   </button>
 );
 
-const Chip = ({ children, onRemove, tone = "slate" }) => (
-  <span
-    className={cn(
-      "inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium",
-      tone === "blue" &&
-        "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200",
-      tone === "green" &&
-        "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-200",
-      tone === "purple" &&
-        "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-200",
-      tone === "orange" &&
-        "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-200",
-      tone === "slate" &&
-        "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-200"
-    )}
-  >
-    {children}
-    {onRemove && (
-      <button
-        onClick={onRemove}
-        className="ml-1 rounded p-0.5 hover:bg-black/5 dark:hover:bg-white/10"
-        title="Remove"
-        aria-label="Remove filter"
-      >
-        <X className="w-3.5 h-3.5" />
-      </button>
-    )}
-  </span>
-);
+const Chip = ({ children, onRemove, tone = "slate" }) => {
+  const tones = {
+    blue: "bg-blue-500/15 text-blue-300 ring-blue-500/30",
+    green: "bg-green-500/15 text-green-300 ring-green-500/30",
+    purple: "bg-purple-500/15 text-purple-300 ring-purple-500/30",
+    orange: "bg-orange-500/15 text-orange-300 ring-orange-500/30",
+    slate: "bg-white/5 text-slate-200 ring-white/10",
+  };
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs ring-1",
+        tones[tone]
+      )}
+    >
+      {children}
+      {onRemove && (
+        <button
+          onClick={onRemove}
+          className="ml-1 rounded p-0.5 hover:bg-white/10"
+          title="Remove"
+          aria-label="Remove filter"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
+    </span>
+  );
+};
 
 const Loader = ({ message }) => (
   <div className="mt-10 flex flex-col items-center gap-4">
-    <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
-    <p className="text-gray-600 dark:text-gray-400">{message}</p>
+    <div className="relative w-12 h-12">
+      <div className="absolute inset-0 rounded-full border-4 border-white/10" />
+      <div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" />
+    </div>
+    <p className="text-slate-300">{message}</p>
   </div>
 );
 
 /* ---------- generator helpers (logika ostaje: score + sort + slice) ---------- */
 const decideCount = (duration) => (duration === "long" ? 9 : 6);
-
 const normalizeArray = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
 const scoreExercise = (ex, filters) => {
-  // why: blago ponderisanje; i dalje je score sistem kakav si imao
   let score = 0;
   if (filters.goal && ex.goal === filters.goal) score += 3;
   if (filters.level && ex.level === filters.level) score += 2;
@@ -162,7 +208,7 @@ const scoreExercise = (ex, filters) => {
   const exMuscles = normalizeArray(ex.muscle_groups);
   if (filters.muscles.length > 0 && exMuscles.length > 0) {
     const matches = filters.muscles.filter((m) => exMuscles.includes(m)).length;
-    score += Math.min(matches, 2) * 2; // cap dve grupe za balans
+    score += Math.min(matches, 2) * 2;
   }
 
   return score;
@@ -189,7 +235,6 @@ const collectExercises = (programs) => {
 };
 
 const diversifyPick = (sorted, targetCount, targetMuscles) => {
-  // why: sprečava monoton izbor istih mišića, ali i dalje sleduje score redosled
   const picked = [];
   const nameSet = new Set();
   const muscleCount = new Map();
@@ -205,17 +250,13 @@ const diversifyPick = (sorted, targetCount, targetMuscles) => {
 
     const mgs = normalizeArray(ex.muscle_groups);
     const overCap = mgs.some((m) => (muscleCount.get(m) || 0) >= capPerMuscle);
-    if (overCap && picked.length < targetCount - 2) {
-      // pokušaj ostaviti mesta za raznolikost
-      continue;
-    }
+    if (overCap && picked.length < targetCount - 2) continue;
 
     picked.push(ex);
     nameSet.add(ex.name);
     mgs.forEach((m) => muscleCount.set(m, (muscleCount.get(m) || 0) + 1));
   }
 
-  // fallback popuna ako nije dosta
   let i = 0;
   while (picked.length < targetCount && i < sorted.length) {
     const ex = sorted[i++];
@@ -267,10 +308,6 @@ export default function WorkoutGenerator() {
         return !!filters.level;
       case 2:
         return !!filters.location;
-      case 3:
-        return true; // equipment optional
-      case 4:
-        return true; // muscles optional
       case 5:
         return !!filters.duration;
       case 6:
@@ -307,18 +344,14 @@ export default function WorkoutGenerator() {
 
   const generateCore = () => {
     let allExercises = collectExercises(programsData.programs);
-
     let scored = allExercises.map((ex) => ({
       ...ex,
       score: scoreExercise(ex, filters),
     }));
-
     scored = shuffleBySeed(scored).sort((a, b) => b.score - a.score);
     if (scored.length === 0) scored = allExercises;
-
     const count = decideCount(filters.duration);
     const workout = diversifyPick(scored, count, filters.muscles);
-
     setGeneratedWorkout(workout);
   };
 
@@ -342,7 +375,6 @@ export default function WorkoutGenerator() {
   };
 
   const copyAsJson = async () => {
-    // why: brza razmena/planning izvan app-a
     const payload = {
       filters,
       workout: generatedWorkout,
@@ -356,41 +388,51 @@ export default function WorkoutGenerator() {
     }
   };
 
+  const StepTitle = ({ icon: Icon, title }) => (
+    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+      {Icon && <Icon className="w-5 h-5 text-blue-400" />} {title}
+    </h3>
+  );
+
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-5xl mx-auto px-6">
+    <PageShell>
+      <main className="mx-auto max-w-6xl px-4 py-10">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10"
+          className="text-3xl sm:text-4xl font-extrabold text-white text-center mb-8"
         >
           🏋️ Workout Generator
         </motion.h2>
 
         {/* progress + stepper */}
-        <div className="relative w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full mb-4">
-          <motion.div
-            className="h-3 bg-blue-600 rounded-full"
-            initial={{ width: "0%" }}
-            animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-            transition={{ duration: 0.4 }}
-          />
-        </div>
-        <div className="flex justify-between text-xs text-gray-500 mb-6">
-          {STEPS.map((s, i) => (
-            <button
-              key={s}
-              onClick={() => goto(i)}
-              className={cn(
-                "transition",
-                i === step ? "text-blue-600 font-bold" : "hover:text-gray-700"
-              )}
-              title={`Go to ${s}`}
-            >
-              {s}
-            </button>
-          ))}
+        <div className="mb-3">
+          <div className="relative w-full h-2 bg-white/5 rounded-full">
+            <motion.div
+              className="h-2 bg-blue-600 rounded-full"
+              initial={{ width: "0%" }}
+              animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+          <div className="mt-3 grid grid-cols-7 text-[11px] text-slate-400">
+            {STEPS.map((s, i) => (
+              <button
+                key={s}
+                onClick={() => goto(i)}
+                className={cn(
+                  "text-left truncate px-1 transition",
+                  i === step
+                    ? "text-white font-semibold"
+                    : "hover:text-slate-200"
+                )}
+                title={`Go to ${s}`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* summary chips */}
@@ -436,18 +478,18 @@ export default function WorkoutGenerator() {
         <Card>
           {step === 0 && (
             <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Target className="w-5 h-5 text-blue-600" /> Choose your Goal
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <StepTitle icon={Target} title="Choose your Goal" />
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {GOALS.map((opt) => (
                   <OptionButton
                     key={opt.key}
                     active={filters.goal === opt.key}
                     onClick={() => handleSelect("goal", opt.key)}
                   >
-                    <opt.icon className="w-6 h-6 mx-auto mb-2" />
-                    <span>{opt.label}</span>
+                    <div className="flex flex-col items-center gap-1">
+                      <opt.icon className="w-6 h-6 mb-1 text-white/90" />
+                      <span>{opt.label}</span>
+                    </div>
                   </OptionButton>
                 ))}
               </div>
@@ -456,8 +498,8 @@ export default function WorkoutGenerator() {
 
           {step === 1 && (
             <div>
-              <h3 className="text-lg font-bold mb-4">Choose your Level</h3>
-              <div className="grid grid-cols-3 gap-4">
+              <StepTitle title="Choose your Level" />
+              <div className="grid grid-cols-3 gap-3">
                 {LEVELS.map((lvl) => (
                   <OptionButton
                     key={lvl}
@@ -473,16 +515,18 @@ export default function WorkoutGenerator() {
 
           {step === 2 && (
             <div>
-              <h3 className="text-lg font-bold mb-4">Where will you train?</h3>
-              <div className="grid grid-cols-3 gap-4">
+              <StepTitle title="Where will you train?" />
+              <div className="grid grid-cols-3 gap-3">
                 {LOCATIONS.map((opt) => (
                   <OptionButton
                     key={opt.key}
                     active={filters.location === opt.key}
                     onClick={() => handleSelect("location", opt.key)}
                   >
-                    <opt.icon className="w-6 h-6 mx-auto mb-2" />
-                    <span>{opt.label}</span>
+                    <div className="flex flex-col items-center gap-1">
+                      <opt.icon className="w-6 h-6 mb-1 text-white/90" />
+                      <span>{opt.label}</span>
+                    </div>
                   </OptionButton>
                 ))}
               </div>
@@ -493,9 +537,9 @@ export default function WorkoutGenerator() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold">Choose Equipment</h3>
-                <span className="text-xs text-gray-500">Optional</span>
+                <span className="text-xs text-slate-400">Optional</span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {EQUIPMENT.map((eq) => {
                   const active = filters.equipment.includes(eq);
                   return (
@@ -504,10 +548,12 @@ export default function WorkoutGenerator() {
                       active={active}
                       onClick={() => handleMultiSelect("equipment", eq)}
                     >
-                      <span className="capitalize">{eq}</span>
-                      {active && (
-                        <CheckCircle2 className="w-4 h-4 ml-2 inline" />
-                      )}
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="capitalize">{eq}</span>
+                        {active && (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        )}
+                      </div>
                     </OptionButton>
                   );
                 })}
@@ -519,9 +565,9 @@ export default function WorkoutGenerator() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold">Target Muscle Groups</h3>
-                <span className="text-xs text-gray-500">Optional</span>
+                <span className="text-xs text-slate-400">Optional</span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {MUSCLES.map((m) => {
                   const active = filters.muscles.includes(m);
                   return (
@@ -530,10 +576,12 @@ export default function WorkoutGenerator() {
                       active={active}
                       onClick={() => handleMultiSelect("muscles", m)}
                     >
-                      <span className="capitalize">{m}</span>
-                      {active && (
-                        <CheckCircle2 className="w-4 h-4 ml-2 inline" />
-                      )}
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="capitalize">{m}</span>
+                        {active && (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        )}
+                      </div>
                     </OptionButton>
                   );
                 })}
@@ -543,8 +591,8 @@ export default function WorkoutGenerator() {
 
           {step === 5 && (
             <div>
-              <h3 className="text-lg font-bold mb-4">Workout Duration</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <StepTitle title="Workout Duration" />
+              <div className="grid grid-cols-2 gap-3">
                 {DURATIONS.map((d) => (
                   <OptionButton
                     key={d.key}
@@ -560,10 +608,8 @@ export default function WorkoutGenerator() {
 
           {step === 6 && (
             <div>
-              <h3 className="text-lg font-bold mb-4">
-                How many days per week?
-              </h3>
-              <div className="grid grid-cols-3 gap-4">
+              <StepTitle title="How many days per week?" />
+              <div className="grid grid-cols-3 gap-3">
                 {DAY_OPTIONS.map((d) => (
                   <OptionButton
                     key={d}
@@ -583,7 +629,7 @@ export default function WorkoutGenerator() {
           <button
             onClick={prev}
             disabled={step === 0}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-white/5 ring-1 ring-white/10 text-slate-200 hover:bg-white/10 disabled:opacity-50"
           >
             Back
           </button>
@@ -596,21 +642,21 @@ export default function WorkoutGenerator() {
                 "px-6 py-2 rounded-lg text-white",
                 isStepValid(step)
                   ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-blue-400 cursor-not-allowed"
+                  : "bg-blue-600/50 cursor-not-allowed"
               )}
             >
               Next
             </button>
           ) : (
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={generateWorkout}
                 disabled={!allRequiredValid}
                 className={cn(
                   "px-6 py-2 rounded-lg text-white",
                   allRequiredValid
-                    ? "bg-green-600 hover:bg-green-700"
-                    : "bg-green-400 cursor-not-allowed"
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-emerald-600/50 cursor-not-allowed"
                 )}
               >
                 Generate Workout
@@ -618,7 +664,7 @@ export default function WorkoutGenerator() {
               <button
                 onClick={randomize}
                 disabled={loading || generatedWorkout.length === 0}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg inline-flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg bg-blue-600 text-white inline-flex items-center gap-2 disabled:opacity-50"
                 title="Randomize top matches"
               >
                 <RefreshCcw className="w-4 h-4" /> Randomize
@@ -626,7 +672,7 @@ export default function WorkoutGenerator() {
               <button
                 onClick={copyAsJson}
                 disabled={generatedWorkout.length === 0}
-                className="px-4 py-2 bg-gray-900 text-white rounded-lg inline-flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg bg-white/5 ring-1 ring-white/10 text-slate-200 inline-flex items-center gap-2 disabled:opacity-50"
                 title="Copy result as JSON"
               >
                 <Clipboard className="w-4 h-4" /> Copy
@@ -644,19 +690,19 @@ export default function WorkoutGenerator() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             {generatedWorkout.map((ex, i) => (
               <motion.div
                 key={`${ex.name}-${i}`}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-left"
+                transition={{ delay: i * 0.04 }}
+                className="rounded-xl bg-white/5 ring-1 ring-white/10 p-5"
               >
-                <p className="font-semibold text-lg">{ex.name}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {ex.sets} sets × {ex.reps} – Rest {ex.rest}
+                <p className="font-semibold text-lg text-white">{ex.name}</p>
+                <p className="text-sm text-slate-300 mt-0.5">
+                  {ex.sets} sets × {ex.reps} — Rest {ex.rest}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3 text-xs">
                   {filters.goal && <Chip tone="blue">🎯 {filters.goal}</Chip>}
@@ -682,7 +728,7 @@ export default function WorkoutGenerator() {
                       </Chip>
                     ))}
                 </div>
-                <div className="mt-3 text-[11px] text-gray-500">
+                <div className="mt-3 text-[11px] text-slate-400">
                   <span className="opacity-70">Program:</span> {ex.program} •{" "}
                   <span className="opacity-70">Day:</span> {ex.day}
                 </div>
@@ -693,11 +739,11 @@ export default function WorkoutGenerator() {
 
         {/* empty state */}
         {!loading && generatedWorkout.length === 0 && (
-          <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-8 text-center text-sm text-slate-400">
             Configure filters and generate your workout.
           </p>
         )}
-      </div>
-    </section>
+      </main>
+    </PageShell>
   );
 }

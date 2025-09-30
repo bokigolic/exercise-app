@@ -1,5 +1,5 @@
 // src/components/FitnessHub.jsx
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Flame,
@@ -11,12 +11,11 @@ import {
   Moon,
 } from "lucide-react";
 
-/* ---------- UI Primitives (JSX, no TS types) ---------- */
+/* ---------- UI Primitives ---------- */
 const Card = ({ children, className = "" }) => (
   <div
     className={
-      "bg-white dark:bg-gray-900 rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 " +
-      className
+      "rounded-2xl shadow-lg ring-1 ring-white/10 bg-white/5 " + className
     }
   >
     {children}
@@ -26,23 +25,18 @@ const Card = ({ children, className = "" }) => (
 const SectionTitle = ({ title, emoji }) => (
   <div className="flex items-center gap-2 mb-6">
     {emoji ? <span className="text-2xl leading-none">{emoji}</span> : null}
-    <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+    <h2 className="text-2xl font-bold tracking-tight text-white">{title}</h2>
   </div>
 );
 
 const Field = ({ label, htmlFor, description, error, children }) => (
   <div className="space-y-1.5">
-    <label
-      htmlFor={htmlFor}
-      className="text-sm font-medium text-gray-800 dark:text-gray-200"
-    >
+    <label htmlFor={htmlFor} className="text-sm font-medium text-slate-100">
       {label}
     </label>
     {children}
-    {description && (
-      <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
-    )}
-    {error && <p className="text-xs text-red-600">{error}</p>}
+    {description && <p className="text-xs text-slate-400">{description}</p>}
+    {error && <p className="text-xs text-red-400">{error}</p>}
   </div>
 );
 
@@ -52,12 +46,12 @@ const NumberField = ({ unit, id, ...rest }) => (
       id={id}
       type="number"
       inputMode="decimal"
-      className="w-full p-3 pr-14 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full p-3 pr-14 rounded-xl border border-white/10 bg-white/5 text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
       {...rest}
     />
     {unit && (
       <span
-        className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-500 dark:text-gray-400 select-none"
+        className="absolute inset-y-0 right-3 flex items-center text-xs text-slate-400 select-none"
         aria-hidden="true"
       >
         {unit}
@@ -69,7 +63,7 @@ const NumberField = ({ unit, id, ...rest }) => (
 const SelectField = ({ id, children, ...rest }) => (
   <select
     id={id}
-    className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    className="w-full p-3 rounded-xl border border-white/10 bg-white/5 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
     {...rest}
   >
     {children}
@@ -82,11 +76,11 @@ const ActionBar = ({ children, className = "" }) => (
 
 const Button = ({ variant = "primary", className = "", ...rest }) => {
   const base =
-    "px-5 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition";
+    "px-5 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-0 transition";
   const styles =
     variant === "primary"
       ? "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
-      : "bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 focus:ring-gray-400";
+      : "bg-white/5 text-slate-100 hover:bg-white/10 ring-1 ring-white/10";
   return <button className={`${base} ${styles} ${className}`} {...rest} />;
 };
 
@@ -95,17 +89,17 @@ const ResetButton = (props) => (
 );
 
 const Stat = ({ label, value, hint }) => (
-  <div className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 ring-1 ring-black/5 dark:ring-white/10">
-    <p className="text-sm text-gray-600 dark:text-gray-300">{label}</p>
-    <p className="mt-1 text-2xl font-bold">{value}</p>
-    {hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
+  <div className="rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
+    <p className="text-sm text-slate-300">{label}</p>
+    <p className="mt-1 text-2xl font-bold text-white">{value}</p>
+    {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
   </div>
 );
 
 const Badge = ({ className = "", children }) => (
   <span
     className={
-      "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold " +
+      "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold " +
       className
     }
   >
@@ -123,10 +117,10 @@ const BMIRangeBar = ({ value }) => {
   const pct = (v) => ((v - min) / (max - min)) * 100;
   const pointerLeft = pct(clamp(Number(value), min, max));
   const bg = `linear-gradient(to right,
-    rgba(59,130,246,0.25) 0% ${pct(b1)}%,
-    rgba(34,197,94,0.25) ${pct(b1)}% ${pct(b2)}%,
-    rgba(234,179,8,0.3) ${pct(b2)}% ${pct(b3)}%,
-    rgba(239,68,68,0.3) ${pct(b3)}% 100%)`;
+    rgba(59,130,246,0.35) 0% ${pct(b1)}%,
+    rgba(34,197,94,0.35) ${pct(b1)}% ${pct(b2)}%,
+    rgba(234,179,8,0.45) ${pct(b2)}% ${pct(b3)}%,
+    rgba(239,68,68,0.45) ${pct(b3)}% 100%)`;
   return (
     <div className="w-full">
       <div
@@ -134,14 +128,14 @@ const BMIRangeBar = ({ value }) => {
         style={{ background: bg }}
         aria-label="BMI range bar"
       >
-        <div className="absolute inset-0 rounded-full ring-1 ring-black/10 dark:ring-white/10 pointer-events-none" />
+        <div className="absolute inset-0 rounded-full ring-1 ring-white/10 pointer-events-none" />
         <div
-          className="absolute -top-1.5 h-7 w-0.5 bg-gray-900 dark:bg-gray-100 rounded-sm"
+          className="absolute -top-1.5 h-7 w-0.5 bg-white rounded-sm"
           style={{ left: `${pointerLeft}%`, transform: "translateX(-50%)" }}
           aria-hidden="true"
         />
       </div>
-      <div className="mt-2 flex justify-between text-[11px] text-gray-600 dark:text-gray-300">
+      <div className="mt-2 flex justify-between text-[11px] text-slate-300">
         <span>10</span>
         <span>18.5</span>
         <span>25</span>
@@ -157,43 +151,35 @@ function getBmiInfo(bmiNumber) {
   if (!Number.isFinite(bmiNumber)) {
     return {
       label: "-",
-      tone: "gray",
-      badgeClass:
-        "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
+      badgeClass: "bg-white/10 text-slate-200 ring-1 ring-white/10",
       advice: "",
     };
   }
   if (bmiNumber < 18.5) {
     return {
       label: "Underweight",
-      tone: "blue",
-      badgeClass:
-        "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200",
+      badgeClass: "bg-blue-500/15 text-blue-200 ring-1 ring-blue-500/30",
       advice: "Consider increasing calories and protein.",
     };
   }
   if (bmiNumber < 25) {
     return {
       label: "Normal",
-      tone: "green",
       badgeClass:
-        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200",
+        "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/30",
       advice: "Maintain habits and progressive training.",
     };
   }
   if (bmiNumber < 30) {
     return {
       label: "Overweight",
-      tone: "yellow",
-      badgeClass:
-        "bg-yellow-100 text-yellow-900 dark:bg-yellow-900/30 dark:text-yellow-200",
+      badgeClass: "bg-yellow-500/15 text-yellow-200 ring-1 ring-yellow-500/30",
       advice: "Use a mild calorie deficit and increase NEAT.",
     };
   }
   return {
     label: "Obesity",
-    tone: "red",
-    badgeClass: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200",
+    badgeClass: "bg-red-500/15 text-red-200 ring-1 ring-red-500/30",
     advice: "Go into a deficit; prioritize movement and protein.",
   };
 }
@@ -228,10 +214,10 @@ const TabBar = ({ active, onChange }) => {
       ref={listRef}
       role="tablist"
       aria-label="Fitness sections"
-      className="sticky top-4 z-30 -mt-2 mb-8 bg-transparent"
+      className="sticky top-4 z-30 -mt-2 mb-8 bg-transparent px-1"
     >
       <div className="mx-auto max-w-6xl overflow-x-auto">
-        <div className="inline-flex gap-2 rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur px-2 py-2 ring-1 ring-black/10 dark:ring-white/10">
+        <div className="inline-flex gap-2 rounded-2xl bg-white/10 backdrop-blur px-2 py-2 ring-1 ring-white/10">
           {TABS.map((t, i) => {
             const selected = active === t.id;
             return (
@@ -243,7 +229,7 @@ const TabBar = ({ active, onChange }) => {
                 id={`tab-${t.id}`}
                 onClick={() => onChange(t.id)}
                 onKeyDown={(e) => onKeyDown(e, i)}
-                className="relative px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                className="relative px-4 py-2 rounded-xl text-sm font-semibold text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
               >
                 <span className="inline-flex items-center gap-2">
                   {t.icon}
@@ -255,7 +241,7 @@ const TabBar = ({ active, onChange }) => {
                     className="absolute inset-0 rounded-xl -z-10"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     style={{
-                      boxShadow: "inset 0 0 0 1000px rgba(37,99,235,0.12)",
+                      boxShadow: "inset 0 0 0 1000px rgba(59,130,246,0.18)",
                     }}
                   />
                 )}
@@ -270,11 +256,25 @@ const TabBar = ({ active, onChange }) => {
 
 /* ---------- Main ---------- */
 export default function FitnessHub() {
-  const [activeTab, setActiveTab] = useState("calories");
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      return localStorage.getItem("fitnesshub:tab") || "calories";
+    } catch {
+      return "calories";
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("fitnesshub:tab", activeTab);
+    } catch {}
+  }, [activeTab]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-950 dark:via-gray-900 dark:to-black p-4 sm:p-6">
-      <header className="mx-auto max-w-6xl">
-        <Card className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white">
+    <div className="mx-auto max-w-6xl px-4 pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      {/* HERO */}
+      <header className="pt-8">
+        <Card>
           <div className="px-4 sm:px-6 py-8 sm:py-10 text-center">
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wide">
               🏋️ Ultimate Fitness Hub
@@ -287,31 +287,32 @@ export default function FitnessHub() {
         </Card>
       </header>
 
+      {/* TABS */}
       <TabBar active={activeTab} onChange={setActiveTab} />
 
-      <main className="mx-auto max-w-6xl">
-        <motion.section
-          key={activeTab}
-          id={`panel-${activeTab}`}
-          role="tabpanel"
-          aria-labelledby={`tab-${activeTab}`}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          {activeTab === "calories" && <CaloriesTab />}
-          {activeTab === "analysis" && <AnalysisTab />}
-          {activeTab === "nutrition" && <NutritionTab />}
-          {activeTab === "hydration" && <HydrationTab />}
-          {activeTab === "training" && <TrainingTab />}
-          {activeTab === "lifestyle" && <LifestyleTab />}
-        </motion.section>
-      </main>
+      {/* CONTENT */}
+      <motion.section
+        key={activeTab}
+        id={`panel-${activeTab}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${activeTab}`}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+        className="mb-10"
+      >
+        {activeTab === "calories" && <CaloriesTab />}
+        {activeTab === "analysis" && <AnalysisTab />}
+        {activeTab === "nutrition" && <NutritionTab />}
+        {activeTab === "hydration" && <HydrationTab />}
+        {activeTab === "training" && <TrainingTab />}
+        {activeTab === "lifestyle" && <LifestyleTab />}
+      </motion.section>
     </div>
   );
 }
 
-/* ---------- Tabs Content (logic preserved) ---------- */
+/* ---------- Tabs Content ---------- */
 
 // 🔹 Calories
 function CaloriesTab() {
@@ -319,7 +320,6 @@ function CaloriesTab() {
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  // ⛔️ OVA LINIJA JE BILA BUG: "the" — UKLONJENA
   const [activity, setActivity] = useState("1.55");
   const [calories, setCalories] = useState(null);
 
@@ -450,7 +450,7 @@ function CaloriesTab() {
   );
 }
 
-// 🔹 Body Analysis (BMI, BMR, TDEE, Body Fat)
+// 🔹 Body Analysis
 function AnalysisTab() {
   const [gender, setGender] = useState("M");
   const [age, setAge] = useState("");
@@ -634,23 +634,19 @@ function AnalysisTab() {
             {results.bf && <Stat label="Body Fat %" value={`${results.bf}%`} />}
           </div>
 
-          <div className="mt-6 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 ring-1 ring-black/5 dark:ring-white/10">
+          <div className="mt-6 rounded-xl p-4 bg-white/5 ring-1 ring-white/10">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600 dark:text-gray-300">
-                  BMI status:
-                </span>
+                <span className="text-sm text-slate-300">BMI status:</span>
                 <Badge className={bmiInfo.badgeClass}>{bmiInfo.label}</Badge>
               </div>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-slate-400">
                 Thresholds: 18.5 / 25 / 30
               </span>
             </div>
             <BMIRangeBar value={Number(results.bmi)} />
             {bmiInfo.advice && (
-              <p className="mt-3 text-xs text-gray-600 dark:text-gray-300">
-                {bmiInfo.advice}
-              </p>
+              <p className="mt-3 text-xs text-slate-300">{bmiInfo.advice}</p>
             )}
           </div>
         </>
@@ -659,7 +655,7 @@ function AnalysisTab() {
   );
 }
 
-// 🔹 Nutrition (Macro Split)
+// 🔹 Nutrition
 function NutritionTab() {
   const [calories, setCalories] = useState("");
   const [goal, setGoal] = useState("balance");
@@ -740,7 +736,7 @@ function NutritionTab() {
         </div>
       )}
 
-      <p className="mt-6 text-xs text-gray-600 dark:text-gray-400">
+      <p className="mt-6 text-xs text-slate-400">
         Daily vitamins & minerals suggestions — coming soon.
       </p>
       <ActionBar className="mt-4">
@@ -803,7 +799,7 @@ function HydrationTab() {
   );
 }
 
-// 🔹 Training (1RM + stub)
+// 🔹 Training (1RM)
 function TrainingTab() {
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
@@ -830,7 +826,7 @@ function TrainingTab() {
     <Card className="p-6">
       <SectionTitle title="Training Tools" emoji="🏋️" />
       <div onKeyDown={onKey}>
-        <h3 className="text-lg font-semibold mb-3 inline-flex items-center gap-2">
+        <h3 className="text-lg font-semibold mb-3 inline-flex items-center gap-2 text-white">
           <HeartPulse className="opacity-70" /> 1RM Calculator
         </h3>
         <div className="grid gap-4 sm:grid-cols-3 mb-4">
@@ -877,8 +873,10 @@ function TrainingTab() {
           </div>
         )}
 
-        <h3 className="text-lg font-semibold mb-2">💓 Cardio Zones</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+        <h3 className="text-lg font-semibold mb-2 text-white">
+          💓 Cardio Zones
+        </h3>
+        <p className="text-sm text-slate-300">
           Calculate HR zones by age, VO₂ max estimator — coming soon.
         </p>
       </div>
@@ -891,7 +889,7 @@ function LifestyleTab() {
   return (
     <Card className="p-6">
       <SectionTitle title="Lifestyle & Wellness" emoji="🧘" />
-      <p className="text-gray-700 dark:text-gray-300">
+      <p className="text-slate-300">
         Sleep calculator, stress tracker, step counter, posture analysis,
         wellness tips — optimize your health beyond just training.
       </p>

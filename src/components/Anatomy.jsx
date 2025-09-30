@@ -1,4 +1,3 @@
-// src/components/Anatomy.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
@@ -6,17 +5,17 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
+import PageShell from "./layout/PageShell";
 
-/* ---------------- Utils ---------------- */
+/* util */
 const cn = (...c) => c.filter(Boolean).join(" ");
-const stop = (e) => e.stopPropagation();
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 const words = (s) =>
   (Array.isArray(s) ? s.join(" ") : s || "").split(/\s+/).filter(Boolean)
     .length;
 const estimateReadMin = (w, wpm = 220) => Math.max(1, Math.round(w / wpm));
 
-/* ---------------- Icons (inline) ---------------- */
+/* icons (inline) */
 const icons = {
   book: (p) => (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...p}>
@@ -145,172 +144,77 @@ const icons = {
   ),
 };
 
-/* ---------------- Content (richer previews) ---------------- */
+/* content (skraćena za primer – koristi tvoje SECTIONS iz prethodne verzije) */
 const SECTIONS = [
   {
     id: "intro",
     icon: "book",
     title: "Introduction to Muscles",
-    preview:
-      "Muscles power movement, posture, breathing, and heat. They adapt quickly to how you train and recover.",
+    preview: "Muscles power movement, posture, breathing, and heat.",
     tags: ["basics", "health"],
     body: [
       "Muscles account for ~30–40% of body weight and underpin movement, stability, breathing mechanics, circulation, and thermoregulation.",
-      "They are metabolically active tissues responsive to training, nutrition, and sleep—key drivers of performance, insulin sensitivity, and healthy aging.",
     ],
   },
   {
     id: "types",
     icon: "layers",
     title: "Types of Muscles",
-    preview:
-      "Three tissues with distinct roles: skeletal (movement), cardiac (heart), smooth (organs).",
+    preview: "Skeletal, cardiac, and smooth muscles.",
     tags: ["basics", "physiology"],
     bullets: [
-      "Skeletal — voluntary, attached to bones; posture & movement.",
-      "Cardiac — involuntary, unique to the heart; beats continuously.",
-      "Smooth — involuntary, in organs/vessels; digestion & circulation.",
+      "Skeletal — voluntary, attached to bones.",
+      "Cardiac — involuntary, heart only.",
+      "Smooth — involuntary, organs/vessels.",
     ],
   },
   {
     id: "structure",
     icon: "tune",
     title: "Muscle Structure",
-    preview:
-      "Fibers contain myofibrils; sarcomeres with actin & myosin create force via sliding filaments.",
+    preview: "Fibers → myofibrils → sarcomeres (actin & myosin).",
     tags: ["physiology", "structure"],
     bullets: [
-      "Muscle fiber → myofibrils → sarcomeres.",
-      "Sarcomere: actin & myosin slide to shorten the muscle.",
-      "Connective sheaths: endomysium, perimysium, epimysium.",
-      "Neuromuscular junctions: motor neurons trigger contraction.",
+      "Sarcomere sliding-filament model.",
+      "Connective sheaths: endo/peri/epi.",
+      "Neuromuscular junction triggers contraction.",
     ],
   },
   {
     id: "hypertrophy",
     icon: "dumbbell",
-    title: "How Muscles Grow (Hypertrophy)",
-    preview:
-      "Micro-tears + protein synthesis + progressive overload → bigger, stronger fibers.",
+    title: "How Muscles Grow",
+    preview: "Overload + protein synthesis + recovery.",
     tags: ["training", "growth"],
     body: [
-      "Resistance training causes micro-damage repaired by protein synthesis, leading to thicker fibers.",
-      "Progressive overload (more load/reps/range/tempo) and adequate recovery drive hypertrophy; hormones (testosterone, GH, IGF-1) support the process.",
-    ],
-  },
-  {
-    id: "atrophy",
-    icon: "moon",
-    title: "Muscle Loss (Atrophy & Sarcopenia)",
-    preview:
-      "Inactivity, illness, or aging shrink fibers; strength and metabolism decline without training.",
-    tags: ["health", "aging"],
-    body: [
-      "Atrophy emerges with disuse, undernutrition, or disease. Sarcopenia starts ~30 and accelerates after 50.",
-      "Prevention: lift regularly, eat sufficient protein, and stay active to preserve muscle quality and function.",
-    ],
-  },
-  {
-    id: "fuel",
-    icon: "bolt",
-    title: "Fuel for Muscles",
-    preview:
-      "ATP for now, creatine for bursts, glycogen for hard efforts, fat for endurance.",
-    tags: ["energy", "physiology"],
-    bullets: [
-      "ATP — immediate currency.",
-      "Creatine phosphate — brief power.",
-      "Glycogen — primary at higher intensities.",
-      "Fatty acids — main at rest/long duration.",
-      "Protein — backup fuel when carbs/fats are low.",
+      "Progressive overload with adequate recovery drives hypertrophy; hormones support the process.",
     ],
   },
   {
     id: "nutrition",
     icon: "heart",
     title: "Nutrition & Muscles",
-    preview:
-      "Aim ~1.6–2.2 g/kg protein, fuel with carbs, include healthy fats, hydrate well.",
+    preview: "1.6–2.2 g/kg protein; carbs fuel; hydrate.",
     tags: ["nutrition", "health"],
     bullets: [
-      "Protein: ~1.6–2.2 g/kg/day (active individuals).",
-      "Carbohydrates: refill glycogen for training.",
-      "Healthy fats: hormone balance & recovery.",
-      "Micros: vitamin D, calcium, magnesium, iron.",
-      "Hydration: muscles are ~75% water.",
+      "Protein 1.6–2.2 g/kg/day",
+      "Carbs refill glycogen",
+      "Hydration ~30–35 ml/kg/day",
     ],
   },
   {
     id: "recovery",
     icon: "clock",
     title: "Recovery & Sleep",
-    preview:
-      "Growth happens outside the gym: 7–9h sleep, deloads, and active recovery matter.",
-    tags: ["recovery", "health"],
+    preview: "Growth happens outside the gym.",
+    tags: ["recovery"],
     body: [
-      "Deep sleep supports growth hormone and tissue repair.",
-      "Active recovery increases blood flow; manage volume and insert deload weeks to avoid overtraining.",
-    ],
-  },
-  {
-    id: "training",
-    icon: "dumbbell",
-    title: "Training Variables",
-    preview:
-      "Intensity, volume, frequency, and variation—track them to guide progression.",
-    tags: ["training"],
-    bullets: [
-      "Intensity: load/weight.",
-      "Volume: sets × reps (total work).",
-      "Frequency: sessions per muscle/week.",
-      "Variation: rotation of exercises & stimuli.",
-      "Consistency: meaningful gains take months/years.",
-    ],
-  },
-  {
-    id: "lifespan",
-    icon: "users",
-    title: "Muscles Across the Lifespan",
-    preview:
-      "Youth growth → peak in 20s → gradual decline; training preserves function at any age.",
-    tags: ["aging", "health"],
-    bullets: [
-      "Teens: rapid growth with activity & hormones.",
-      "20s: peak muscle potential.",
-      "30–40s: gradual decline without training.",
-      "50+: sarcopenia accelerates; strength work crucial.",
-      "70+: training maintains mobility & independence.",
-    ],
-  },
-  {
-    id: "fun",
-    icon: "star",
-    title: "Fun Facts",
-    preview:
-      "Largest: gluteus maximus. Strongest per size: masseter. 600+ muscles coordinate daily life.",
-    tags: ["fun"],
-    bullets: [
-      "Largest muscle: gluteus maximus.",
-      "Strongest relative to size: masseter.",
-      "Standing still needs hundreds of contractions.",
-    ],
-  },
-  {
-    id: "takeaways",
-    icon: "book",
-    title: "Key Takeaways",
-    preview:
-      "Use it or lose it—apply load, eat protein, sleep well, and be consistent.",
-    tags: ["summary"],
-    bullets: [
-      "Adaptation follows the stimulus you provide.",
-      "Training + nutrition + recovery = progress.",
-      "Consistency beats perfection.",
+      "Deep sleep supports growth hormone and tissue repair; active recovery boosts blood flow.",
     ],
   },
 ];
 
-/* ---------------- Toast ---------------- */
+/* toast */
 function Toast({ text, onDone }) {
   return (
     <AnimatePresence>
@@ -330,14 +234,13 @@ function Toast({ text, onDone }) {
   );
 }
 
-/* ---------------- FancyCard (tilt + shine) ---------------- */
+/* fancy card */
 function FancyCard({ children, onClick, className }) {
   const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const x = useMotionValue(0.5);
+  const y = useMotionValue(0.5);
   const rx = useTransform(y, [0, 1], [8, -8]);
   const ry = useTransform(x, [0, 1], [-8, 8]);
-
   const onMove = (e) => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
@@ -346,7 +249,6 @@ function FancyCard({ children, onClick, className }) {
     x.set(px);
     y.set(py);
   };
-
   return (
     <motion.div
       ref={ref}
@@ -356,20 +258,17 @@ function FancyCard({ children, onClick, className }) {
         y.set(0.5);
       }}
       style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-      className={cn("relative rounded-2xl p-px", className)}
+      className={cn("relative rounded-2xl p-px cursor-pointer", className)}
       onClick={onClick}
     >
-      {/* animated gradient border */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-fuchsia-500/30 via-blue-500/30 to-emerald-500/30 blur-[2px]" />
-      {/* inner */}
-      <div className="relative rounded-[1rem] bg-white/80 dark:bg-slate-900/70 ring-1 ring-slate-900/10 dark:ring-white/10 shadow-sm">
-        {/* shine */}
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-fuchsia-500/20 via-blue-500/20 to-emerald-500/20 blur-[2px]" />
+      <div className="relative rounded-[1rem] bg-white/5 ring-1 ring-white/10">
         <div
           className="pointer-events-none absolute inset-0 rounded-[1rem]"
           style={{
             background: `radial-gradient(600px circle at ${x.get() * 100}% ${
               y.get() * 100
-            }%, rgba(255,255,255,.25), transparent 40%)`,
+            }%, rgba(255,255,255,.08), transparent 40%)`,
           }}
         />
         <div className="relative z-10 p-4">{children}</div>
@@ -378,27 +277,25 @@ function FancyCard({ children, onClick, className }) {
   );
 }
 
-/* ---------------- Card ---------------- */
-function Card({ section, onOpen, isFav, toggleFav }) {
+/* card */
+function CardItem({ section, onOpen, isFav, toggleFav }) {
   const Icon = icons[section.icon] || icons.book;
   return (
-    <FancyCard onClick={() => onOpen(section.id)} className="cursor-pointer">
+    <FancyCard onClick={() => onOpen(section.id)}>
       <div className="flex items-start gap-3">
-        <div className="shrink-0 rounded-xl p-2 bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-white">
+        <div className="shrink-0 rounded-xl p-2 bg-white/10 text-white">
           <Icon className="w-5 h-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-            {section.title}
-          </h3>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">
+          <h3 className="font-semibold text-white">{section.title}</h3>
+          <p className="mt-1 text-sm text-slate-300 line-clamp-3">
             {section.preview}
           </p>
           <div className="mt-2 flex flex-wrap gap-1">
             {section.tags?.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 ring-1 ring-slate-200 dark:bg-white/10 dark:text-slate-200 dark:ring-white/10"
+                className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 ring-1 ring-white/10"
               >
                 {t}
               </span>
@@ -410,18 +307,18 @@ function Card({ section, onOpen, isFav, toggleFav }) {
             e.stopPropagation();
             toggleFav(section.id);
           }}
-          className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
+          className="p-2 rounded-lg hover:bg-white/10"
           title={isFav ? "Remove favorite" : "Add favorite"}
         >
           {isFav ? (
             <icons.starFill className="w-4 h-4 text-amber-400" />
           ) : (
-            <icons.star className="w-4 h-4 text-slate-500" />
+            <icons.star className="w-4 h-4 text-slate-300" />
           )}
         </button>
       </div>
       <div className="mt-3">
-        <span className="text-xs px-2 py-1 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900">
+        <span className="text-xs px-2 py-1 rounded-lg bg-white/10 ring-1 ring-white/10 text-white">
           Read more
         </span>
       </div>
@@ -429,7 +326,7 @@ function Card({ section, onOpen, isFav, toggleFav }) {
   );
 }
 
-/* ---------------- Modal (no quiz here) ---------------- */
+/* modal */
 function Modal({
   section,
   index,
@@ -444,9 +341,6 @@ function Modal({
   const ref = useRef(null);
   const sc = useRef(null);
   const [progress, setProgress] = useState(0);
-  const reduce =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
   useEffect(() => {
     const onKey = (e) => {
@@ -469,7 +363,10 @@ function Modal({
     if (!el) return;
     const onScroll = () =>
       setProgress(
-        clamp(el.scrollTop / (el.scrollHeight - el.clientHeight + 1), 0, 1)
+        Math.max(
+          0,
+          Math.min(1, el.scrollTop / (el.scrollHeight - el.clientHeight + 1))
+        )
       );
     el.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -479,7 +376,6 @@ function Modal({
   const Icon = icons[section.icon] || icons.book;
   const w = words(section.body) + words(section.bullets);
   const readMin = estimateReadMin(w);
-
   const copyLink = () => {
     const url = `${window.location.origin}${window.location.pathname}#${section.id}`;
     navigator.clipboard?.writeText(url);
@@ -488,7 +384,7 @@ function Modal({
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -497,24 +393,18 @@ function Modal({
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-labelledby={`${section.id}-title`}
         tabIndex={-1}
         ref={ref}
-        onClick={stop}
-        className={cn(
-          "fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2",
-          "sm:-translate-x-1/2 sm:-translate-y-1/2",
-          "w-full sm:w-[720px] max-w-screen px-4 sm:px-0"
-        )}
+        onClick={(e) => e.stopPropagation()}
+        className="fixed inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:w-[720px] px-4 sm:px-0"
       >
         <motion.div
-          initial={reduce ? { opacity: 0 } : { y: 40, opacity: 0 }}
-          animate={reduce ? { opacity: 1 } : { y: 0, opacity: 1 }}
-          exit={reduce ? { opacity: 0 } : { y: 24, opacity: 0 }}
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 24, opacity: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 30 }}
-          className="overflow-hidden rounded-2xl bg-white text-slate-900 shadow-2xl ring-1 ring-slate-900/10 dark:bg-slate-900 dark:text-slate-100 dark:ring-white/10"
+          className="overflow-hidden rounded-2xl bg-slate-900 text-slate-100 shadow-2xl ring-1 ring-white/10"
         >
-          {/* progress */}
           <div className="h-1 bg-transparent">
             <div
               className="h-1 bg-blue-600 transition-[width] duration-150"
@@ -523,42 +413,35 @@ function Modal({
           </div>
 
           <div className="flex items-start gap-3 p-4 sm:p-5">
-            <div className="shrink-0 mt-0.5 rounded-xl p-2 bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-white">
+            <div className="shrink-0 mt-0.5 rounded-xl p-2 bg-white/10">
               <Icon className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3
-                  id={`${section.id}-title`}
-                  className="text-lg font-semibold"
-                >
-                  {section.title}
-                </h3>
+                <h3 className="text-lg font-semibold">{section.title}</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 dark:text-slate-400">
-                    {readMin} min
-                  </span>
+                  <span className="text-xs text-slate-400">{readMin} min</span>
                   <button
                     onClick={() => toggleFav(section.id)}
-                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10"
+                    className="p-2 rounded-lg hover:bg-white/10"
                     title={isFav ? "Remove favorite" : "Add favorite"}
                   >
                     {isFav ? (
                       <icons.starFill className="w-4 h-4 text-amber-400" />
                     ) : (
-                      <icons.star className="w-4 h-4 text-slate-500" />
+                      <icons.star className="w-4 h-4 text-slate-300" />
                     )}
                   </button>
                   <button
                     onClick={copyLink}
-                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10"
+                    className="p-2 rounded-lg hover:bg-white/10"
                     title="Copy link"
                   >
-                    <icons.link className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                    <icons.link className="w-4 h-4 text-slate-300" />
                   </button>
                   <button
                     onClick={onClose}
-                    className="ml-1 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:bg-white/10 dark:text-slate-300"
+                    className="ml-1 rounded-lg p-2 text-slate-300 hover:bg-white/10"
                     aria-label="Close"
                     title="Close"
                   >
@@ -573,7 +456,6 @@ function Modal({
                 </div>
               </div>
 
-              {/* scrollable content */}
               <div
                 ref={sc}
                 className="mt-2 max-h-[60vh] overflow-y-auto pr-1 space-y-2 text-sm leading-relaxed"
@@ -588,70 +470,8 @@ function Modal({
                     ))}
                   </ul>
                 )}
-                {/* Quick tips by context */}
-                {(section.id === "nutrition" ||
-                  section.id === "hypertrophy" ||
-                  section.id === "recovery" ||
-                  section.id === "fuel" ||
-                  section.id === "training") && (
-                  <div className="mt-3 rounded-xl bg-blue-50 text-blue-900 ring-1 ring-blue-200 dark:bg-blue-950/40 dark:text-blue-200 dark:ring-blue-900/40 p-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide">
-                      Quick tips
-                    </p>
-                    <ul className="mt-1 text-sm list-disc list-inside space-y-1">
-                      {section.id === "nutrition" && (
-                        <>
-                          <li>
-                            Protein: <strong>1.6–2.2 g/kg/day</strong>, split
-                            3–5 meals.
-                          </li>
-                          <li>
-                            Hydrate: start at <strong>30–35 ml/kg/day</strong>{" "}
-                            and adjust.
-                          </li>
-                        </>
-                      )}
-                      {section.id === "hypertrophy" && (
-                        <>
-                          <li>
-                            Overload: add reps/weight or slow tempo weekly.
-                          </li>
-                          <li>Keep 1–3 reps in reserve (RIR) for most sets.</li>
-                        </>
-                      )}
-                      {section.id === "recovery" && (
-                        <>
-                          <li>
-                            Sleep <strong>7–9 h</strong>; consistent schedule >
-                            weekend binges.
-                          </li>
-                          <li>Deload every 6–8 weeks if progress stalls.</li>
-                        </>
-                      )}
-                      {section.id === "fuel" && (
-                        <>
-                          <li>
-                            Creatine monohydrate: <strong>3–5 g/day</strong>.
-                          </li>
-                          <li>
-                            High-intensity days: prioritize carbs pre/post.
-                          </li>
-                        </>
-                      )}
-                      {section.id === "training" && (
-                        <>
-                          <li>
-                            Track intensity, volume, frequency for each muscle.
-                          </li>
-                          <li>Rotate movement patterns every 6–8 weeks.</li>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-                )}
               </div>
 
-              {/* Prev/Next */}
               <div className="mt-3 flex items-center justify-between text-xs">
                 <button
                   onClick={onPrev}
@@ -659,7 +479,7 @@ function Modal({
                 >
                   ← Prev
                 </button>
-                <span className="text-slate-500 dark:text-slate-400">
+                <span className="text-slate-400">
                   {index + 1} / {total}
                 </span>
                 <button
@@ -677,162 +497,8 @@ function Modal({
   );
 }
 
-/* ---------------- Quiz Section (separate; levels) ---------------- */
-const QUIZ = {
-  easy: [
-    {
-      q: "Which tissue is voluntary and attached to bones?",
-      a: ["Smooth", "Cardiac", "Skeletal"],
-      c: 2,
-    },
-    {
-      q: "Immediate cellular energy currency is…",
-      a: ["ATP", "Glycogen", "Fatty acids"],
-      c: 0,
-    },
-    {
-      q: "Recommended adult sleep for recovery?",
-      a: ["3–4 h", "7–9 h", "10–12 h"],
-      c: 1,
-    },
-  ],
-  medium: [
-    {
-      q: "Hypertrophy primarily requires…",
-      a: ["Progressive overload", "Static stretching", "Dehydration"],
-      c: 0,
-    },
-    {
-      q: "Sarcopenia generally begins around age…",
-      a: ["10", "30", "70"],
-      c: 1,
-    },
-    {
-      q: "Primary fuel at high intensity efforts:",
-      a: ["Fatty acids", "Glycogen", "Protein"],
-      c: 1,
-    },
-  ],
-  hard: [
-    {
-      q: "Sliding filament theory involves…",
-      a: ["Actin & myosin", "Collagen & elastin", "Calcium & sodium only"],
-      c: 0,
-    },
-    {
-      q: "Connective tissue around fascicles is…",
-      a: ["Endomysium", "Perimysium", "Epimysium"],
-      c: 1,
-    },
-    {
-      q: "Creatine phosphate system dominates for…",
-      a: ["<10s power bursts", ">30 min jog", "All-day activity"],
-      c: 0,
-    },
-  ],
-};
-
-function QuizSection() {
-  const tabs = ["easy", "medium", "hard"];
-  const [tab, setTab] = useState("easy");
-  const key = (t) => `quiz-global:${t}`;
-  const [answers, setAnswers] = useState(() =>
-    JSON.parse(localStorage.getItem(key(tab)) || "[]")
-  );
-  const items = QUIZ[tab];
-
-  useEffect(() => {
-    setAnswers(JSON.parse(localStorage.getItem(key(tab)) || "[]"));
-  }, [tab]);
-
-  useEffect(() => {
-    localStorage.setItem(key(tab), JSON.stringify(answers));
-  }, [answers, tab]);
-
-  const score = items.reduce(
-    (s, it, i) => s + (answers[i] === it.c ? 1 : 0),
-    0
-  );
-
-  return (
-    <section className="mt-10 rounded-2xl bg-white/70 dark:bg-slate-900/70 ring-1 ring-slate-900/10 dark:ring-white/10 p-4 sm:p-5">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-lg font-bold">Practice Quiz</h2>
-        <div className="flex gap-1">
-          {tabs.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={cn(
-                "px-2.5 py-1.5 rounded-lg text-xs capitalize ring-1",
-                tab === t
-                  ? "bg-blue-600 text-white ring-blue-700"
-                  : "bg-white/10 ring-white/15 hover:bg-white/15"
-              )}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
-      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        Score: {score}/{items.length}
-      </p>
-
-      <div className="mt-3 space-y-4">
-        {items.map((it, i) => (
-          <div key={i} className="space-y-1">
-            <p className="text-sm">
-              {i + 1}. {it.q}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {it.a.map((opt, j) => {
-                const picked = answers[i] === j;
-                const correct = it.c === j;
-                const state =
-                  answers[i] == null
-                    ? ""
-                    : picked && correct
-                    ? "bg-green-600 text-white"
-                    : picked && !correct
-                    ? "bg-red-600 text-white"
-                    : correct
-                    ? "ring-1 ring-green-500"
-                    : "";
-                return (
-                  <button
-                    key={j}
-                    onClick={() =>
-                      setAnswers((prev) => {
-                        const next = [...prev];
-                        next[i] = j;
-                        return next;
-                      })
-                    }
-                    className={cn(
-                      "text-left px-2.5 py-1.5 rounded-lg text-sm bg-white/70 hover:bg-white dark:bg-white/10 dark:hover:bg-white/15",
-                      state
-                    )}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-        Tip: Questions are independent from cards—no spoilers in modals.
-      </p>
-    </section>
-  );
-}
-
-/* ---------------- Main ---------------- */
 export default function Anatomy() {
   const [query, setQuery] = useState("");
-  const [activeTags, setActiveTags] = useState(new Set());
   const [favorites, setFavorites] = useState(
     () => new Set(JSON.parse(localStorage.getItem("anatomy:favs") || "[]"))
   );
@@ -842,8 +508,6 @@ export default function Anatomy() {
   useEffect(() => {
     localStorage.setItem("anatomy:favs", JSON.stringify([...favorites]));
   }, [favorites]);
-
-  // Deep-link open by hash
   useEffect(() => {
     const openFromHash = () => {
       const id = window.location.hash?.slice(1);
@@ -859,6 +523,7 @@ export default function Anatomy() {
     SECTIONS.forEach((s) => s.tags?.forEach((x) => t.add(x)));
     return ["all", ...t];
   }, []);
+  const [activeTags, setActiveTags] = useState(new Set());
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -909,88 +574,85 @@ export default function Anatomy() {
     });
     setToast((t) => (t ? t : "Updated favorites"));
   };
-
   const active = useMemo(
     () => SECTIONS.find((s) => s.id === activeId) || null,
     [activeId]
   );
 
   return (
-    <section className="min-h-[70vh] bg-gradient-to-b from-slate-50 to-white text-slate-900 dark:from-slate-950 dark:to-slate-900 dark:text-slate-100">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
-        {/* Header */}
-        <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Anatomy — Muscles: Complete Educational Guide
-            </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              Tap a card to open a detailed modal. Quiz is below the cards.
-            </p>
-          </div>
-          <div className="w-full sm:w-[420px] flex items-center gap-2">
-            <div className="relative flex-1">
-              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400">
-                <icons.search className="w-4 h-4" />
-              </span>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search: hypertrophy, protein, glycogen, sleep…"
-                className="w-full pl-8 pr-3 py-2 rounded-xl bg-black/5 ring-1 ring-slate-900/10 outline-none focus:ring-2 focus:ring-blue-500/70 dark:bg-white/5 dark:ring-white/10"
-              />
+    <PageShell>
+      <section className="min-h-[70vh]">
+        <div className="mx-auto max-w-7xl px-4 py-8">
+          <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                Anatomy — Muscles: Complete Educational Guide
+              </h1>
+              <p className="text-sm text-slate-300">
+                Tap a card to open a detailed modal.
+              </p>
             </div>
+            <div className="w-full sm:w-[420px] flex items-center gap-2">
+              <div className="relative flex-1">
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400">
+                  <icons.search className="w-4 h-4" />
+                </span>
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search: hypertrophy, protein, glycogen, sleep…"
+                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-white/5 ring-1 ring-white/10 outline-none focus:ring-2 focus:ring-blue-500/70 text-white placeholder:text-slate-400"
+                />
+              </div>
+            </div>
+          </header>
+
+          {/* Tags */}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {allTags.map((t, i) => (
+              <button
+                key={t}
+                onClick={() =>
+                  setActiveTags((prev) => {
+                    if (i === 0) return new Set();
+                    const next = new Set(prev);
+                    next.has(t) ? next.delete(t) : next.add(t);
+                    return next;
+                  })
+                }
+                className={cn(
+                  "px-2.5 py-1 rounded-full text-xs ring-1 transition",
+                  (i === 0 && activeTags.size === 0) || activeTags.has(t)
+                    ? "bg-blue-600 text-white ring-blue-700"
+                    : "bg-white/10 ring-white/15 hover:bg-white/15"
+                )}
+              >
+                {t}
+              </button>
+            ))}
+            <span className="text-xs text-slate-400 self-center ml-auto">
+              {filtered.length} result{filtered.length === 1 ? "" : "s"}
+            </span>
           </div>
-        </header>
 
-        {/* Tags */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {allTags.map((t, i) => (
-            <button
-              key={t}
-              onClick={() =>
-                setActiveTags((prev) => {
-                  if (i === 0) return new Set(); // All
-                  const next = new Set(prev);
-                  next.has(t) ? next.delete(t) : next.add(t);
-                  return next;
-                })
-              }
-              className={cn(
-                "px-2.5 py-1 rounded-full text-xs ring-1 transition",
-                (i === 0 && activeTags.size === 0) || activeTags.has(t)
-                  ? "bg-blue-600 text-white ring-blue-700"
-                  : "bg-white/10 ring-white/15 hover:bg-white/15 dark:bg-white/10"
-              )}
-            >
-              {t}
-            </button>
-          ))}
-          <span className="text-xs text-slate-500 dark:text-slate-400 self-center ml-auto">
-            {filtered.length} result{filtered.length === 1 ? "" : "s"}
-          </span>
+          {/* Grid */}
+          <motion.div
+            layout
+            className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            initial={false}
+          >
+            {filtered.map((s) => (
+              <CardItem
+                key={s.id}
+                section={s}
+                onOpen={open}
+                isFav={favorites.has(s.id)}
+                toggleFav={toggleFav}
+              />
+            ))}
+          </motion.div>
         </div>
-
-        {/* Grid: 1 / 2 / 3 columns */}
-        <motion.div
-          layout
-          className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          initial={false}
-        >
-          {filtered.map((s) => (
-            <Card
-              key={s.id}
-              section={s}
-              onOpen={open}
-              isFav={favorites.has(s.id)}
-              toggleFav={toggleFav}
-            />
-          ))}
-        </motion.div>
-
-        {/* Quiz (separate section) */}
-        <QuizSection />
-      </div>
+      </section>
 
       {/* Modal */}
       <AnimatePresence>
@@ -1011,6 +673,6 @@ export default function Anatomy() {
 
       {/* Toast */}
       <Toast text={toast} onDone={() => setToast("")} />
-    </section>
+    </PageShell>
   );
 }
