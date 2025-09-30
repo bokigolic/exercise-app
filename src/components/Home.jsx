@@ -1,11 +1,12 @@
-// src/pages/Home.jsx
+// src/components/Home.jsx  (ako koristiš /pages/, prilagodi import u App.jsx)
+// why: moderniji tamni hero + responsive kontrole; zadržana kompletna logika
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import exercisesData from "../data/exercises.json";
 import Loader from "../components/Loader";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ---------- helpers ---------- */
-// why: smanji re-render pri tipkanju
 function useDebouncedValue(value, delay = 300) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -14,8 +15,6 @@ function useDebouncedValue(value, delay = 300) {
   }, [value, delay]);
   return debounced;
 }
-
-// why: dataset nivoi znaju da variraju
 function normalizeLevel(lvl) {
   const v = (lvl || "").toString().toLowerCase();
   if (["expert", "adv"].includes(v)) return "advanced";
@@ -23,7 +22,6 @@ function normalizeLevel(lvl) {
   if (["beginner", "novice", "beg"].includes(v)) return "beginner";
   return v;
 }
-
 const BODY_PARTS = [
   { value: "abdominals", label: "Abs" },
   { value: "biceps", label: "Biceps" },
@@ -36,20 +34,17 @@ const BODY_PARTS = [
   { value: "glutes", label: "Glutes" },
   { value: "calves", label: "Calves" },
 ];
-
 const LEVELS = [
   { value: "", label: "All Levels" },
   { value: "beginner", label: "Beginner" },
   { value: "intermediate", label: "Intermediate" },
   { value: "advanced", label: "Advanced" },
 ];
-
 const SORTS = [
   { value: "relevance", label: "Relevance" },
   { value: "name", label: "Name (A–Z)" },
   { value: "level", label: "Level" },
 ];
-
 const cn = (...c) => c.filter(Boolean).join(" ");
 const keyForExercise = (ex) => ex.id ?? `${ex.name}|${ex.equipment ?? ""}`;
 
@@ -68,7 +63,6 @@ function Highlight({ text, query }) {
     </>
   );
 }
-
 function ImgOrFallback({ src, alt, className = "w-1/2" }) {
   const [error, setError] = useState(false);
   if (error || !src) {
@@ -94,52 +88,184 @@ function ImgOrFallback({ src, alt, className = "w-1/2" }) {
   );
 }
 
-/* ---------- Quick View Modal ---------- */
+/* ---------- tiny inline logo ---------- */
+function BokiGymLogo({ className = "" }) {
+  return (
+    <div className={cn("flex items-center gap-2", className)}>
+      <svg width="26" height="26" viewBox="0 0 24 24" className="text-blue-500">
+        <path
+          d="M3 12h18M7 8v8M17 8v8"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+        <rect
+          x="1.5"
+          y="9.5"
+          width="3"
+          height="5"
+          rx="1.2"
+          fill="currentColor"
+        />
+        <rect
+          x="19.5"
+          y="9.5"
+          width="3"
+          height="5"
+          rx="1.2"
+          fill="currentColor"
+        />
+      </svg>
+      <span className="font-extrabold tracking-tight">BokiGym</span>
+    </div>
+  );
+}
+
+/* ---------- Quick View Modal (improved) ---------- */
 function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
-  // why: ESC za11brzo zatvaranje
+  const [index, setIndex] = useState(0);
+  const startX = useRef(null);
+  const deltaX = useRef(0);
+  const closeBtnRef = useRef(null);
+
+  const images = useMemo(
+    () =>
+      Array.isArray(exercise?.images) ? exercise.images.filter(Boolean) : [],
+    [exercise]
+  );
+
+  // reset index kad se promeni vežba
+  useEffect(() => setIndex(0), [exercise]);
+
+  // ESC + strelice
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && onClose();
-    if (open) document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (!images.length) return;
+      if (e.key === "ArrowRight") setIndex((i) => (i + 1) % images.length);
+      if (e.key === "ArrowLeft")
+        setIndex((i) => (i - 1 + images.length) % images.length);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, images.length, onClose]);
+
+  // fokus na Close
+  useEffect(() => {
+    if (open) setTimeout(() => closeBtnRef.current?.focus(), 0);
+  }, [open]);
+
+  // lock scroll kad je modal otvoren
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev || "";
+    };
+  }, [open]);
+
+  // swipe za slike
+  const onPointerDown = (e) => {
+    startX.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    deltaX.current = 0;
+  };
+  const onPointerMove = (e) => {
+    if (startX.current == null) return;
+    const x = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    deltaX.current = x - startX.current;
+  };
+  const onPointerUp = () => {
+    if (startX.current == null) return;
+    const swipe = deltaX.current;
+    startX.current = null;
+    deltaX.current = 0;
+    if (Math.abs(swipe) > 60 && images.length > 1) {
+      setIndex((i) =>
+        swipe < 0
+          ? (i + 1) % images.length
+          : (i - 1 + images.length) % images.length
+      );
+    }
+  };
+
+  const next = () => images.length && setIndex((i) => (i + 1) % images.length);
+  const prev = () =>
+    images.length && setIndex((i) => (i - 1 + images.length) % images.length);
 
   return (
     <AnimatePresence>
       {open && exercise && (
         <motion.div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          aria-live="polite"
         >
+          {/* overlay */}
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
+
+          {/* dialog */}
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative z-[61] w-full max-w-3xl bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden"
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 40, opacity: 0 }}
+            aria-label={`${exercise.name} details`}
+            className={cn(
+              "relative z-[91] w-full max-w-4xl",
+              "bg-[#111214] text-white rounded-2xl shadow-2xl ring-1 ring-white/10",
+              "overflow-hidden"
+            )}
+            initial={{ y: 40, opacity: 0, scale: 0.98 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 20, opacity: 0, scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
           >
-            <div className="flex flex-col md:flex-row">
-              <div className="md:w-1/2 p-4">
-                <div className="flex gap-3">
-                  {Array.isArray(exercise.images) &&
-                  exercise.images.length > 0 ? (
-                    exercise.images
-                      .slice(0, 2)
-                      .map((img, i) => (
-                        <ImgOrFallback
-                          key={i}
-                          src={`/exercises/${img}`}
-                          alt={exercise.name}
-                          className="w-1/2"
-                        />
-                      ))
+            {/* header */}
+            <div className="flex items-center justify-between gap-2 px-4 sm:px-5 py-3 border-b border-white/10 bg-white/5">
+              <div className="min-w-0">
+                <h3 className="text-base sm:text-lg font-semibold truncate">
+                  {exercise.name}
+                </h3>
+                <p className="text-xs text-white/60 truncate">
+                  {exercise.category || "Exercise"} •{" "}
+                  {normalizeLevel(exercise.level) || "—"}
+                </p>
+              </div>
+              <button
+                ref={closeBtnRef}
+                onClick={onClose}
+                className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-sm"
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* content */}
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* media / carousel */}
+              <div
+                className="relative bg-white/5 md:border-r border-white/10"
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onTouchStart={onPointerDown}
+                onTouchMove={onPointerMove}
+                onTouchEnd={onPointerUp}
+              >
+                <div className="p-4 sm:p-5">
+                  {images.length > 0 ? (
+                    <ImgOrFallback
+                      src={`/exercises/${images[index]}`}
+                      alt={exercise.name}
+                      className="w-full"
+                    />
                   ) : (
                     <ImgOrFallback
                       src={null}
@@ -148,54 +274,87 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                     />
                   )}
                 </div>
-              </div>
-              <div className="md:w-1/2 p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-xl font-bold">{exercise.name}</h3>
-                  <button
-                    onClick={onClose}
-                    className="rounded-lg px-2 py-1 bg-gray-100 dark:bg-gray-800"
-                    title="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                  <div>
-                    <span className="font-medium">Equipment:</span>{" "}
-                    {exercise.equipment || "—"}
+                {/* arrows + dots */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prev}
+                      aria-label="Previous image"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 w-9 h-9 grid place-items-center"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      onClick={next}
+                      aria-label="Next image"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 w-9 h-9 grid place-items-center"
+                    >
+                      ›
+                    </button>
+                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
+                      {images.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setIndex(i)}
+                          aria-label={`Go to image ${i + 1}`}
+                          className={cn(
+                            "w-2.5 h-2.5 rounded-full",
+                            i === index ? "bg-white" : "bg-white/40"
+                          )}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* details */}
+              <div className="p-4 sm:p-6 overflow-y-auto max-h-[70vh] md:max-h-[80vh]">
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                  <div className="truncate">
+                    <dt className="text-white/50">Equipment</dt>
+                    <dd className="font-medium">{exercise.equipment || "—"}</dd>
                   </div>
-                  <div>
-                    <span className="font-medium">Level:</span>{" "}
-                    {normalizeLevel(exercise.level) || "—"}
+                  <div className="truncate">
+                    <dt className="text-white/50">Level</dt>
+                    <dd className="font-medium">
+                      {normalizeLevel(exercise.level) || "—"}
+                    </dd>
                   </div>
-                  <div className="col-span-2">
-                    <span className="font-medium">Primary:</span>{" "}
-                    {Array.isArray(exercise.primaryMuscles)
-                      ? exercise.primaryMuscles.join(", ")
-                      : "—"}
-                  </div>
+                  {Array.isArray(exercise.primaryMuscles) &&
+                    exercise.primaryMuscles.length > 0 && (
+                      <div className="col-span-2">
+                        <dt className="text-white/50">Primary</dt>
+                        <dd className="font-medium">
+                          {exercise.primaryMuscles.join(", ")}
+                        </dd>
+                      </div>
+                    )}
                   {Array.isArray(exercise.secondaryMuscles) &&
                     exercise.secondaryMuscles.length > 0 && (
                       <div className="col-span-2">
-                        <span className="font-medium">Secondary:</span>{" "}
-                        {exercise.secondaryMuscles.join(", ")}
+                        <dt className="text-white/50">Secondary</dt>
+                        <dd className="font-medium">
+                          {exercise.secondaryMuscles.join(", ")}
+                        </dd>
                       </div>
                     )}
                   {exercise.category && (
                     <div className="col-span-2">
-                      <span className="font-medium">Category:</span>{" "}
-                      {exercise.category}
+                      <dt className="text-white/50">Category</dt>
+                      <dd className="font-medium">{exercise.category}</dd>
                     </div>
                   )}
-                </div>
+                </dl>
 
                 {Array.isArray(exercise.instructions) &&
                   exercise.instructions.length > 0 && (
                     <div className="mt-4">
-                      <p className="text-sm font-medium mb-1">Instructions</p>
-                      <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300 max-h-40 overflow-auto pr-2">
+                      <p className="text-sm font-semibold mb-1.5">
+                        Instructions
+                      </p>
+                      <ul className="list-disc list-inside space-y-1.5 text-sm text-white/90 max-h-40 overflow-auto pr-1">
                         {exercise.instructions.map((s, i) => (
                           <li key={i}>{s}</li>
                         ))}
@@ -203,46 +362,21 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                     </div>
                   )}
 
-                {/* optional tips/mistakes if dataset has them */}
-                {Array.isArray(exercise.tips) && exercise.tips.length > 0 && (
-                  <div className="mt-3">
-                    <p className="text-sm font-medium mb-1">Tips</p>
-                    <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                      {exercise.tips.map((t, i) => (
-                        <li key={i}>{t}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {Array.isArray(exercise.mistakes) &&
-                  exercise.mistakes.length > 0 && (
-                    <div className="mt-3">
-                      <p className="text-sm font-medium mb-1">
-                        Common mistakes
-                      </p>
-                      <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                        {exercise.mistakes.map((t, i) => (
-                          <li key={i}>{t}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                <div className="mt-5 flex gap-2">
+                <div className="mt-6 flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => onAdd(exercise)}
                     className={cn(
-                      "px-4 py-2 rounded-lg text-white",
+                      "px-4 py-2 rounded-lg text-sm",
                       isSelected
-                        ? "bg-green-700"
-                        : "bg-green-600 hover:bg-green-700"
+                        ? "bg-green-700 text-white"
+                        : "bg-green-600 hover:bg-green-700 text-white"
                     )}
                   >
                     {isSelected ? "Added" : "Add to workout"}
                   </button>
                   <button
                     onClick={onClose}
-                    className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800"
+                    className="px-4 py-2 rounded-lg text-sm bg-white/10 hover:bg-white/15"
                   >
                     Close
                   </button>
@@ -270,7 +404,6 @@ function Home() {
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // selection
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     try {
@@ -284,22 +417,18 @@ function Home() {
     } catch {}
   }, [selected]);
 
-  // quick view
   const [quick, setQuick] = useState(null);
 
   const [page, setPage] = useState(1);
   const pageSize = 12;
   const listRef = useRef(null);
 
-  // filter + sort
   const filteredSorted = useMemo(() => {
     const q = (searchDebounced || "").trim().toLowerCase();
     const lvl = normalizeLevel(level);
     let arr = exercisesData.slice();
 
-    if (lvl) {
-      arr = arr.filter((ex) => normalizeLevel(ex.level) === lvl);
-    }
+    if (lvl) arr = arr.filter((ex) => normalizeLevel(ex.level) === lvl);
 
     if (q) {
       arr = arr.filter((ex) => {
@@ -356,7 +485,6 @@ function Home() {
     return arr;
   }, [searchDebounced, level, bodyPart, withinPart, sortBy]);
 
-  // fetch (fake loader stay)
   const fetchExercises = () => {
     setLoading(true);
     setExpanded(null);
@@ -366,13 +494,11 @@ function Home() {
       setLoading(false);
     }, 700);
   };
-
   useEffect(() => {
     fetchExercises();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bodyPart, level, searchDebounced, withinPart, sortBy]);
 
-  // pagination
   const total = exercises.length;
   const maxPage = Math.max(1, Math.ceil(total / pageSize));
   const pageData = useMemo(() => {
@@ -381,10 +507,7 @@ function Home() {
   }, [exercises, page]);
 
   const changePage = (dir) => {
-    setPage((p) => {
-      const next = Math.min(maxPage, Math.max(1, p + dir));
-      return next;
-    });
+    setPage((p) => Math.min(maxPage, Math.max(1, p + dir)));
     setTimeout(() => {
       listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 0);
@@ -403,7 +526,7 @@ function Home() {
     selected.some((s) => keyForExercise(s) === keyForExercise(ex));
   const addToSelected = (ex) => {
     if (isSelected(ex)) return;
-    setSelected((cur) => (cur.length >= 20 ? cur : [...cur, ex])); // why: cap da ne buja beskonačno
+    setSelected((cur) => (cur.length >= 20 ? cur : [...cur, ex])); // cap
   };
   const removeFromSelected = (ex) => {
     const key = keyForExercise(ex);
@@ -426,123 +549,160 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      {/* Hero */}
-      <section className="relative text-center py-16 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-        <motion.h1
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold"
-        >
-          Welcome to GymMaster 💪
-        </motion.h1>
-        <p className="mt-3 text-lg opacity-90">
-          Your interactive exercise guide with animations, images & filters
-        </p>
+    <div className="min-h-screen bg-[#0b0b0c] text-white">
+      {/* Hero — tamni, kompaktan, sa opcionalnom pozadinskom slikom */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: "url('/hero/gym-dark.jpg')", // opcionalno: stavi sliku u public/hero/
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "grayscale(10%)",
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 py-10 md:py-12">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3"
+          >
+            <div>
+              <BokiGymLogo className="text-white text-2xl" />
+              <p className="mt-1 text-white/80 text-sm md:text-base">
+                Train smarter — search, filter & build your workout.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <a
+                href="/generator"
+                className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm"
+              >
+                Build a Workout
+              </a>
+              <a
+                href="/hub"
+                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm"
+              >
+                Open Fitness Hub
+              </a>
+            </div>
+          </motion.div>
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-[#0b0b0c]" />
       </section>
 
       {/* Controls */}
-      <div className="flex flex-wrap justify-center gap-4 p-6">
-        <select
-          value={bodyPart}
-          onChange={(e) => {
-            setSearch("");
-            setBodyPart(e.target.value);
-          }}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
-        >
-          {BODY_PARTS.map((bp) => (
-            <option key={bp.value} value={bp.value}>
-              {bp.label}
-            </option>
-          ))}
-        </select>
+      <div className="px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4 bg-white/5 rounded-2xl p-4 ring-1 ring-white/10">
+            <select
+              value={bodyPart}
+              onChange={(e) => {
+                setSearch("");
+                setBodyPart(e.target.value);
+              }}
+              className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {BODY_PARTS.map((bp) => (
+                <option
+                  key={bp.value}
+                  value={bp.value}
+                  className="bg-[#0b0b0c]"
+                >
+                  {bp.label}
+                </option>
+              ))}
+            </select>
 
-        <select
-          value={level}
-          onChange={(e) => setLevel(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
-        >
-          {LEVELS.map((l) => (
-            <option key={l.value} value={l.value}>
-              {l.label}
-            </option>
-          ))}
-        </select>
+            <select
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {LEVELS.map((l) => (
+                <option key={l.value} value={l.value} className="bg-[#0b0b0c]">
+                  {l.label}
+                </option>
+              ))}
+            </select>
 
-        <input
-          type="text"
-          placeholder="Search exercise (e.g. curl)"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 w-64 focus:ring-2 focus:ring-blue-500"
-        />
+            <input
+              type="text"
+              placeholder="Search exercise (e.g. curl)"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <label className="inline-flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={withinPart}
-            onChange={(e) => setWithinPart(e.target.checked)}
-          />
-          <span>Search within body part</span>
-        </label>
+            <label className="w-full inline-flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border border-white/10 bg-white/5 cursor-pointer text-sm">
+              <span className="text-white/80">Search within body part</span>
+              <input
+                type="checkbox"
+                checked={withinPart}
+                onChange={(e) => setWithinPart(e.target.checked)}
+              />
+            </label>
 
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
-        >
-          {SORTS.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {SORTS.map((s) => (
+                <option key={s.value} value={s.value} className="bg-[#0b0b0c]">
+                  {s.label}
+                </option>
+              ))}
+            </select>
 
-        <button
-          onClick={fetchExercises}
-          className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        >
-          Search
-        </button>
-
-        <button
-          onClick={clearAll}
-          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg"
-          title="Reset filters"
-        >
-          Reset
-        </button>
+            <div className="flex gap-2">
+              <button
+                onClick={fetchExercises}
+                className="w-full px-3 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Search
+              </button>
+              <button
+                onClick={clearAll}
+                className="px-3 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white"
+                title="Reset filters"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Active filters chips */}
-      <div className="flex flex-wrap justify-center gap-2 px-6 -mt-2">
+      <div className="flex flex-wrap justify-center gap-2 px-6 pt-3">
         {searchDebounced && (
-          <span className="px-2 py-1 rounded-lg text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200">
+          <span className="px-2 py-1 rounded-lg text-xs bg-yellow-500/15 text-yellow-300">
             🔎 {searchDebounced}
           </span>
         )}
         {level && (
-          <span className="px-2 py-1 rounded-lg text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-200">
+          <span className="px-2 py-1 rounded-lg text-xs bg-green-500/15 text-green-300">
             🏆 {normalizeLevel(level)}
           </span>
         )}
         {bodyPart && !searchDebounced && (
-          <span className="px-2 py-1 rounded-lg text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-200">
+          <span className="px-2 py-1 rounded-lg text-xs bg-purple-500/15 text-purple-300">
             💪 {bodyPart}
           </span>
         )}
         {sortBy !== "relevance" && (
-          <span className="px-2 py-1 rounded-lg text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200">
+          <span className="px-2 py-1 rounded-lg text-xs bg-blue-500/15 text-blue-300">
             ↕ Sort: {SORTS.find((s) => s.value === sortBy)?.label}
           </span>
         )}
       </div>
 
       {/* Summary */}
-      <div className="max-w-6xl mx-auto px-4 pb-3 pt-2" aria-live="polite">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+      <div className="max-w-7xl mx-auto px-4 pb-3 pt-2" aria-live="polite">
+        <p className="text-sm text-white/70">
           {loading
             ? "Loading…"
             : `${exercises.length} exercise${
@@ -552,7 +712,7 @@ function Home() {
       </div>
 
       {/* Layout: grid + sidebar */}
-      <div className="max-w-7xl mx-auto px-4 pb-12">
+      <div className="max-w-7xl mx-auto px-4 pb-24">
         <div
           className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8"
           ref={listRef}
@@ -562,30 +722,29 @@ function Home() {
             {loading ? (
               <Loader />
             ) : exercises.length === 0 ? (
-              <p className="text-center text-gray-500 dark:text-gray-400">
-                No exercises found.
-              </p>
+              <p className="text-center text-white/70">No exercises found.</p>
             ) : (
               <>
                 <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {pageData.map((ex, i) => {
-                    const added = isSelected(ex);
+                    const added = selected.some(
+                      (s) => keyForExercise(s) === keyForExercise(ex)
+                    );
                     return (
                       <motion.div
                         key={`${ex.name}-${i}`}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: (i % pageSize) * 0.03 }}
-                        className="relative bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 hover:shadow-lg transition flex flex-col"
+                        className="relative bg-white/5 ring-1 ring-white/10 backdrop-blur rounded-xl p-5 hover:ring-white/20 transition flex flex-col"
                       >
-                        {/* Added ribbon */}
                         {added && (
                           <span className="absolute right-3 top-3 text-[11px] px-2 py-0.5 rounded bg-green-600 text-white">
                             Added
                           </span>
                         )}
 
-                        <div className="flex gap-3 mb-4">
+                        <div className="grid grid-cols-2 gap-3 mb-4">
                           {Array.isArray(ex.images) && ex.images.length > 0 ? (
                             ex.images
                               .slice(0, 2)
@@ -594,33 +753,34 @@ function Home() {
                                   key={idx}
                                   src={`/exercises/${img}`}
                                   alt={ex.name}
+                                  className="w-full"
                                 />
                               ))
                           ) : (
-                            <div className="w-full rounded-lg bg-gray-100 dark:bg-gray-700 grid place-items-center text-gray-400 h-32">
+                            <div className="col-span-2 rounded-lg bg-white/10 grid place-items-center text-white/60 h-32">
                               No images
                             </div>
                           )}
                         </div>
 
-                        <h2 className="text-xl font-semibold mb-2">
+                        <h2 className="text-lg font-semibold mb-2">
                           <Highlight text={ex.name} query={searchDebounced} />
                         </h2>
-                        <p className="text-sm">
+                        <p className="text-sm text-white/80">
                           <span className="font-medium">Primary Muscles:</span>{" "}
                           {Array.isArray(ex.primaryMuscles)
                             ? ex.primaryMuscles.join(", ")
                             : "—"}
                         </p>
-                        <p className="text-sm">
+                        <p className="text-sm text-white/80">
                           <span className="font-medium">Equipment:</span>{" "}
                           {ex.equipment || "—"}
                         </p>
-                        <p className="text-sm">
+                        <p className="text-sm text-white/80">
                           <span className="font-medium">Level:</span>{" "}
                           {normalizeLevel(ex.level) || "—"}
                         </p>
-                        <p className="text-sm">
+                        <p className="text-sm text-white/80">
                           <span className="font-medium">Category:</span>{" "}
                           {ex.category || "—"}
                         </p>
@@ -632,7 +792,7 @@ function Home() {
                                 onClick={() =>
                                   setExpanded(expanded === i ? null : i)
                                 }
-                                className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
+                                className="text-blue-300 hover:underline font-medium"
                               >
                                 {expanded === i
                                   ? "Hide Instructions"
@@ -644,7 +804,7 @@ function Home() {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    className="mt-2 space-y-1 text-gray-700 dark:text-gray-300 overflow-hidden list-disc list-inside"
+                                    className="mt-2 space-y-1 text-white/85 overflow-hidden list-disc list-inside"
                                   >
                                     {ex.instructions.map((step, idx) => (
                                       <li key={idx} className="text-sm">
@@ -660,13 +820,13 @@ function Home() {
                         <div className="mt-4 flex gap-2">
                           <button
                             onClick={() => setQuick(ex)}
-                            className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700"
+                            className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15"
                           >
                             Quick view
                           </button>
                           {!added ? (
                             <button
-                              onClick={() => addToSelected(ex)}
+                              onClick={() => setSelected((cur) => [...cur, ex])}
                               className="px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
                             >
                               Add
@@ -685,23 +845,22 @@ function Home() {
                   })}
                 </div>
 
-                {/* Pagination */}
                 {maxPage > 1 && (
                   <div className="mt-8 flex items-center justify-center gap-3">
                     <button
                       onClick={() => changePage(-1)}
                       disabled={page <= 1}
-                      className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+                      className="px-3 py-2 rounded-lg bg-white/10 disabled:opacity-40"
                     >
                       ← Prev
                     </button>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">
+                    <span className="text-sm text-white/70">
                       Page {page} / {maxPage}
                     </span>
                     <button
                       onClick={() => changePage(1)}
                       disabled={page >= maxPage}
-                      className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+                      className="px-3 py-2 rounded-lg bg-white/10 disabled:opacity-40"
                     >
                       Next →
                     </button>
@@ -713,22 +872,22 @@ function Home() {
 
           {/* Sidebar selection */}
           <aside className="lg:sticky lg:top-6 h-fit">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5">
+            <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-5 backdrop-blur">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold">
                   Workout ({selected.length})
                 </h3>
                 <button
-                  onClick={clearSelected}
+                  onClick={() => setSelected([])}
                   disabled={selected.length === 0}
-                  className="text-sm px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+                  className="text-sm px-2 py-1 rounded bg-white/10 disabled:opacity-40"
                 >
                   Clear
                 </button>
               </div>
 
               {selected.length === 0 ? (
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                <p className="mt-3 text-sm text-white/70">
                   Add exercises to build your workout.
                 </p>
               ) : (
@@ -737,7 +896,7 @@ function Home() {
                     {selected.map((ex) => (
                       <li
                         key={keyForExercise(ex)}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/40"
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10"
                       >
                         <ImgOrFallback
                           src={
@@ -752,13 +911,13 @@ function Home() {
                           <p className="text-sm font-medium truncate">
                             {ex.name}
                           </p>
-                          <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">
+                          <p className="text-[11px] text-white/60 truncate">
                             {normalizeLevel(ex.level)} • {ex.equipment || "—"}
                           </p>
                         </div>
                         <button
                           onClick={() => removeFromSelected(ex)}
-                          className="px-2 py-1 text-xs rounded bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-200"
+                          className="px-2 py-1 text-xs rounded bg-red-600/20 text-red-200"
                         >
                           Remove
                         </button>
@@ -769,7 +928,7 @@ function Home() {
                   <div className="mt-4 flex flex-col gap-2">
                     <button
                       onClick={copySelectedAsJson}
-                      className="px-4 py-2 rounded-lg bg-gray-900 text-white"
+                      className="px-4 py-2 rounded-lg bg-white text-black"
                     >
                       Copy as JSON
                     </button>
@@ -795,10 +954,16 @@ function Home() {
         onClose={() => setQuick(null)}
         exercise={quick}
         onAdd={(ex) => {
-          addToSelected(ex);
+          if (!selected.some((s) => keyForExercise(s) === keyForExercise(ex))) {
+            setSelected((cur) => (cur.length >= 20 ? cur : [...cur, ex]));
+          }
           setQuick(null);
         }}
-        isSelected={quick ? isSelected(quick) : false}
+        isSelected={
+          quick
+            ? selected.some((s) => keyForExercise(s) === keyForExercise(quick))
+            : false
+        }
       />
     </div>
   );

@@ -102,8 +102,57 @@ const Stat = ({ label, value, hint }) => (
   </div>
 );
 
-/* ---------- BMI Helpers (EN) ---------- */
-// clear categorization + visual feedback
+const Badge = ({ className = "", children }) => (
+  <span
+    className={
+      "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold " +
+      className
+    }
+  >
+    {children}
+  </span>
+);
+
+const BMIRangeBar = ({ value }) => {
+  const min = 10,
+    max = 40,
+    b1 = 18.5,
+    b2 = 25,
+    b3 = 30;
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const pct = (v) => ((v - min) / (max - min)) * 100;
+  const pointerLeft = pct(clamp(Number(value), min, max));
+  const bg = `linear-gradient(to right,
+    rgba(59,130,246,0.25) 0% ${pct(b1)}%,
+    rgba(34,197,94,0.25) ${pct(b1)}% ${pct(b2)}%,
+    rgba(234,179,8,0.3) ${pct(b2)}% ${pct(b3)}%,
+    rgba(239,68,68,0.3) ${pct(b3)}% 100%)`;
+  return (
+    <div className="w-full">
+      <div
+        className="relative h-4 w-full rounded-full"
+        style={{ background: bg }}
+        aria-label="BMI range bar"
+      >
+        <div className="absolute inset-0 rounded-full ring-1 ring-black/10 dark:ring-white/10 pointer-events-none" />
+        <div
+          className="absolute -top-1.5 h-7 w-0.5 bg-gray-900 dark:bg-gray-100 rounded-sm"
+          style={{ left: `${pointerLeft}%`, transform: "translateX(-50%)" }}
+          aria-hidden="true"
+        />
+      </div>
+      <div className="mt-2 flex justify-between text-[11px] text-gray-600 dark:text-gray-300">
+        <span>10</span>
+        <span>18.5</span>
+        <span>25</span>
+        <span>30</span>
+        <span>40</span>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- BMI Helpers ---------- */
 function getBmiInfo(bmiNumber) {
   if (!Number.isFinite(bmiNumber)) {
     return {
@@ -149,70 +198,6 @@ function getBmiInfo(bmiNumber) {
   };
 }
 
-/* ---------- OPTIONAL UI text tweak ---------- */
-// In AnalysisTab, replace:
-// <span className="text-xs text-gray-500">Granice: 18.5 / 25 / 30</span>
-// with:
-<span className="text-xs text-gray-500">Thresholds: 18.5 / 25 / 30</span>;
-const Badge = ({ className = "", children }) => (
-  <span
-    className={
-      "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold " +
-      className
-    }
-  >
-    {children}
-  </span>
-);
-
-const BMIRangeBar = ({ value }) => {
-  // scale bounds & breakpoints
-  const min = 10;
-  const max = 40;
-  const b1 = 18.5;
-  const b2 = 25;
-  const b3 = 30;
-
-  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-  const pct = (v) => ((v - min) / (max - min)) * 100;
-
-  const pointerLeft = pct(clamp(Number(value), min, max));
-
-  // why: precizan segmentni prikaz raspona
-  const bg = `linear-gradient(to right,
-    rgba(59,130,246,0.25) 0% ${pct(b1)}%,
-    rgba(34,197,94,0.25) ${pct(b1)}% ${pct(b2)}%,
-    rgba(234,179,8,0.3) ${pct(b2)}% ${pct(b3)}%,
-    rgba(239,68,68,0.3) ${pct(b3)}% 100%)`;
-
-  return (
-    <div className="w-full">
-      <div
-        className="relative h-4 w-full rounded-full"
-        style={{ background: bg }}
-        aria-label="BMI range bar"
-      >
-        {/* track outline */}
-        <div className="absolute inset-0 rounded-full ring-1 ring-black/10 dark:ring-white/10 pointer-events-none" />
-        {/* pointer */}
-        <div
-          className="absolute -top-1.5 h-7 w-0.5 bg-gray-900 dark:bg-gray-100 rounded-sm"
-          style={{ left: `${pointerLeft}%`, transform: "translateX(-50%)" }}
-          aria-hidden="true"
-        />
-      </div>
-      {/* ticks */}
-      <div className="mt-2 flex justify-between text-[11px] text-gray-600 dark:text-gray-300">
-        <span>10</span>
-        <span>18.5</span>
-        <span>25</span>
-        <span>30</span>
-        <span>40</span>
-      </div>
-    </div>
-  );
-};
-
 /* ---------- Tabs ---------- */
 const TABS = [
   { id: "calories", label: "Calories", icon: <Flame size={18} /> },
@@ -225,8 +210,6 @@ const TABS = [
 
 const TabBar = ({ active, onChange }) => {
   const listRef = useRef(null);
-
-  // why: keyboard UX za pristupačnost i brzinu
   const onKeyDown = (e, idx) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
@@ -240,7 +223,6 @@ const TabBar = ({ active, onChange }) => {
     const btns = listRef.current?.querySelectorAll("button[role=tab]");
     btns?.[next]?.focus();
   };
-
   return (
     <div
       ref={listRef}
@@ -289,16 +271,15 @@ const TabBar = ({ active, onChange }) => {
 /* ---------- Main ---------- */
 export default function FitnessHub() {
   const [activeTab, setActiveTab] = useState("calories");
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-950 dark:via-gray-900 dark:to-black p-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-950 dark:via-gray-900 dark:to-black p-4 sm:p-6">
       <header className="mx-auto max-w-6xl">
-        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-          <div className="px-6 py-10 text-center">
-            <h1 className="text-4xl font-extrabold tracking-wide">
+        <Card className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white">
+          <div className="px-4 sm:px-6 py-8 sm:py-10 text-center">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wide">
               🏋️ Ultimate Fitness Hub
             </h1>
-            <p className="mt-2 opacity-90">
+            <p className="mt-2 opacity-90 text-sm sm:text-base">
               All-in-one: calories, body analysis, nutrition, hydration,
               training & lifestyle
             </p>
@@ -338,6 +319,7 @@ function CaloriesTab() {
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+  // ⛔️ OVA LINIJA JE BILA BUG: "the" — UKLONJENA
   const [activity, setActivity] = useState("1.55");
   const [calories, setCalories] = useState(null);
 
@@ -450,12 +432,12 @@ function CaloriesTab() {
         </Field>
       </div>
 
-      <ActionBar className="mt-6">
+      <div className="mt-6 flex items-center gap-3">
         <Button onClick={calculate} disabled={!isValid}>
           Calculate
         </Button>
         <ResetButton onClick={reset}>Reset</ResetButton>
-      </ActionBar>
+      </div>
 
       {calories !== null && (
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -468,7 +450,7 @@ function CaloriesTab() {
   );
 }
 
-// 🔹 Body Analysis (BMI, BMR, TDEE, Body Fat) + BMI interpretacija i bar
+// 🔹 Body Analysis (BMI, BMR, TDEE, Body Fat)
 function AnalysisTab() {
   const [gender, setGender] = useState("M");
   const [age, setAge] = useState("");
@@ -499,11 +481,9 @@ function AnalysisTab() {
     const h = parseFloat(height);
     const w = parseFloat(weight);
     const a = parseInt(age, 10);
-
     const bmi = (w / ((h / 100) * (h / 100))).toFixed(1);
     const bmr = 10 * w + 6.25 * h - 5 * a + (gender === "M" ? 5 : -161);
     const tdee = bmr * parseFloat(activity);
-
     let bf = null;
     if (bfValid) {
       if (gender === "M") {
@@ -525,7 +505,6 @@ function AnalysisTab() {
           450;
       }
     }
-
     setResults({
       bmi,
       bmr: Math.round(bmr),
@@ -655,7 +634,6 @@ function AnalysisTab() {
             {results.bf && <Stat label="Body Fat %" value={`${results.bf}%`} />}
           </div>
 
-          {/* BMI interpretacija + vizualizacija */}
           <div className="mt-6 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 ring-1 ring-black/5 dark:ring-white/10">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
@@ -665,7 +643,7 @@ function AnalysisTab() {
                 <Badge className={bmiInfo.badgeClass}>{bmiInfo.label}</Badge>
               </div>
               <span className="text-xs text-gray-500">
-                Granice: 18.5 / 25 / 30
+                Thresholds: 18.5 / 25 / 30
               </span>
             </div>
             <BMIRangeBar value={Number(results.bmi)} />
@@ -686,7 +664,6 @@ function NutritionTab() {
   const [calories, setCalories] = useState("");
   const [goal, setGoal] = useState("balance");
   const [macros, setMacros] = useState(null);
-
   const isValid = Number(calories) > 0;
 
   const calculate = () => {
@@ -766,7 +743,6 @@ function NutritionTab() {
       <p className="mt-6 text-xs text-gray-600 dark:text-gray-400">
         Daily vitamins & minerals suggestions — coming soon.
       </p>
-
       <ActionBar className="mt-4">
         <ResetButton onClick={reset}>Reset</ResetButton>
       </ActionBar>
@@ -778,7 +754,6 @@ function NutritionTab() {
 function HydrationTab() {
   const [weight, setWeight] = useState("");
   const [water, setWater] = useState(null);
-
   const isValid = Number(weight) > 0;
 
   const calcWater = () => {
@@ -786,7 +761,6 @@ function HydrationTab() {
     const liters = (parseFloat(weight) * 0.035).toFixed(2);
     setWater(liters);
   };
-
   const reset = () => {
     setWeight("");
     setWater(null);
@@ -829,28 +803,25 @@ function HydrationTab() {
   );
 }
 
-// 🔹 Training (1RM + Cardio Zones placeholder)
+// 🔹 Training (1RM + stub)
 function TrainingTab() {
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
   const [oneRm, setOneRm] = useState(null);
-
   const isValid = Number(weight) > 0 && Number(reps) > 0;
 
   const calc1RM = () => {
     if (!isValid) return;
-    const w = Number(weight);
-    const r = Number(reps);
+    const w = Number(weight),
+      r = Number(reps);
     const rm = w * (1 + r / 30);
     setOneRm(rm.toFixed(0));
   };
-
   const reset = () => {
     setWeight("");
     setReps("");
     setOneRm(null);
   };
-
   const onKey = (e) => {
     if (e.key === "Enter" && isValid) calc1RM();
   };

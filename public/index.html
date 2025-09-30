@@ -1,0 +1,32 @@
+<!-- public/index.html — FULL HEAD (zameni ceo <head>) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>BokiGym 💪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- PWA: Android/Chromium -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b1220" />
+
+  <!-- PWA: iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BokiGym">
+  <link rel="apple-touch-icon" href="/icons/pwa-180.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <!-- Favicon (fallback) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/pwa-32.png" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
