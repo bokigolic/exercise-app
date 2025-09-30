@@ -1,0 +1,2022 @@
+{
+  "programs": [
+    {
+      "id": 1,
+      "name": "Beginner Full Body – Home – No Equipment",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jumping Jacks", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/jumping_jacks.gif" },
+            { "name": "Bodyweight Squats", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" }
+          ]
+        },
+        {
+          "day": 2,
+          "exercises": [
+            { "name": "High Knees", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/high_knees.gif" },
+            { "name": "Plank", "sets": 3, "reps": "30-45s", "rest": "60s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" },
+            { "name": "Lunges", "sets": 3, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs","glutes"], "image": "/images/exercises/lunges.gif" }
+          ]
+        }
+      ]
+    },
+
+    
+    {
+      "id": 2,
+      "name": "Intermediate Muscle Gain – Gym – Dumbbells",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["dumbbell"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "8-10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 3, "reps": "10-12", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" },
+            { "name": "Dumbbell Flyes", "sets": 3, "reps": "12-15", "rest": "75s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_flyes.gif" }
+          ]
+        },
+        {
+          "day": 2,
+          "exercises": [
+            { "name": "Dumbbell Rows", "sets": 4, "reps": "10-12", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" },
+            { "name": "Pull-Ups", "sets": 3, "reps": "8-10", "rest": "120s", "muscle_groups": ["back","biceps"], "image": "/images/exercises/pullups.gif" },
+            { "name": "Biceps Curls (Dumbbell)", "sets": 3, "reps": "12-15", "rest": "75s", "muscle_groups": ["biceps"], "image": "/images/exercises/bicep_curls.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Advanced Strength – Gym – Barbell + Machines",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell", "machines"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squat", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Deadlift", "sets": 4, "reps": "5", "rest": "180s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" }
+          ]
+        },
+        {
+          "day": 2,
+          "exercises": [
+            { "name": "Bench Press", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "6", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Beginner Endurance – Outdoor – No Equipment",
+      "goal": "endurance",
+      "level": "beginner",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Running (Intervals)", "sets": 6, "reps": "200m fast / 200m slow", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/running.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "10", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Intermediate Yoga Flow – Home – Mat Only",
+      "goal": "mobility",
+      "level": "intermediate",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sun Salutation A", "sets": 3, "reps": "5 cycles", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/sun_salutation.gif" },
+            { "name": "Warrior Pose", "sets": 3, "reps": "30s/side", "rest": "30s", "muscle_groups": ["legs","core"], "image": "/images/exercises/warrior_pose.gif" }
+          ]
+        }
+      ]
+    },
+
+
+
+
+
+
+    {
+      "id": 6,
+      "name": "Beginner Bodyweight Strength – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Push-Ups", "sets": 3, "reps": "10-12", "rest": "60s", "muscle_groups": ["chest","triceps"], "image": "/images/exercises/pushups.gif" },
+            { "name": "Bodyweight Squats", "sets": 3, "reps": "15", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" },
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Intermediate CrossFit WOD – Gym",
+      "goal": "endurance",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","kettlebell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Thrusters", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["legs","shoulders"], "image": "/images/exercises/thrusters.gif" },
+            { "name": "Kettlebell Swings", "sets": 3, "reps": "15", "rest": "75s", "muscle_groups": ["back","glutes"], "image": "/images/exercises/kettlebell_swings.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Advanced Mass Gain – Gym – Barbell Focus",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","machines"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Bench Press", "sets": 5, "reps": "6-8", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Barbell Press", "sets": 4, "reps": "8-10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_barbell_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Beginner Fat Burn – Home – HIIT",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Burpees", "sets": 3, "reps": "10", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Mountain Climbers", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core","legs"], "image": "/images/exercises/mountain_climbers.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Intermediate Powerlifting Split – Gym",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Deadlift", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Barbell Rows", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/barbell_row.gif" }
+          ]
+        }
+      ]
+    }
+  ,
+    {
+      "id": 11,
+      "name": "Beginner Mobility & Flexibility – Home – Yoga",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Cat Cow Stretch", "sets": 3, "reps": "30s", "rest": "20s", "muscle_groups": ["spine","core"], "image": "/images/exercises/cat_cow.gif" },
+            { "name": "Child Pose", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["back"], "image": "/images/exercises/child_pose.gif" },
+            { "name": "Downward Dog", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["hamstrings","shoulders"], "image": "/images/exercises/downward_dog.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Advanced HIIT Shred – Outdoor",
+      "goal": "weight_loss",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sprints", "sets": 10, "reps": "100m", "rest": "60s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Burpees", "sets": 5, "reps": "15", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Intermediate Strength & Conditioning – Gym – Mixed Equipment",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Deadlift", "sets": 4, "reps": "6", "rest": "180s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Pull-Ups", "sets": 4, "reps": "10", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/pullups.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Beginner Fat Burn – Home – Resistance Bands",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["bands"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Band Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/band_squats.gif" },
+            { "name": "Band Rows", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["back"], "image": "/images/exercises/band_rows.gif" },
+            { "name": "Band Chest Press", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/band_chest_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Advanced Powerlifting – Gym – Barbell Core",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "powerlifting",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squat", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Bench Press", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Deadlift", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Beginner Home Full Body – Kettlebell",
+      "goal": "muscle_gain",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["kettlebell"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Kettlebell Swings", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["back","glutes"], "image": "/images/exercises/kettlebell_swings.gif" },
+            { "name": "Goblet Squats", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/goblet_squat.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Intermediate Hypertrophy – Gym – Machines Only",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Leg Press", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["legs"], "image": "/images/exercises/leg_press.gif" },
+            { "name": "Chest Press Machine", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/machine_chest_press.gif" },
+            { "name": "Lat Pulldown", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/lat_pulldown.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Advanced Conditioning – Outdoor CrossFit",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["barbell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Clean and Jerk", "sets": 5, "reps": "3", "rest": "150s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" },
+            { "name": "Burpee Pull-Ups", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpee_pullup.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Beginner Core Focus – Home – No Equipment",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sit-Ups", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["core"], "image": "/images/exercises/situps.gif" },
+            { "name": "Leg Raises", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["core"], "image": "/images/exercises/leg_raises.gif" },
+            { "name": "Plank", "sets": 3, "reps": "45s", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    },
+   
+
+
+    {
+      "id": 20,
+      "name": "Intermediate Push Pull Legs – Gym – Dumbbell + Barbell",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["dumbbell","barbell"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Bench Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Advanced Push Pull Legs – Gym – Full Equipment",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Bench Press", "sets": 5, "reps": "6-8", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "8-10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" },
+            { "name": "Dumbbell Flyes", "sets": 3, "reps": "12-15", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_flyes.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Beginner Cardio Burn – Outdoor",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jogging", "sets": 1, "reps": "20 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/jogging.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "10", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Intermediate Core Crusher – Home – Dumbbells",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["home"],
+      "equipment": ["dumbbell"],
+      "style": "calisthenics",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Russian Twists", "sets": 3, "reps": "20", "rest": "60s", "muscle_groups": ["core"], "image": "/images/exercises/russian_twist.gif" },
+            { "name": "Dumbbell Side Bends", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["core"], "image": "/images/exercises/side_bend.gif" },
+            { "name": "Plank", "sets": 3, "reps": "60s", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Advanced CrossFit Challenge – Gym",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","kettlebell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Clean and Jerk", "sets": 5, "reps": "3", "rest": "150s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" },
+            { "name": "Burpee Pull-Ups", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpee_pullup.gif" },
+            { "name": "Kettlebell Swings", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["glutes","back"], "image": "/images/exercises/kettlebell_swings.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Beginner Yoga Relax – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Child Pose", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["back"], "image": "/images/exercises/child_pose.gif" },
+            { "name": "Seated Forward Bend", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["hamstrings"], "image": "/images/exercises/seated_forward_bend.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Intermediate Leg Day – Gym – Barbell",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squat", "sets": 5, "reps": "6-8", "rest": "120s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Romanian Deadlift", "sets": 4, "reps": "8-10", "rest": "120s", "muscle_groups": ["hamstrings"], "image": "/images/exercises/romanian_deadlift.gif" },
+            { "name": "Calf Raises", "sets": 4, "reps": "15", "rest": "60s", "muscle_groups": ["calves"], "image": "/images/exercises/calf_raises.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Advanced Power Endurance – Outdoor",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Hill Sprints", "sets": 12, "reps": "30s sprint", "rest": "90s", "muscle_groups": ["legs","cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "12", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Beginner Dumbbell Strength – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["dumbbell"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Shoulder Press", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" },
+            { "name": "Dumbbell Rows", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" }
+          ]
+        }
+      ]
+    }
+
+,
+    {
+      "id": 29,
+      "name": "Intermediate Circuit Burn – Outdoor",
+      "goal": "weight_loss",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Burpees", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Mountain Climbers", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core","legs"], "image": "/images/exercises/mountain_climbers.gif" },
+            { "name": "Jumping Lunges", "sets": 3, "reps": "12/leg", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Advanced Olympic Lifting – Gym",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "olympic",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Snatch", "sets": 6, "reps": "2", "rest": "180s", "muscle_groups": ["full_body"], "image": "/images/exercises/snatch.gif" },
+            { "name": "Clean and Jerk", "sets": 6, "reps": "2", "rest": "180s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 31,
+      "name": "Beginner Pilates Core – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "pilates",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Hundred", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/pilates_hundred.gif" },
+            { "name": "Roll Up", "sets": 3, "reps": "10", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/pilates_rollup.gif" },
+            { "name": "Single Leg Stretch", "sets": 3, "reps": "12/leg", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/single_leg_stretch.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Intermediate Functional Strength – Outdoor",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["kettlebell","bodyweight"],
+      "style": "functional",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Kettlebell Clean", "sets": 4, "reps": "8", "rest": "90s", "muscle_groups": ["back","shoulders"], "image": "/images/exercises/kettlebell_clean.gif" },
+            { "name": "Walking Lunges", "sets": 3, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/walking_lunges.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Advanced Mass Builder – Gym – Barbell & Dumbbells",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Bench Press", "sets": 5, "reps": "6", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "8-10", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" },
+            { "name": "Dumbbell Flyes", "sets": 4, "reps": "10-12", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_flyes.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Beginner HIIT Burn – Home",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jumping Jacks", "sets": 3, "reps": "45s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/jumping_jacks.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Mountain Climbers", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core","legs"], "image": "/images/exercises/mountain_climbers.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "name": "Intermediate Power Yoga – Home",
+      "goal": "mobility",
+      "level": "intermediate",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Warrior Pose", "sets": 3, "reps": "30s", "rest": "20s", "muscle_groups": ["legs","core"], "image": "/images/exercises/warrior_pose.gif" },
+            { "name": "Chair Pose", "sets": 3, "reps": "30s", "rest": "20s", "muscle_groups": ["legs"], "image": "/images/exercises/chair_pose.gif" },
+            { "name": "Plank to Downward Dog", "sets": 3, "reps": "8", "rest": "30s", "muscle_groups": ["shoulders","core"], "image": "/images/exercises/plank_downwarddog.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Advanced Conditioning – Gym CrossFit",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Deadlift", "sets": 4, "reps": "5", "rest": "150s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Push Press", "sets": 4, "reps": "6", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/push_press.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Beginner Strength – Home – Resistance Bands",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["bands"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Band Chest Press", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/band_chest_press.gif" },
+            { "name": "Band Rows", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["back"], "image": "/images/exercises/band_rows.gif" },
+            { "name": "Band Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/band_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Intermediate Endurance Builder – Outdoor",
+      "goal": "endurance",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sprints", "sets": 8, "reps": "100m", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Advanced Push Day – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Bench Press", "sets": 5, "reps": "5", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" },
+            { "name": "Triceps Dips", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["triceps"], "image": "/images/exercises/dips.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Beginner Endurance Circuit – Home",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jumping Jacks", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/jumping_jacks.gif" },
+            { "name": "Bodyweight Squats", "sets": 3, "reps": "20", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" },
+            { "name": "Push-Ups", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest","triceps"], "image": "/images/exercises/pushups.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 41,
+      "name": "Intermediate Pull Day – Gym",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Deadlift", "sets": 4, "reps": "6", "rest": "150s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Pull-Ups", "sets": 4, "reps": "10", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/pullups.gif" },
+            { "name": "Barbell Rows", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/barbell_row.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Beginner Cardio Endurance – Outdoor",
+      "goal": "endurance",
+      "level": "beginner",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "cardio",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Walking", "sets": 1, "reps": "30 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/walking.gif" },
+            { "name": "Light Jogging", "sets": 1, "reps": "15 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/jogging.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Advanced Chest & Triceps – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Incline Barbell Press", "sets": 4, "reps": "6-8", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_barbell_press.gif" },
+            { "name": "Dumbbell Flyes", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_flyes.gif" },
+            { "name": "Triceps Pushdowns", "sets": 4, "reps": "12", "rest": "60s", "muscle_groups": ["triceps"], "image": "/images/exercises/triceps_pushdown.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Beginner Home Circuit – No Equipment",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Push-Ups", "sets": 3, "reps": "10", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/pushups.gif" },
+            { "name": "Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" },
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Intermediate Back & Biceps – Gym",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Pull-Ups", "sets": 4, "reps": "10", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/pullups.gif" },
+            { "name": "Barbell Rows", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/barbell_row.gif" },
+            { "name": "Dumbbell Bicep Curls", "sets": 4, "reps": "12", "rest": "60s", "muscle_groups": ["biceps"], "image": "/images/exercises/dumbbell_curl.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Advanced HIIT Blast – Outdoor",
+      "goal": "weight_loss",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Hill Sprints", "sets": 10, "reps": "30s sprint", "rest": "90s", "muscle_groups": ["legs","cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" },
+            { "name": "Burpees", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Beginner Yoga Flow – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Cat Cow Stretch", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["spine"], "image": "/images/exercises/cat_cow.gif" },
+            { "name": "Child Pose", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["back"], "image": "/images/exercises/child_pose.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Intermediate Full Body – Dumbbells Only",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["home","gym"],
+      "equipment": ["dumbbell"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" },
+            { "name": "Dumbbell Rows", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" },
+            { "name": "Dumbbell Shoulder Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Advanced Leg Power – Gym – Barbell Focus",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "powerlifting",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squats", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Romanian Deadlift", "sets": 4, "reps": "6", "rest": "150s", "muscle_groups": ["hamstrings"], "image": "/images/exercises/romanian_deadlift.gif" },
+            { "name": "Calf Raises", "sets": 4, "reps": "15", "rest": "60s", "muscle_groups": ["calves"], "image": "/images/exercises/calf_raises.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Beginner Core Strength – Home – Bodyweight",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sit-Ups", "sets": 3, "reps": "15", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/situps.gif" },
+            { "name": "Leg Raises", "sets": 3, "reps": "12", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/leg_raises.gif" },
+            { "name": "Plank", "sets": 3, "reps": "45s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 51,
+      "name": "Intermediate Push Pull – Home – Dumbbells",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["home"],
+      "equipment": ["dumbbell"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" },
+            { "name": "Overhead Dumbbell Press", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" },
+            { "name": "Dumbbell Rows", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Advanced CrossFit Endurance – Outdoor",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["bodyweight","kettlebell"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Burpee Pull-Ups", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpee_pullup.gif" },
+            { "name": "Kettlebell Swings", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["glutes","back"], "image": "/images/exercises/kettlebell_swings.gif" },
+            { "name": "Push-Ups", "sets": 4, "reps": "20", "rest": "60s", "muscle_groups": ["chest","triceps"], "image": "/images/exercises/pushups.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "name": "Beginner Bodyweight Strength – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Push-Ups", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/pushups.gif" },
+            { "name": "Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" },
+            { "name": "Crunches", "sets": 3, "reps": "20", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/crunches.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Intermediate HIIT Torch – Gym",
+      "goal": "weight_loss",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["bodyweight","dumbbell"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Burpees", "sets": 4, "reps": "12", "rest": "60s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Dumbbell Thrusters", "sets": 4, "reps": "10", "rest": "75s", "muscle_groups": ["legs","shoulders"], "image": "/images/exercises/dumbbell_thruster.gif" },
+            { "name": "Mountain Climbers", "sets": 3, "reps": "30s", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/mountain_climbers.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Advanced Powerlifting – Barbell Only",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "powerlifting",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squat", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Bench Press", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Deadlift", "sets": 5, "reps": "5", "rest": "180s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Beginner Yoga Balance – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Tree Pose", "sets": 3, "reps": "30s", "rest": "20s", "muscle_groups": ["legs","core"], "image": "/images/exercises/tree_pose.gif" },
+            { "name": "Child Pose", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["back"], "image": "/images/exercises/child_pose.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Intermediate Conditioning – Outdoor Circuits",
+      "goal": "endurance",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "circuit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jogging", "sets": 1, "reps": "20 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/jogging.gif" },
+            { "name": "Jumping Lunges", "sets": 3, "reps": "12/leg", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Advanced Full Body Strength – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Squats", "sets": 5, "reps": "6-8", "rest": "150s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Deadlift", "sets": 4, "reps": "6", "rest": "150s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Bench Press", "sets": 4, "reps": "6-8", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "name": "Beginner Resistance Bands Circuit – Home",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["bands"],
+      "style": "hiit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Band Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/band_squats.gif" },
+            { "name": "Band Rows", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["back"], "image": "/images/exercises/band_rows.gif" },
+            { "name": "Band Shoulder Press", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["shoulders"], "image": "/images/exercises/band_shoulder_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Intermediate Strength Builder – Kettlebell Focus",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["home","gym"],
+      "equipment": ["kettlebell"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Kettlebell Swings", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["back","glutes"], "image": "/images/exercises/kettlebell_swings.gif" },
+            { "name": "Goblet Squats", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["legs"], "image": "/images/exercises/goblet_squat.gif" },
+            { "name": "Kettlebell Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/kettlebell_press.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 61,
+      "name": "Beginner Full Body Circuit – Home",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "circuit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jumping Jacks", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/jumping_jacks.gif" },
+            { "name": "Push-Ups", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/pushups.gif" },
+            { "name": "Bodyweight Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Intermediate Upper Body Strength – Dumbbells",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["home","gym"],
+      "equipment": ["dumbbell"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Shoulder Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" },
+            { "name": "Dumbbell Rows", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" },
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "name": "Advanced Conditioning Challenge – Outdoor",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sprints", "sets": 12, "reps": "60s", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Burpees", "sets": 5, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "name": "Beginner Stretch & Flexibility – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Seated Forward Bend", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["hamstrings"], "image": "/images/exercises/seated_forward_bend.gif" },
+            { "name": "Butterfly Stretch", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["hips"], "image": "/images/exercises/butterfly_stretch.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "name": "Intermediate Leg Power – Gym – Barbell & Dumbbells",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squats", "sets": 5, "reps": "6-8", "rest": "150s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Lunges", "sets": 4, "reps": "12/leg", "rest": "90s", "muscle_groups": ["legs"], "image": "/images/exercises/lunges.gif" },
+            { "name": "Leg Press", "sets": 4, "reps": "12", "rest": "120s", "muscle_groups": ["legs"], "image": "/images/exercises/leg_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "name": "Advanced Core Destroyer – Gym",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["machines","dumbbell"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Weighted Sit-Ups", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["core"], "image": "/images/exercises/weighted_situp.gif" },
+            { "name": "Cable Crunches", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["core"], "image": "/images/exercises/cable_crunch.gif" },
+            { "name": "Hanging Leg Raises", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["core"], "image": "/images/exercises/hanging_leg_raise.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "name": "Beginner Kettlebell Conditioning – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["kettlebell"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Kettlebell Deadlift", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["back","legs"], "image": "/images/exercises/kettlebell_deadlift.gif" },
+            { "name": "Goblet Squat", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["legs"], "image": "/images/exercises/goblet_squat.gif" },
+            { "name": "Kettlebell Press", "sets": 3, "reps": "12", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/kettlebell_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "name": "Intermediate Push Day – Gym – Machines",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["machines"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Chest Press Machine", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/machine_chest_press.gif" },
+            { "name": "Shoulder Press Machine", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/machine_shoulder_press.gif" },
+            { "name": "Triceps Pushdowns", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["triceps"], "image": "/images/exercises/triceps_pushdown.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "name": "Advanced Full Body HIIT – Outdoor",
+      "goal": "weight_loss",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sprints", "sets": 10, "reps": "60s", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Burpees", "sets": 5, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Jumping Lunges", "sets": 4, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "name": "Beginner Core & Balance – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "pilates",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" },
+            { "name": "Bird Dog", "sets": 3, "reps": "12/side", "rest": "45s", "muscle_groups": ["core","back"], "image": "/images/exercises/bird_dog.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 71,
+      "name": "Intermediate Functional Training – Gym",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","kettlebell"],
+      "style": "functional",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Deadlift", "sets": 4, "reps": "6", "rest": "150s", "muscle_groups": ["back","legs"], "image": "/images/exercises/deadlift.gif" },
+            { "name": "Kettlebell Swings", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["glutes","back"], "image": "/images/exercises/kettlebell_swings.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "name": "Beginner Endurance Walking – Outdoor",
+      "goal": "endurance",
+      "level": "beginner",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "cardio",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Walking", "sets": 1, "reps": "40 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/walking.gif" },
+            { "name": "Light Jogging", "sets": 1, "reps": "10 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/jogging.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "name": "Advanced Push Pull Legs Hybrid – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Incline Barbell Press", "sets": 5, "reps": "6-8", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_barbell_press.gif" },
+            { "name": "Dumbbell Flyes", "sets": 4, "reps": "10-12", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_flyes.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "name": "Beginner Pilates Flow – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "pilates",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Pilates Hundred", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/pilates_hundred.gif" },
+            { "name": "Roll Up", "sets": 3, "reps": "10", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/pilates_rollup.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "name": "Intermediate Strength & Hypertrophy – Gym",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Bench Press", "sets": 5, "reps": "6-8", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "8-10", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" },
+            { "name": "Barbell Rows", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/barbell_row.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "name": "Advanced Endurance HIIT – Outdoor",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Sprints", "sets": 12, "reps": "30s", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Burpees", "sets": 5, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "name": "Beginner Resistance Bands – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["bands"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Band Chest Press", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/band_chest_press.gif" },
+            { "name": "Band Rows", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["back"], "image": "/images/exercises/band_rows.gif" },
+            { "name": "Band Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/band_squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "name": "Intermediate Conditioning Circuits – Outdoor",
+      "goal": "weight_loss",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "circuit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jumping Lunges", "sets": 4, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" },
+            { "name": "Mountain Climbers", "sets": 4, "reps": "30s", "rest": "60s", "muscle_groups": ["core","legs"], "image": "/images/exercises/mountain_climbers.gif" },
+            { "name": "Burpees", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "name": "Advanced Olympic Lifting – Gym",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "olympic",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Snatch", "sets": 6, "reps": "2", "rest": "180s", "muscle_groups": ["full_body"], "image": "/images/exercises/snatch.gif" },
+            { "name": "Clean and Jerk", "sets": 6, "reps": "2", "rest": "180s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "name": "Beginner Core & Stability – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" },
+            { "name": "Glute Bridge", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["glutes"], "image": "/images/exercises/glute_bridge.gif" },
+            { "name": "Bird Dog", "sets": 3, "reps": "12/side", "rest": "45s", "muscle_groups": ["core","back"], "image": "/images/exercises/bird_dog.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 81,
+      "name": "Intermediate Chest & Back – Gym",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Bench Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" },
+            { "name": "Pull-Ups", "sets": 4, "reps": "10", "rest": "120s", "muscle_groups": ["back"], "image": "/images/exercises/pullups.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "name": "Beginner Outdoor Fitness – Walking & Calisthenics",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "circuit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Walking", "sets": 1, "reps": "25 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/walking.gif" },
+            { "name": "Push-Ups", "sets": 3, "reps": "10", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/pushups.gif" },
+            { "name": "Bodyweight Squats", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/squats.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "name": "Advanced Conditioning – CrossFit Style",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["gym","outdoor"],
+      "equipment": ["barbell","kettlebell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Clean and Jerk", "sets": 5, "reps": "3", "rest": "150s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" },
+            { "name": "Burpees", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Kettlebell Swings", "sets": 4, "reps": "20", "rest": "75s", "muscle_groups": ["glutes","back"], "image": "/images/exercises/kettlebell_swings.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "name": "Beginner Core & Glutes – Home",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["none"],
+      "style": "calisthenics",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Glute Bridge", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["glutes"], "image": "/images/exercises/glute_bridge.gif" },
+            { "name": "Crunches", "sets": 3, "reps": "20", "rest": "45s", "muscle_groups": ["core"], "image": "/images/exercises/crunches.gif" },
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "name": "Intermediate Dumbbell Only – Full Body",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["home","gym"],
+      "equipment": ["dumbbell"],
+      "style": "strength",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Deadlift", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["back","legs"], "image": "/images/exercises/dumbbell_deadlift.gif" },
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" },
+            { "name": "Dumbbell Shoulder Press", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "name": "Advanced Power Endurance – Outdoor HIIT",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Hill Sprints", "sets": 10, "reps": "45s sprint", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Jumping Lunges", "sets": 4, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" },
+            { "name": "Burpees", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "name": "Beginner Dumbbell Circuit – Home",
+      "goal": "weight_loss",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["dumbbell"],
+      "style": "circuit",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Squats", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/dumbbell_squat.gif" },
+            { "name": "Dumbbell Rows", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" },
+            { "name": "Dumbbell Press", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "name": "Intermediate Functional Circuits – Outdoor",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["kettlebell","bodyweight"],
+      "style": "functional",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Kettlebell Clean", "sets": 4, "reps": "8", "rest": "90s", "muscle_groups": ["back","shoulders"], "image": "/images/exercises/kettlebell_clean.gif" },
+            { "name": "Walking Lunges", "sets": 3, "reps": "12/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/walking_lunges.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "name": "Advanced Chest & Shoulders – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Bench Press", "sets": 5, "reps": "6", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" },
+            { "name": "Incline Dumbbell Press", "sets": 4, "reps": "10", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_dumbbell_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "name": "Beginner Balance & Stability – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "pilates",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Bird Dog", "sets": 3, "reps": "12/side", "rest": "45s", "muscle_groups": ["core","back"], "image": "/images/exercises/bird_dog.gif" },
+            { "name": "Side Plank", "sets": 3, "reps": "30s/side", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/side_plank.gif" }
+          ]
+        }
+      ]
+    }
+    ,
+    {
+      "id": 91,
+      "name": "Intermediate Push Pull Legs – Dumbbells",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "location": ["home","gym"],
+      "equipment": ["dumbbell"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Dumbbell Bench Press", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["chest"], "image": "/images/exercises/dumbbell_bench_press.gif" },
+            { "name": "Dumbbell Rows", "sets": 4, "reps": "10", "rest": "90s", "muscle_groups": ["back"], "image": "/images/exercises/dumbbell_rows.gif" },
+            { "name": "Dumbbell Shoulder Press", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["shoulders"], "image": "/images/exercises/dumbbell_shoulder_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "name": "Advanced Endurance Challenge – Outdoor HIIT",
+      "goal": "endurance",
+      "level": "advanced",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 6,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Hill Sprints", "sets": 12, "reps": "40s sprint", "rest": "90s", "muscle_groups": ["cardio"], "image": "/images/exercises/sprint.gif" },
+            { "name": "Burpees", "sets": 5, "reps": "20", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Jumping Lunges", "sets": 4, "reps": "15/leg", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jumping_lunges.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "name": "Beginner Core & Flexibility – Home",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "pilates",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Plank", "sets": 3, "reps": "30s", "rest": "30s", "muscle_groups": ["core"], "image": "/images/exercises/plank.gif" },
+            { "name": "Bridge", "sets": 3, "reps": "12", "rest": "45s", "muscle_groups": ["glutes"], "image": "/images/exercises/glute_bridge.gif" },
+            { "name": "Cat Cow Stretch", "sets": 2, "reps": "60s", "rest": "30s", "muscle_groups": ["spine"], "image": "/images/exercises/cat_cow.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "name": "Intermediate Powerlifting Base – Gym",
+      "goal": "strength",
+      "level": "intermediate",
+      "location": ["gym"],
+      "equipment": ["barbell"],
+      "style": "powerlifting",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Barbell Squat", "sets": 5, "reps": "5", "rest": "150s", "muscle_groups": ["legs"], "image": "/images/exercises/barbell_squat.gif" },
+            { "name": "Bench Press", "sets": 5, "reps": "5", "rest": "150s", "muscle_groups": ["chest"], "image": "/images/exercises/barbell_bench_press.gif" },
+            { "name": "Deadlift", "sets": 5, "reps": "5", "rest": "150s", "muscle_groups": ["back"], "image": "/images/exercises/deadlift.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "name": "Advanced Strength & Conditioning – Gym CrossFit",
+      "goal": "strength",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","bodyweight"],
+      "style": "crossfit",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Clean and Jerk", "sets": 5, "reps": "3", "rest": "150s", "muscle_groups": ["full_body"], "image": "/images/exercises/clean_and_jerk.gif" },
+            { "name": "Burpees", "sets": 4, "reps": "15", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Dumbbell Thrusters", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["legs","shoulders"], "image": "/images/exercises/dumbbell_thruster.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "name": "Beginner Strength – Resistance Bands",
+      "goal": "strength",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["bands"],
+      "style": "strength",
+      "days": 3,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Band Squats", "sets": 3, "reps": "15", "rest": "60s", "muscle_groups": ["legs"], "image": "/images/exercises/band_squats.gif" },
+            { "name": "Band Rows", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["back"], "image": "/images/exercises/band_rows.gif" },
+            { "name": "Band Chest Press", "sets": 3, "reps": "12", "rest": "60s", "muscle_groups": ["chest"], "image": "/images/exercises/band_chest_press.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "name": "Intermediate Cardio & Conditioning – Outdoor",
+      "goal": "endurance",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "hiit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Jogging", "sets": 1, "reps": "20 min", "rest": "—", "muscle_groups": ["cardio"], "image": "/images/exercises/jogging.gif" },
+            { "name": "Burpees", "sets": 3, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Jumping Jacks", "sets": 3, "reps": "45s", "rest": "30s", "muscle_groups": ["cardio"], "image": "/images/exercises/jumping_jacks.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "name": "Advanced Push Day – Gym",
+      "goal": "muscle_gain",
+      "level": "advanced",
+      "location": ["gym"],
+      "equipment": ["barbell","dumbbell","machines"],
+      "style": "bodybuilding",
+      "days": 5,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Incline Barbell Press", "sets": 5, "reps": "6", "rest": "120s", "muscle_groups": ["chest"], "image": "/images/exercises/incline_barbell_press.gif" },
+            { "name": "Overhead Press", "sets": 4, "reps": "8", "rest": "120s", "muscle_groups": ["shoulders"], "image": "/images/exercises/overhead_press.gif" },
+            { "name": "Triceps Dips", "sets": 4, "reps": "12", "rest": "90s", "muscle_groups": ["triceps"], "image": "/images/exercises/dips.gif" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "name": "Beginner Flexibility & Balance – Yoga",
+      "goal": "mobility",
+      "level": "beginner",
+      "location": ["home"],
+      "equipment": ["mat"],
+      "style": "yoga",
+      "days": 2,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Tree Pose", "sets": 3, "reps": "30s", "rest": "20s", "muscle_groups": ["balance"], "image": "/images/exercises/tree_pose.gif" },
+            { "name": "Downward Dog", "sets": 3, "reps": "45s", "rest": "20s", "muscle_groups": ["hamstrings","shoulders"], "image": "/images/exercises/downward_dog.gif" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": 100,
+      "name": "Intermediate Full Body Circuit – Outdoor",
+      "goal": "weight_loss",
+      "level": "intermediate",
+      "location": ["outdoor"],
+      "equipment": ["none"],
+      "style": "circuit",
+      "days": 4,
+      "plan": [
+        {
+          "day": 1,
+          "exercises": [
+            { "name": "Burpees", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["full_body"], "image": "/images/exercises/burpees.gif" },
+            { "name": "Mountain Climbers", "sets": 4, "reps": "30s", "rest": "60s", "muscle_groups": ["core","legs"], "image": "/images/exercises/mountain_climbers.gif" },
+            { "name": "Jump Squats", "sets": 4, "reps": "12", "rest": "75s", "muscle_groups": ["legs"], "image": "/images/exercises/jump_squats.gif" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+    

@@ -2,8 +2,10 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import About from "./components/About";
 import Bmi from "./components/Bmi";
-import FitnessHub from "./components/FitnessHub"; // ✅ dodaj novi hub
+import FitnessHub from "./components/FitnessHub";
+import WorkoutGenerator from "./components/WorkoutGenerator.jsx"; // ✅ novi dodatak
 import Footer from "./components/Footer";
+
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +31,9 @@ function App() {
             <Link to="/hub" className="hover:text-blue-500">
               Hub
             </Link>
+            <Link to="/generator" className="hover:text-blue-500">
+              Generator
+            </Link>
           </nav>
         </div>
       </header>
@@ -38,8 +43,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/bmi" element={<Bmi />} />
-        <Route path="/hub" element={<FitnessHub />} /> {/* ✅ nova ruta */}
+        <Route path="/hub" element={<FitnessHub />} />
+        <Route path="/generator" element={<WorkoutGenerator />} />{" "}
+        {/* ✅ nova ruta */}
       </Routes>
+
       {/* Footer */}
       <Footer />
     </BrowserRouter>

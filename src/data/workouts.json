@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Dumbbell Bench Press",
+      "muscle_groups": ["chest", "triceps"],
+      "equipment": ["dumbbell", "bench"],
+      "location": ["gym"],
+      "level": "beginner",
+      "image": "/images/exercises/dumbbell_bench_press.gif",
+      "sets": 4,
+      "reps": "10-12",
+      "rest": "90s",
+      "style": "bodybuilding"
+    },
+    {
+      "id": 2,
+      "name": "Push-Ups",
+      "muscle_groups": ["chest", "triceps", "core"],
+      "equipment": ["none"],
+      "location": ["home", "outdoor"],
+      "level": "all",
+      "image": "/images/exercises/pushups.gif",
+      "sets": 3,
+      "reps": "12-15",
+      "rest": "60s",
+      "style": "calisthenics"
+    },
+    {
+      "id": 3,
+      "name": "Squats",
+      "muscle_groups": ["legs", "glutes"],
+      "equipment": ["none", "barbell"],
+      "location": ["home", "gym"],
+      "level": "all",
+      "image": "/images/exercises/squats.gif",
+      "sets": 4,
+      "reps": "12-15",
+      "rest": "75s",
+      "style": "strength"
+    }
+  ]
+}
+
+
+
+
+

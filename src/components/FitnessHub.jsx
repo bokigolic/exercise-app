@@ -1,441 +1,929 @@
-import { useState } from "react";
+// src/components/FitnessHub.jsx
+import React, { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Flame, Ruler, Camera, Dumbbell } from "lucide-react";
+import {
+  Flame,
+  Ruler,
+  Droplets,
+  Dumbbell,
+  HeartPulse,
+  Apple,
+  Moon,
+} from "lucide-react";
 
-function FitnessHub() {
-  const [activeTab, setActiveTab] = useState("calories");
+/* ---------- UI Primitives (JSX, no TS types) ---------- */
+const Card = ({ children, className = "" }) => (
+  <div
+    className={
+      "bg-white dark:bg-gray-900 rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 " +
+      className
+    }
+  >
+    {children}
+  </div>
+);
 
-  const tabs = [
-    { id: "calories", label: "Calories", icon: <Flame /> },
-    { id: "measurements", label: "Measurements", icon: <Ruler /> },
-    { id: "posture", label: "Posture", icon: <Camera /> },
-    { id: "plans", label: "Plans", icon: <Dumbbell /> },
-  ];
+const SectionTitle = ({ title, emoji }) => (
+  <div className="flex items-center gap-2 mb-6">
+    {emoji ? <span className="text-2xl leading-none">{emoji}</span> : null}
+    <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+  </div>
+);
+
+const Field = ({ label, htmlFor, description, error, children }) => (
+  <div className="space-y-1.5">
+    <label
+      htmlFor={htmlFor}
+      className="text-sm font-medium text-gray-800 dark:text-gray-200"
+    >
+      {label}
+    </label>
+    {children}
+    {description && (
+      <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
+    )}
+    {error && <p className="text-xs text-red-600">{error}</p>}
+  </div>
+);
+
+const NumberField = ({ unit, id, ...rest }) => (
+  <div className="relative">
+    <input
+      id={id}
+      type="number"
+      inputMode="decimal"
+      className="w-full p-3 pr-14 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      {...rest}
+    />
+    {unit && (
+      <span
+        className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-500 dark:text-gray-400 select-none"
+        aria-hidden="true"
+      >
+        {unit}
+      </span>
+    )}
+  </div>
+);
+
+const SelectField = ({ id, children, ...rest }) => (
+  <select
+    id={id}
+    className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    {...rest}
+  >
+    {children}
+  </select>
+);
+
+const ActionBar = ({ children, className = "" }) => (
+  <div className={"flex items-center gap-3 " + className}>{children}</div>
+);
+
+const Button = ({ variant = "primary", className = "", ...rest }) => {
+  const base =
+    "px-5 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition";
+  const styles =
+    variant === "primary"
+      ? "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
+      : "bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 focus:ring-gray-400";
+  return <button className={`${base} ${styles} ${className}`} {...rest} />;
+};
+
+const ResetButton = (props) => (
+  <Button {...props} variant="ghost" title="Reset" aria-label="Reset fields" />
+);
+
+const Stat = ({ label, value, hint }) => (
+  <div className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 ring-1 ring-black/5 dark:ring-white/10">
+    <p className="text-sm text-gray-600 dark:text-gray-300">{label}</p>
+    <p className="mt-1 text-2xl font-bold">{value}</p>
+    {hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
+  </div>
+);
+
+/* ---------- BMI Helpers (EN) ---------- */
+// clear categorization + visual feedback
+function getBmiInfo(bmiNumber) {
+  if (!Number.isFinite(bmiNumber)) {
+    return {
+      label: "-",
+      tone: "gray",
+      badgeClass:
+        "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
+      advice: "",
+    };
+  }
+  if (bmiNumber < 18.5) {
+    return {
+      label: "Underweight",
+      tone: "blue",
+      badgeClass:
+        "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200",
+      advice: "Consider increasing calories and protein.",
+    };
+  }
+  if (bmiNumber < 25) {
+    return {
+      label: "Normal",
+      tone: "green",
+      badgeClass:
+        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200",
+      advice: "Maintain habits and progressive training.",
+    };
+  }
+  if (bmiNumber < 30) {
+    return {
+      label: "Overweight",
+      tone: "yellow",
+      badgeClass:
+        "bg-yellow-100 text-yellow-900 dark:bg-yellow-900/30 dark:text-yellow-200",
+      advice: "Use a mild calorie deficit and increase NEAT.",
+    };
+  }
+  return {
+    label: "Obesity",
+    tone: "red",
+    badgeClass: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200",
+    advice: "Go into a deficit; prioritize movement and protein.",
+  };
+}
+
+/* ---------- OPTIONAL UI text tweak ---------- */
+// In AnalysisTab, replace:
+// <span className="text-xs text-gray-500">Granice: 18.5 / 25 / 30</span>
+// with:
+<span className="text-xs text-gray-500">Thresholds: 18.5 / 25 / 30</span>;
+const Badge = ({ className = "", children }) => (
+  <span
+    className={
+      "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold " +
+      className
+    }
+  >
+    {children}
+  </span>
+);
+
+const BMIRangeBar = ({ value }) => {
+  // scale bounds & breakpoints
+  const min = 10;
+  const max = 40;
+  const b1 = 18.5;
+  const b2 = 25;
+  const b3 = 30;
+
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const pct = (v) => ((v - min) / (max - min)) * 100;
+
+  const pointerLeft = pct(clamp(Number(value), min, max));
+
+  // why: precizan segmentni prikaz raspona
+  const bg = `linear-gradient(to right,
+    rgba(59,130,246,0.25) 0% ${pct(b1)}%,
+    rgba(34,197,94,0.25) ${pct(b1)}% ${pct(b2)}%,
+    rgba(234,179,8,0.3) ${pct(b2)}% ${pct(b3)}%,
+    rgba(239,68,68,0.3) ${pct(b3)}% 100%)`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6">
-      {/* Header */}
-      <section className="text-center py-10 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg rounded-xl mb-8">
-        <h1 className="text-4xl font-extrabold tracking-wide">
-          🏋️ Advanced Fitness Hub
-        </h1>
-        <p className="mt-2 opacity-90">
-          All-in-one: calories, body tracking, posture analysis & goal-based
-          plans
-        </p>
-      </section>
-
-      {/* Tabs */}
-      <div className="flex justify-center gap-6 mb-10 flex-wrap">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition ${
-              activeTab === tab.id
-                ? "bg-blue-600 text-white shadow-lg"
-                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
+    <div className="w-full">
+      <div
+        className="relative h-4 w-full rounded-full"
+        style={{ background: bg }}
+        aria-label="BMI range bar"
+      >
+        {/* track outline */}
+        <div className="absolute inset-0 rounded-full ring-1 ring-black/10 dark:ring-white/10 pointer-events-none" />
+        {/* pointer */}
+        <div
+          className="absolute -top-1.5 h-7 w-0.5 bg-gray-900 dark:bg-gray-100 rounded-sm"
+          style={{ left: `${pointerLeft}%`, transform: "translateX(-50%)" }}
+          aria-hidden="true"
+        />
       </div>
-
-      {/* Tab Content */}
-      <div className="max-w-5xl mx-auto">
-        {activeTab === "calories" && <CaloriesTab />}
-        {activeTab === "measurements" && <MeasurementsTab />}
-        {activeTab === "posture" && <PostureTab />}
-        {activeTab === "plans" && <PlansTab />}
+      {/* ticks */}
+      <div className="mt-2 flex justify-between text-[11px] text-gray-600 dark:text-gray-300">
+        <span>10</span>
+        <span>18.5</span>
+        <span>25</span>
+        <span>30</span>
+        <span>40</span>
       </div>
+    </div>
+  );
+};
+
+/* ---------- Tabs ---------- */
+const TABS = [
+  { id: "calories", label: "Calories", icon: <Flame size={18} /> },
+  { id: "analysis", label: "Body Analysis", icon: <Ruler size={18} /> },
+  { id: "nutrition", label: "Nutrition", icon: <Apple size={18} /> },
+  { id: "hydration", label: "Hydration", icon: <Droplets size={18} /> },
+  { id: "training", label: "Training", icon: <Dumbbell size={18} /> },
+  { id: "lifestyle", label: "Lifestyle", icon: <Moon size={18} /> },
+];
+
+const TabBar = ({ active, onChange }) => {
+  const listRef = useRef(null);
+
+  // why: keyboard UX za pristupačnost i brzinu
+  const onKeyDown = (e, idx) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const last = TABS.length - 1;
+    let next = idx;
+    if (e.key === "ArrowRight") next = idx === last ? 0 : idx + 1;
+    if (e.key === "ArrowLeft") next = idx === 0 ? last : idx - 1;
+    if (e.key === "Home") next = 0;
+    if (e.key === "End") next = last;
+    onChange(TABS[next].id);
+    const btns = listRef.current?.querySelectorAll("button[role=tab]");
+    btns?.[next]?.focus();
+  };
+
+  return (
+    <div
+      ref={listRef}
+      role="tablist"
+      aria-label="Fitness sections"
+      className="sticky top-4 z-30 -mt-2 mb-8 bg-transparent"
+    >
+      <div className="mx-auto max-w-6xl overflow-x-auto">
+        <div className="inline-flex gap-2 rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur px-2 py-2 ring-1 ring-black/10 dark:ring-white/10">
+          {TABS.map((t, i) => {
+            const selected = active === t.id;
+            return (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={selected}
+                aria-controls={`panel-${t.id}`}
+                id={`tab-${t.id}`}
+                onClick={() => onChange(t.id)}
+                onKeyDown={(e) => onKeyDown(e, i)}
+                className="relative px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              >
+                <span className="inline-flex items-center gap-2">
+                  {t.icon}
+                  {t.label}
+                </span>
+                {selected && (
+                  <motion.span
+                    layoutId="active-pill"
+                    className="absolute inset-0 rounded-xl -z-10"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    style={{
+                      boxShadow: "inset 0 0 0 1000px rgba(37,99,235,0.12)",
+                    }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- Main ---------- */
+export default function FitnessHub() {
+  const [activeTab, setActiveTab] = useState("calories");
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-950 dark:via-gray-900 dark:to-black p-6">
+      <header className="mx-auto max-w-6xl">
+        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <div className="px-6 py-10 text-center">
+            <h1 className="text-4xl font-extrabold tracking-wide">
+              🏋️ Ultimate Fitness Hub
+            </h1>
+            <p className="mt-2 opacity-90">
+              All-in-one: calories, body analysis, nutrition, hydration,
+              training & lifestyle
+            </p>
+          </div>
+        </Card>
+      </header>
+
+      <TabBar active={activeTab} onChange={setActiveTab} />
+
+      <main className="mx-auto max-w-6xl">
+        <motion.section
+          key={activeTab}
+          id={`panel-${activeTab}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          {activeTab === "calories" && <CaloriesTab />}
+          {activeTab === "analysis" && <AnalysisTab />}
+          {activeTab === "nutrition" && <NutritionTab />}
+          {activeTab === "hydration" && <HydrationTab />}
+          {activeTab === "training" && <TrainingTab />}
+          {activeTab === "lifestyle" && <LifestyleTab />}
+        </motion.section>
+      </main>
     </div>
   );
 }
 
-//
-// 🔹 1. Calories Calculator
-//
-function CaloriesTab() {
-  const [activity, setActivity] = useState("running");
-  const [duration, setDuration] = useState("");
-  const [weight, setWeight] = useState("");
-  const [result, setResult] = useState(null);
+/* ---------- Tabs Content (logic preserved) ---------- */
 
-  const activities = {
-    running: 9.8,
-    cycling: 7.5,
-    swimming: 8,
-    football: 10,
-    yoga: 3,
-    hiit: 12,
-    walking: 3.5,
-  };
+// 🔹 Calories
+function CaloriesTab() {
+  const [gender, setGender] = useState("M");
+  const [age, setAge] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [activity, setActivity] = useState("1.55");
+  const [calories, setCalories] = useState(null);
+
+  const isValid = useMemo(() => {
+    const a = Number(age),
+      h = Number(height),
+      w = Number(weight);
+    return (
+      Number.isFinite(a) &&
+      a > 0 &&
+      Number.isFinite(h) &&
+      h > 0 &&
+      Number.isFinite(w) &&
+      w > 0
+    );
+  }, [age, height, weight]);
 
   const calculate = () => {
-    if (!duration || !weight) return;
-    const met = activities[activity];
-    const calories = (met * weight * (duration / 60)).toFixed(0);
-    setResult(calories);
+    if (!isValid) return;
+    const w = parseFloat(weight);
+    const h = parseFloat(height);
+    const a = parseInt(age, 10);
+    const bmr = 10 * w + 6.25 * h - 5 * a + (gender === "M" ? 5 : -161);
+    const tdee = bmr * parseFloat(activity);
+    setCalories(Math.round(tdee));
+  };
+
+  const reset = () => {
+    setGender("M");
+    setAge("");
+    setHeight("");
+    setWeight("");
+    setActivity("1.55");
+    setCalories(null);
+  };
+
+  const onKey = (e) => {
+    if (e.key === "Enter" && isValid) calculate();
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
-    >
-      <h2 className="text-2xl font-bold mb-4">
-        🔥 Activity Calories Calculator
-      </h2>
-      <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
-        Calculate how many calories you burn during common activities using the{" "}
-        <strong>MET formula</strong>:
-        <br />
-        <code>Calories = MET × weight(kg) × duration(h)</code>
-      </p>
-      <div className="grid gap-4 sm:grid-cols-3">
-        <select
-          value={activity}
-          onChange={(e) => setActivity(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        >
-          {Object.keys(activities).map((a) => (
-            <option key={a} value={a}>
-              {a.charAt(0).toUpperCase() + a.slice(1)}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          placeholder="Duration (min)"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        />
-        <input
-          type="number"
-          placeholder="Weight (kg)"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        />
-      </div>
-      <button
-        onClick={calculate}
-        className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+    <Card className="p-6">
+      <SectionTitle title="Calorie Calculator" emoji="🔥" />
+      <div
+        className="grid gap-4 sm:grid-cols-2 md:grid-cols-3"
+        onKeyDown={onKey}
       >
-        Calculate
-      </button>
-      {result && (
-        <div className="mt-6 bg-green-100 dark:bg-green-900/40 p-4 rounded-xl">
-          <p className="text-lg font-medium">
-            You burned approximately <span className="font-bold">{result}</span>{" "}
-            kcal ⚡
-          </p>
-          <p className="text-sm opacity-80">
-            Equivalent to ~{Math.round(result / 100)} bananas 🍌
-          </p>
+        <Field
+          label="Gender"
+          htmlFor="cal-gender"
+          description="Affects BMR baseline."
+        >
+          <SelectField
+            id="cal-gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </SelectField>
+        </Field>
+        <Field label="Age" htmlFor="cal-age">
+          <NumberField
+            id="cal-age"
+            placeholder="e.g. 28"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            min={1}
+            step={1}
+          />
+        </Field>
+        <Field label="Height" htmlFor="cal-height" description="Centimeters.">
+          <NumberField
+            id="cal-height"
+            placeholder="e.g. 178"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="cm"
+          />
+        </Field>
+        <Field label="Weight" htmlFor="cal-weight" description="Kilograms.">
+          <NumberField
+            id="cal-weight"
+            placeholder="e.g. 75"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="kg"
+          />
+        </Field>
+        <Field
+          label="Activity Level"
+          htmlFor="cal-activity"
+          description="TDEE multiplier."
+        >
+          <SelectField
+            id="cal-activity"
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+          >
+            <option value="1.2">Sedentary (1.2)</option>
+            <option value="1.375">Lightly active (1.375)</option>
+            <option value="1.55">Moderate (1.55)</option>
+            <option value="1.725">Active (1.725)</option>
+            <option value="1.9">Very active (1.9)</option>
+          </SelectField>
+        </Field>
+      </div>
+
+      <ActionBar className="mt-6">
+        <Button onClick={calculate} disabled={!isValid}>
+          Calculate
+        </Button>
+        <ResetButton onClick={reset}>Reset</ResetButton>
+      </ActionBar>
+
+      {calories !== null && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <Stat label="Daily Maintenance" value={`${calories} kcal`} />
+          <Stat label="Cutting (−500)" value={`${calories - 500} kcal`} />
+          <Stat label="Bulking (+300)" value={`${calories + 300} kcal`} />
         </div>
       )}
-    </motion.div>
+    </Card>
   );
 }
 
-//
-// 🔹 2. Measurements Tracker
-//
-function MeasurementsTab() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
-    >
-      <h2 className="text-2xl font-bold mb-4">📏 Body Measurements Tracker</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-        Track progress in key measurements:{" "}
-        <strong>waist, chest, biceps, thighs, hips</strong>. Combine with photos
-        or charts for visual progress 📊.
-      </p>
-      <p className="italic opacity-70">
-        (Future enhancement: save data, show graphs, compare months)
-      </p>
-    </motion.div>
-  );
-}
+// 🔹 Body Analysis (BMI, BMR, TDEE, Body Fat) + BMI interpretacija i bar
+function AnalysisTab() {
+  const [gender, setGender] = useState("M");
+  const [age, setAge] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [waist, setWaist] = useState("");
+  const [neck, setNeck] = useState("");
+  const [hips, setHips] = useState("");
+  const [activity, setActivity] = useState("1.55");
+  const [results, setResults] = useState(null);
 
-//
-// 🔹 3. Posture Analysis
-//
-function PostureTab() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
-    >
-      <h2 className="text-2xl font-bold mb-4">🤸 Posture & Pose Analysis</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-300">
-        Upload an image or use your camera for AI-based posture detection.
-        <br />
-        Feedback example: ✅ “Great squat form” or ⚠️ “Your knee is moving too
-        far forward”.
-      </p>
-      <p className="italic opacity-70 mt-3">
-        (Prototype mode – AI integration can be added later)
-      </p>
-    </motion.div>
-  );
-}
+  const baseValid = useMemo(() => {
+    const a = Number(age),
+      h = Number(height),
+      w = Number(weight);
+    return a > 0 && h > 0 && w > 0;
+  }, [age, height, weight]);
 
-//
-// 🔹 4. Plans Generator
-//
-function PlansTab() {
-  const [goal, setGoal] = useState("fat-loss");
-  const [level, setLevel] = useState("beginner");
-  const [weeks, setWeeks] = useState("4");
-  const [frequency, setFrequency] = useState("3");
-  const [plan, setPlan] = useState(null);
+  const bfValid = useMemo(() => {
+    const has = (v) => Number(v) > 0;
+    return gender === "M"
+      ? has(waist) && has(neck)
+      : has(waist) && has(neck) && has(hips);
+  }, [gender, waist, neck, hips]);
 
-  const generatePlan = () => {
-    const trainingTemplates = {
-      "fat-loss": {
-        beginner: [
-          "3x Full-body circuit (10–12 reps, 3 rounds)",
-          "2x Cardio (20–30 min brisk walk/jog)",
-        ],
-        intermediate: [
-          "Upper/Lower split + cardio finishers",
-          "HIIT 2x week (20 min intervals)",
-        ],
-        advanced: [
-          "Push/Pull/Legs split 5–6x week",
-          "HIIT finishers + steady-state cardio",
-        ],
-      },
-      "muscle-gain": {
-        beginner: [
-          "3x Full-body (8–10 reps, progressive overload)",
-          "Optional cardio 1x week",
-        ],
-        intermediate: ["Upper/Lower split 4x week", "Accessory isolation work"],
-        advanced: ["Push/Pull/Legs 6x week", "High volume compound lifts"],
-      },
-      endurance: {
-        beginner: ["Jog 20 min", "Bike 30 min", "Walk 30 min"],
-        intermediate: ["Run intervals + long run 1x", "Swim 2x", "Bike 1x"],
-        advanced: ["5x training: long runs, swim drills, cycling intervals"],
-      },
-      health: {
-        beginner: ["2x Strength full-body", "2x Light cardio (30 min)"],
-        intermediate: ["3x Strength (split)", "2x Cardio (40 min)"],
-        advanced: ["4x Strength", "3x Cardio mix"],
-      },
-    };
+  const calculate = () => {
+    if (!baseValid) return;
+    const h = parseFloat(height);
+    const w = parseFloat(weight);
+    const a = parseInt(age, 10);
 
-    const nutritionTemplates = {
-      "fat-loss": {
-        desc: "Stay in a calorie deficit. Focus on high protein, low sugar.",
-        protein: "1.8–2.2 g/kg",
-        carbs: "30–40%",
-        fats: "20–25%",
-      },
-      "muscle-gain": {
-        desc: "Eat in a slight calorie surplus. Prioritize protein & carbs.",
-        protein: "2 g/kg",
-        carbs: "45–55%",
-        fats: "20–25%",
-      },
-      endurance: {
-        desc: "Carb-rich diet for energy. Moderate protein.",
-        protein: "1.5 g/kg",
-        carbs: "55–65%",
-        fats: "15–20%",
-      },
-      health: {
-        desc: "Balanced macros. Focus on whole foods.",
-        protein: "1.6 g/kg",
-        carbs: "45–55%",
-        fats: "20–30%",
-      },
-    };
+    const bmi = (w / ((h / 100) * (h / 100))).toFixed(1);
+    const bmr = 10 * w + 6.25 * h - 5 * a + (gender === "M" ? 5 : -161);
+    const tdee = bmr * parseFloat(activity);
 
-    // Generate schedule
-    const days = [];
-    const totalWeeks = parseInt(weeks);
-    const freq = parseInt(frequency);
-    for (let w = 1; w <= totalWeeks; w++) {
-      for (let d = 1; d <= freq; d++) {
-        days.push({
-          week: w,
-          day: d,
-          workout:
-            trainingTemplates[goal][level][
-              (d - 1) % trainingTemplates[goal][level].length
-            ],
-        });
+    let bf = null;
+    if (bfValid) {
+      if (gender === "M") {
+        bf =
+          495 /
+            (1.0324 -
+              0.19077 * Math.log10(parseFloat(waist) - parseFloat(neck)) +
+              0.15456 * Math.log10(h)) -
+          450;
+      } else {
+        bf =
+          495 /
+            (1.29579 -
+              0.35004 *
+                Math.log10(
+                  parseFloat(waist) + parseFloat(hips) - parseFloat(neck)
+                ) +
+              0.221 * Math.log10(h)) -
+          450;
       }
     }
 
-    setPlan({
-      goal,
-      level,
-      weeks,
-      frequency,
-      training: trainingTemplates[goal][level],
-      nutrition: nutritionTemplates[goal],
-      days,
-      milestones: [
-        "Week 1–2: Adaptation – build consistency 💪",
-        "Midway: Increase intensity/volume 🔥",
-        totalWeeks >= 8 ? "Reassess progress, adjust macros 📊" : null,
-        totalWeeks >= 12 ? "Final push – peak training 🚀" : null,
-      ].filter(Boolean),
+    setResults({
+      bmi,
+      bmr: Math.round(bmr),
+      tdee: Math.round(tdee),
+      bf: bf !== null ? bf.toFixed(1) : null,
     });
   };
 
+  const reset = () => {
+    setGender("M");
+    setAge("");
+    setHeight("");
+    setWeight("");
+    setWaist("");
+    setNeck("");
+    setHips("");
+    setActivity("1.55");
+    setResults(null);
+  };
+
+  const bmiNumber = results ? Number(results.bmi) : null;
+  const bmiInfo = results ? getBmiInfo(bmiNumber) : null;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
-    >
-      <h2 className="text-2xl font-bold mb-4">📅 Goal-Based Plans</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-        Generate structured workout + nutrition plans based on your{" "}
-        <strong>goal, level, weeks, and frequency</strong>. Plans are based on
-        proven templates (not AI).
-      </p>
-
-      {/* Inputs */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-        <select
-          value={goal}
-          onChange={(e) => setGoal(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        >
-          <option value="fat-loss">Fat Loss</option>
-          <option value="muscle-gain">Muscle Gain</option>
-          <option value="endurance">Endurance</option>
-          <option value="health">General Health</option>
-        </select>
-
-        <select
-          value={level}
-          onChange={(e) => setLevel(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        >
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-
-        <select
-          value={weeks}
-          onChange={(e) => setWeeks(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        >
-          <option value="4">4 weeks</option>
-          <option value="8">8 weeks</option>
-          <option value="12">12 weeks</option>
-        </select>
-
-        <select
-          value={frequency}
-          onChange={(e) => setFrequency(e.target.value)}
-          className="p-3 rounded-xl border bg-gray-50 dark:bg-gray-700"
-        >
-          <option value="3">3 sessions/week</option>
-          <option value="4">4 sessions/week</option>
-          <option value="5">5 sessions/week</option>
-          <option value="6">6 sessions/week</option>
-        </select>
+    <Card className="p-6">
+      <SectionTitle title="Body Analysis" emoji="📊" />
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <Field label="Gender" htmlFor="an-gender">
+          <SelectField
+            id="an-gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </SelectField>
+        </Field>
+        <Field label="Age" htmlFor="an-age">
+          <NumberField
+            id="an-age"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            min={1}
+            step={1}
+          />
+        </Field>
+        <Field label="Height" htmlFor="an-height" description="Centimeters.">
+          <NumberField
+            id="an-height"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="cm"
+          />
+        </Field>
+        <Field label="Weight" htmlFor="an-weight" description="Kilograms.">
+          <NumberField
+            id="an-weight"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="kg"
+          />
+        </Field>
+        <Field label="Waist" htmlFor="an-waist" description="Centimeters.">
+          <NumberField
+            id="an-waist"
+            value={waist}
+            onChange={(e) => setWaist(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="cm"
+          />
+        </Field>
+        <Field label="Neck" htmlFor="an-neck" description="Centimeters.">
+          <NumberField
+            id="an-neck"
+            value={neck}
+            onChange={(e) => setNeck(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="cm"
+          />
+        </Field>
+        {gender === "F" && (
+          <Field label="Hips" htmlFor="an-hips" description="Centimeters.">
+            <NumberField
+              id="an-hips"
+              value={hips}
+              onChange={(e) => setHips(e.target.value)}
+              min={1}
+              step={0.1}
+              unit="cm"
+            />
+          </Field>
+        )}
+        <Field label="Activity Level" htmlFor="an-activity">
+          <SelectField
+            id="an-activity"
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+          >
+            <option value="1.2">Sedentary (1.2)</option>
+            <option value="1.375">Lightly active (1.375)</option>
+            <option value="1.55">Moderate (1.55)</option>
+            <option value="1.725">Active (1.725)</option>
+            <option value="1.9">Very active (1.9)</option>
+          </SelectField>
+        </Field>
       </div>
 
-      <button
-        onClick={generatePlan}
-        className="mb-6 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
-      >
-        Generate Plan
-      </button>
+      <ActionBar className="mt-6">
+        <Button onClick={calculate} disabled={!baseValid}>
+          Calculate
+        </Button>
+        <ResetButton onClick={reset}>Reset</ResetButton>
+      </ActionBar>
 
-      {/* Results */}
-      {plan && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="bg-green-100 dark:bg-green-900/40 p-6 rounded-xl shadow-inner"
-        >
-          <h3 className="text-lg font-bold mb-2">
-            {plan.weeks}-week {plan.goal.replace("-", " ")} plan ({plan.level})
-          </h3>
-          <p className="mb-2">
-            <span className="font-semibold">Frequency:</span> {plan.frequency}
-            x/week
-          </p>
-
-          {/* Training */}
-          <p className="mb-1 font-semibold">Training focus:</p>
-          <ul className="list-disc list-inside mb-3 text-sm">
-            {plan.training.map((t, i) => (
-              <li key={i}>{t}</li>
-            ))}
-          </ul>
-
-          {/* Nutrition */}
-          <p className="mb-1 font-semibold">Nutrition guidelines:</p>
-          <p className="text-sm mb-1">{plan.nutrition.desc}</p>
-          <ul className="list-disc list-inside text-sm">
-            <li>Protein: {plan.nutrition.protein}</li>
-            <li>Carbs: {plan.nutrition.carbs}</li>
-            <li>Fats: {plan.nutrition.fats}</li>
-          </ul>
-
-          {/* Milestones */}
-          <p className="mt-4 font-semibold">Milestones:</p>
-          <ul className="list-disc list-inside text-sm">
-            {plan.milestones.map((m, i) => (
-              <li key={i}>{m}</li>
-            ))}
-          </ul>
-
-          {/* Day-by-Day */}
-          <p className="mt-4 font-semibold">Sample Week Schedule:</p>
-          <div className="overflow-x-auto mt-2">
-            <table className="min-w-full text-sm border">
-              <thead className="bg-blue-200 dark:bg-blue-800">
-                <tr>
-                  <th className="p-2 border">Week</th>
-                  <th className="p-2 border">Day</th>
-                  <th className="p-2 border">Workout</th>
-                </tr>
-              </thead>
-              <tbody>
-                {plan.days.slice(0, 7).map((d, i) => (
-                  <tr key={i} className="text-center">
-                    <td className="p-2 border">{d.week}</td>
-                    <td className="p-2 border">Day {d.day}</td>
-                    <td className="p-2 border">{d.workout}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {results && (
+        <>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="BMI" value={results.bmi} />
+            <Stat label="BMR" value={`${results.bmr} kcal/day`} />
+            <Stat label="TDEE" value={`${results.tdee} kcal/day`} />
+            {results.bf && <Stat label="Body Fat %" value={`${results.bf}%`} />}
           </div>
-          <p className="text-xs opacity-70 mt-2">
-            * Week 1 shown. Following weeks gradually increase difficulty.
-          </p>
-        </motion.div>
+
+          {/* BMI interpretacija + vizualizacija */}
+          <div className="mt-6 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 ring-1 ring-black/5 dark:ring-white/10">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
+                  BMI status:
+                </span>
+                <Badge className={bmiInfo.badgeClass}>{bmiInfo.label}</Badge>
+              </div>
+              <span className="text-xs text-gray-500">
+                Granice: 18.5 / 25 / 30
+              </span>
+            </div>
+            <BMIRangeBar value={Number(results.bmi)} />
+            {bmiInfo.advice && (
+              <p className="mt-3 text-xs text-gray-600 dark:text-gray-300">
+                {bmiInfo.advice}
+              </p>
+            )}
+          </div>
+        </>
       )}
-    </motion.div>
+    </Card>
   );
 }
 
-export default FitnessHub;
+// 🔹 Nutrition (Macro Split)
+function NutritionTab() {
+  const [calories, setCalories] = useState("");
+  const [goal, setGoal] = useState("balance");
+  const [macros, setMacros] = useState(null);
+
+  const isValid = Number(calories) > 0;
+
+  const calculate = () => {
+    if (!isValid) return;
+    const cals = Number(calories);
+    let proteinPerc, carbPerc, fatPerc;
+    if (goal === "cut") {
+      proteinPerc = 0.35;
+      carbPerc = 0.35;
+      fatPerc = 0.3;
+    } else if (goal === "bulk") {
+      proteinPerc = 0.25;
+      carbPerc = 0.55;
+      fatPerc = 0.2;
+    } else {
+      proteinPerc = 0.3;
+      carbPerc = 0.45;
+      fatPerc = 0.25;
+    }
+    const p = ((cals * proteinPerc) / 4).toFixed(0);
+    const c = ((cals * carbPerc) / 4).toFixed(0);
+    const f = ((cals * fatPerc) / 9).toFixed(0);
+    setMacros({ protein: p, carbs: c, fats: f });
+  };
+
+  const reset = () => {
+    setCalories("");
+    setGoal("balance");
+    setMacros(null);
+  };
+
+  return (
+    <Card className="p-6">
+      <SectionTitle title="Macro Calculator" emoji="🍎" />
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Field label="Calories" htmlFor="nu-cal">
+          <NumberField
+            id="nu-cal"
+            placeholder="e.g. 2500"
+            value={calories}
+            onChange={(e) => setCalories(e.target.value)}
+            min={1}
+            step={1}
+            unit="kcal"
+          />
+        </Field>
+        <Field
+          label="Goal"
+          htmlFor="nu-goal"
+          description="Adjusts macro split."
+        >
+          <SelectField
+            id="nu-goal"
+            value={goal}
+            onChange={(e) => setGoal(e.target.value)}
+          >
+            <option value="balance">Balanced</option>
+            <option value="cut">Cutting</option>
+            <option value="bulk">Bulking</option>
+          </SelectField>
+        </Field>
+        <div className="flex items-end">
+          <Button onClick={calculate} disabled={!isValid} className="w-full">
+            Calculate
+          </Button>
+        </div>
+      </div>
+
+      {macros && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <Stat label="Protein" value={`${macros.protein} g`} />
+          <Stat label="Carbs" value={`${macros.carbs} g`} />
+          <Stat label="Fats" value={`${macros.fats} g`} />
+        </div>
+      )}
+
+      <p className="mt-6 text-xs text-gray-600 dark:text-gray-400">
+        Daily vitamins & minerals suggestions — coming soon.
+      </p>
+
+      <ActionBar className="mt-4">
+        <ResetButton onClick={reset}>Reset</ResetButton>
+      </ActionBar>
+    </Card>
+  );
+}
+
+// 🔹 Hydration
+function HydrationTab() {
+  const [weight, setWeight] = useState("");
+  const [water, setWater] = useState(null);
+
+  const isValid = Number(weight) > 0;
+
+  const calcWater = () => {
+    if (!isValid) return;
+    const liters = (parseFloat(weight) * 0.035).toFixed(2);
+    setWater(liters);
+  };
+
+  const reset = () => {
+    setWeight("");
+    setWater(null);
+  };
+
+  return (
+    <Card className="p-6">
+      <SectionTitle title="Hydration Calculator" emoji="💧" />
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+        <Field label="Weight" htmlFor="hy-weight" description="Kilograms.">
+          <NumberField
+            id="hy-weight"
+            placeholder="e.g. 75"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            min={1}
+            step={0.1}
+            unit="kg"
+          />
+        </Field>
+        <div className="flex items-end gap-2">
+          <Button onClick={calcWater} disabled={!isValid}>
+            Calculate
+          </Button>
+          <ResetButton onClick={reset}>Reset</ResetButton>
+        </div>
+      </div>
+
+      {water && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <Stat label="Recommended Intake" value={`${water} L / day`} />
+          <Stat
+            label="Reminder"
+            value="Split across the day"
+            hint="Start with a glass on wake-up and around workouts."
+          />
+        </div>
+      )}
+    </Card>
+  );
+}
+
+// 🔹 Training (1RM + Cardio Zones placeholder)
+function TrainingTab() {
+  const [weight, setWeight] = useState("");
+  const [reps, setReps] = useState("");
+  const [oneRm, setOneRm] = useState(null);
+
+  const isValid = Number(weight) > 0 && Number(reps) > 0;
+
+  const calc1RM = () => {
+    if (!isValid) return;
+    const w = Number(weight);
+    const r = Number(reps);
+    const rm = w * (1 + r / 30);
+    setOneRm(rm.toFixed(0));
+  };
+
+  const reset = () => {
+    setWeight("");
+    setReps("");
+    setOneRm(null);
+  };
+
+  const onKey = (e) => {
+    if (e.key === "Enter" && isValid) calc1RM();
+  };
+
+  return (
+    <Card className="p-6">
+      <SectionTitle title="Training Tools" emoji="🏋️" />
+      <div onKeyDown={onKey}>
+        <h3 className="text-lg font-semibold mb-3 inline-flex items-center gap-2">
+          <HeartPulse className="opacity-70" /> 1RM Calculator
+        </h3>
+        <div className="grid gap-4 sm:grid-cols-3 mb-4">
+          <Field
+            label="Weight"
+            htmlFor="tr-weight"
+            description="Kilograms lifted."
+          >
+            <NumberField
+              id="tr-weight"
+              placeholder="e.g. 100"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              min={1}
+              step={0.5}
+              unit="kg"
+            />
+          </Field>
+          <Field label="Reps" htmlFor="tr-reps">
+            <NumberField
+              id="tr-reps"
+              placeholder="e.g. 5"
+              value={reps}
+              onChange={(e) => setReps(e.target.value)}
+              min={1}
+              step={1}
+            />
+          </Field>
+          <div className="flex items-end gap-2">
+            <Button onClick={calc1RM} disabled={!isValid} className="w-full">
+              Calculate
+            </Button>
+            <ResetButton onClick={reset}>Reset</ResetButton>
+          </div>
+        </div>
+        {oneRm && (
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+            <Stat label="Estimated 1RM" value={`${oneRm} kg`} />
+            <Stat
+              label="Tip"
+              value="Train @ 70–85% of 1RM"
+              hint="Adjust volume with experience and recovery."
+            />
+          </div>
+        )}
+
+        <h3 className="text-lg font-semibold mb-2">💓 Cardio Zones</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Calculate HR zones by age, VO₂ max estimator — coming soon.
+        </p>
+      </div>
+    </Card>
+  );
+}
+
+// 🔹 Lifestyle
+function LifestyleTab() {
+  return (
+    <Card className="p-6">
+      <SectionTitle title="Lifestyle & Wellness" emoji="🧘" />
+      <p className="text-gray-700 dark:text-gray-300">
+        Sleep calculator, stress tracker, step counter, posture analysis,
+        wellness tips — optimize your health beyond just training.
+      </p>
+    </Card>
+  );
+}
