@@ -116,7 +116,6 @@ function BokiGymLogo({ className = "" }) {
           fill="currentColor"
         />
       </svg>
-      <span className="font-extrabold tracking-tight">BokiGym</span>
     </div>
   );
 }
