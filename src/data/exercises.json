@@ -346,33 +346,7 @@
     ],
     "id": "Alternating_Deltoid_Raise"
   },
-  {
-    "name": "Alternating Floor Press",
-    "force": "push",
-    "level": "beginner",
-    "mechanic": "compound",
-    "equipment": "kettlebells",
-    "primaryMuscles": [
-      "chest"
-    ],
-    "secondaryMuscles": [
-      "abdominals",
-      "shoulders",
-      "triceps"
-    ],
-    "instructions": [
-      "Lie on the floor with two kettlebells next to your shoulders.",
-      "Position one in place on your chest and then the other, gripping the kettlebells on the handle with the palms facing forward.",
-      "Extend both arms, so that the kettlebells are being held above your chest. Lower one kettlebell, bringing it to your chest and turn the wrist in the direction of the locked out kettlebell.",
-      "Raise the kettlebell and repeat on the opposite side."
-    ],
-    "category": "strength",
-    "images": [
-      "Alternating_Floor_Press/0.jpg",
-      "Alternating_Floor_Press/1.jpg"
-    ],
-    "id": "Alternating_Floor_Press"
-  },
+
   {
     "name": "Alternating Hang Clean",
     "force": "pull",
@@ -645,99 +619,12 @@
     ],
     "id": "Around_The_Worlds"
   },
-  {
-    "name": "Atlas Stone Trainer",
-    "force": "pull",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "other",
-    "primaryMuscles": [
-      "lower back"
-    ],
-    "secondaryMuscles": [
-      "biceps",
-      "forearms",
-      "glutes",
-      "hamstrings",
-      "quadriceps"
-    ],
-    "instructions": [
-      "This trainer is effective for developing Atlas Stone strength for those who don't have access to stones, and are typically made from bar ends or heavy pipe.",
-      "Begin by loading the desired weight onto the bar. Straddle the weight, wrapping your arms around the implement, bending at the hips.",
-      "Begin by pulling the weight up past the knees, extending through the hips. As the weight clears the knees, it can be lapped by resting it on your thighs and sitting back, hugging it tightly to your chest.",
-      "Finish the movement by extending through your hips and knees to raise the weight as high as possible. The weight can be returned to the lap or to the ground for successive repetitions."
-    ],
-    "category": "strongman",
-    "images": [
-      "Atlas_Stone_Trainer/0.jpg",
-      "Atlas_Stone_Trainer/1.jpg"
-    ],
-    "id": "Atlas_Stone_Trainer"
-  },
-  {
-    "name": "Atlas Stones",
-    "force": "pull",
-    "level": "expert",
-    "mechanic": "compound",
-    "equipment": "other",
-    "primaryMuscles": [
-      "lower back"
-    ],
-    "secondaryMuscles": [
-      "abdominals",
-      "adductors",
-      "biceps",
-      "calves",
-      "forearms",
-      "glutes",
-      "hamstrings",
-      "middle back",
-      "quadriceps",
-      "traps"
-    ],
-    "instructions": [
-      "Begin with the atlas stone between your feet. Bend at the hips to wrap your arms vertically around the Atlas Stone, attempting to get your fingers underneath the stone. Many stones will have a small flat portion on the bottom, which will make the stone easier to hold.",
-      "Pulling the stone into your torso, drive through the back half of your feet to pull the stone from the ground.",
-      "As the stone passes the knees, lap it by sitting backward, pulling the stone on top of your thighs.",
-      "Sit low, getting the stone high onto your chest as you change your grip to reach over the stone. Stand, driving through with your hips. Close distance to the loading platform, and lean back, extending the hips to get the stone as high as possible."
-    ],
-    "category": "strongman",
-    "images": [
-      "Atlas_Stones/0.jpg",
-      "Atlas_Stones/1.jpg"
-    ],
-    "id": "Atlas_Stones"
-  },
-  {
-    "name": "Axle Deadlift",
-    "force": "pull",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "other",
-    "primaryMuscles": [
-      "lower back"
-    ],
-    "secondaryMuscles": [
-      "forearms",
-      "glutes",
-      "hamstrings",
-      "middle back",
-      "quadriceps",
-      "traps"
-    ],
-    "instructions": [
-      "Approach the bar so that it is centered over your feet. You feet should be about hip width apart. Bend at the hip to grip the bar at shoulder width, allowing your shoulder blades to protract. Typically, you would use an over/under grip.",
-      "With your feet and your grip set, take a big breath and then lower your hips and flex the knees until your shins contact the bar. Look forward with your head, keep your chest up and your back arched, and begin driving through the heels to move the weight upward.",
-      "After the bar passes the knees, aggressively pull the bar back, pulling your shoulder blades together as you drive your hips forward into the bar.",
-      "Lower the bar by bending at the hips and guiding it to the floor."
-    ],
-    "category": "strongman",
-    "images": [
-      "Axle_Deadlift/0.jpg",
-      "Axle_Deadlift/1.jpg"
-    ],
-    "id": "Axle_Deadlift"
-  },
+
+  
+ 
+  
+  
+  
   {
     "name": "Back Flyes - With Bands",
     "force": "pull",
@@ -1748,32 +1635,8 @@
     ],
     "id": "Behind_Head_Chest_Stretch"
   },
-  {
-    "name": "Bench Dips",
-    "force": "push",
-    "level": "beginner",
-    "mechanic": "compound",
-    "equipment": "body only",
-    "primaryMuscles": [
-      "triceps"
-    ],
-    "secondaryMuscles": [
-      "chest",
-      "shoulders"
-    ],
-    "instructions": [
-      "For this exercise you will need to place a bench behind your back. With the bench perpendicular to your body, and while looking away from it, hold on to the bench on its edge with the hands fully extended, separated at shoulder width. The legs will be extended forward, bent at the waist and perpendicular to your torso. This will be your starting position.",
-      "Slowly lower your body as you inhale by bending at the elbows until you lower yourself far enough to where there is an angle slightly smaller than 90 degrees between the upper arm and the forearm. Tip: Keep the elbows as close as possible throughout the movement. Forearms should always be pointing down.",
-      "Using your triceps to bring your torso up again, lift yourself back to the starting position.",
-      "Repeat for the recommended amount of repetitions."
-    ],
-    "category": "strength",
-    "images": [
-      "Bench_Dips/0.jpg",
-      "Bench_Dips/1.jpg"
-    ],
-    "id": "Bench_Dips"
-  },
+
+  
   {
     "name": "Bench Jump",
     "force": "push",
@@ -3556,30 +3419,8 @@
     ],
     "id": "Chair_Squat"
   },
-  {
-    "name": "Chair Upper Body Stretch",
-    "force": "static",
-    "level": "beginner",
-    "mechanic": null,
-    "equipment": "other",
-    "primaryMuscles": [
-      "shoulders"
-    ],
-    "secondaryMuscles": [
-      "biceps",
-      "chest"
-    ],
-    "instructions": [
-      "Sit on the edge of a chair, gripping the back of it.",
-      "Straighten your arms, keeping your back straight, and pull your upper body forward so you feel a stretch. Hold for 20-30 seconds."
-    ],
-    "category": "stretching",
-    "images": [
-      "Chair_Upper_Body_Stretch/0.jpg",
-      "Chair_Upper_Body_Stretch/1.jpg"
-    ],
-    "id": "Chair_Upper_Body_Stretch"
-  },
+
+  
   {
     "name": "Chest And Front Of Shoulder Stretch",
     "force": "static",
@@ -6374,30 +6215,7 @@
     ],
     "id": "Exercise_Ball_Pull-In"
   },
-  {
-    "name": "Extended Range One-Arm Kettlebell Floor Press",
-    "force": "push",
-    "level": "beginner",
-    "mechanic": "compound",
-    "equipment": "kettlebells",
-    "primaryMuscles": [
-      "chest"
-    ],
-    "secondaryMuscles": [
-      "shoulders",
-      "triceps"
-    ],
-    "instructions": [
-      "Lie on the floor and position a kettlebell for one arm to press. The kettlebell should be held by the handle. The leg on the same side that you are pressing should be bent, with the knee crossing over the midline of the body.",
-      "Press the kettlebell by extending the elbow and adducting the arm, pressing it above your body. Return to the starting position."
-    ],
-    "category": "strength",
-    "images": [
-      "Extended_Range_One-Arm_Kettlebell_Floor_Press/0.jpg",
-      "Extended_Range_One-Arm_Kettlebell_Floor_Press/1.jpg"
-    ],
-    "id": "Extended_Range_One-Arm_Kettlebell_Floor_Press"
-  },
+
   {
     "name": "External Rotation",
     "force": "pull",
@@ -6653,31 +6471,7 @@
     ],
     "id": "Floor_Glute-Ham_Raise"
   },
-  {
-    "name": "Floor Press",
-    "force": "push",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "barbell",
-    "primaryMuscles": [
-      "triceps"
-    ],
-    "secondaryMuscles": [
-      "chest",
-      "shoulders"
-    ],
-    "instructions": [
-      "Adjust the j-hooks so they are at the appropriate height to rack the bar. Begin lying on the floor with your head near the end of a power rack. Keeping your shoulder blades pulled together; pull the bar off of the hooks.",
-      "Lower the bar towards the bottom of your chest or upper stomach, squeezing the bar and attempting to pull it apart as you do so. Ensure that you tuck your elbows throughout the movement. Lower the bar until your upper arm contacts the ground and pause, preventing any slamming or bouncing of the weight.",
-      "Press the bar back up as fast as you can, keeping the bar, your wrists, and elbows in line as you do so."
-    ],
-    "category": "powerlifting",
-    "images": [
-      "Floor_Press/0.jpg",
-      "Floor_Press/1.jpg"
-    ],
-    "id": "Floor_Press"
-  },
+ 
   
   
   {
@@ -9839,31 +9633,7 @@
     ],
     "id": "Latissimus_Dorsi-SMR"
   },
-  {
-    "name": "Leg-Over Floor Press",
-    "force": "push",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "kettlebells",
-    "primaryMuscles": [
-      "chest"
-    ],
-    "secondaryMuscles": [
-      "shoulders",
-      "triceps"
-    ],
-    "instructions": [
-      "Lie on the floor with one kettlebell in place on your chest, holding it by the handle. Extend leg on working side over leg on non-working side.Your free arm can be extended out to your side for support.",
-      "Press the kettlebll into a locked out position.",
-      "Lower the weight until the elbow touches the ground, keeping the kettlebell above the elbow. Repeat for the desired number of repetitions."
-    ],
-    "category": "strength",
-    "images": [
-      "Leg-Over_Floor_Press/0.jpg",
-      "Leg-Over_Floor_Press/1.jpg"
-    ],
-    "id": "Leg-Over_Floor_Press"
-  },
+ 
   {
     "name": "Leg-Up Hamstring Stretch",
     "force": "push",
@@ -10245,38 +10015,8 @@
     ],
     "id": "Linear_Depth_Jump"
   },
-  {
-    "name": "Log Lift",
-    "force": "push",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "other",
-    "primaryMuscles": [
-      "shoulders"
-    ],
-    "secondaryMuscles": [
-      "abdominals",
-      "chest",
-      "glutes",
-      "hamstrings",
-      "lower back",
-      "middle back",
-      "quadriceps",
-      "traps",
-      "triceps"
-    ],
-    "instructions": [
-      "Begin standing with the log in front of you. Grasp the handles, and begin to clean the log. As you are bent over to start the clean, attempt to get the log as high as possible, pulling it into your chest. Extend through the hips and knees to bring it up to complete the clean.",
-      "Push your head back and look up, creating a shelf on your chest to rest the log. Begin the press by dipping, flexing slightly through the knees and reversing the motion. This push press will generate momentum to start the log moving vertically. Continue by extending through the elbows to press the log above your head. There are no strict rules on form, so use whatever techniques you are most efficient with. As the log is pressed, ensure that you push your head through on each repetition, looking forward.",
-      "Repeat as many times as possible. Attempt to control the descent of the log as it is returned to the ground."
-    ],
-    "category": "strongman",
-    "images": [
-      "Log_Lift/0.jpg",
-      "Log_Lift/1.jpg"
-    ],
-    "id": "Log_Lift"
-  },
+ 
+  
   {
     "name": "London Bridges",
     "force": "pull",
@@ -11751,30 +11491,7 @@
     ],
     "id": "One-Arm_Kettlebell_Clean_and_Jerk"
   },
-  {
-    "name": "One-Arm Kettlebell Floor Press",
-    "force": "push",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "kettlebells",
-    "primaryMuscles": [
-      "chest"
-    ],
-    "secondaryMuscles": [
-      "triceps"
-    ],
-    "instructions": [
-      "Lie on the floor holding a kettlebell with one hand, with your upper arm supported by the floor. The palm should be facing in.",
-      "Press the kettlebell straight up toward the ceiling, rotating your wrist.",
-      "Lower the kettlebell back to the starting position and repeat."
-    ],
-    "category": "strength",
-    "images": [
-      "One-Arm_Kettlebell_Floor_Press/0.jpg",
-      "One-Arm_Kettlebell_Floor_Press/1.jpg"
-    ],
-    "id": "One-Arm_Kettlebell_Floor_Press"
-  },
+ 
   {
     "name": "One-Arm Kettlebell Jerk",
     "force": "push",
@@ -20720,33 +20437,8 @@
     ],
     "id": "Walking_Treadmill"
   },
-  {
-    "name": "Weighted Ball Hyperextension",
-    "force": "pull",
-    "level": "intermediate",
-    "mechanic": "compound",
-    "equipment": "exercise ball",
-    "primaryMuscles": [
-      "lower back"
-    ],
-    "secondaryMuscles": [
-      "glutes",
-      "hamstrings",
-      "middle back"
-    ],
-    "instructions": [
-      "To begin, lie down on an exercise ball with your torso pressing against the ball and parallel to the floor. The ball of your feet should be pressed against the floor to help keep you balanced. Place a weighted plate under your chin or behind your neck. This is the starting position.",
-      "Slowly raise your torso up by bending at the waist and lower back. Remember to exhale during this movement.",
-      "Hold the contraction on your lower back for a second and lower your torso back down to the starting position while inhaling.",
-      "Repeat for the recommended amount of repetitions prescribed in your program."
-    ],
-    "category": "strength",
-    "images": [
-      "Weighted_Ball_Hyperextension/0.jpg",
-      "Weighted_Ball_Hyperextension/1.jpg"
-    ],
-    "id": "Weighted_Ball_Hyperextension"
-  },
+
+  
   {
     "name": "Weighted Ball Side Bend",
     "force": "pull",

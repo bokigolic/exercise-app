@@ -23,7 +23,7 @@ import {
   Zap,
   CheckCircle2,
   Linkedin,
-  ExternalLink,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -80,7 +80,7 @@ const ROADMAP = [
   {
     when: "Q2 2025",
     title: "Weekly Split Builder",
-    status: "in_progress", // planned | in_progress | shipped
+    status: "in_progress",
     points: [
       "Auto distribution by muscle groups & time budget",
       "Warm-up / cooldown presets",
@@ -129,68 +129,63 @@ const ROADMAP = [
   },
 ];
 
-// neutral team placeholders
 const TEAM = [
   { name: "Product Team", role: "Product & Training", avatar: null },
   { name: "Design Team", role: "Design & Frontend", avatar: null },
 ];
 
-// replace in src/pages/About.jsx
-const FAQS = [
-  {
-    q: "Is the library free to use?",
-    a: "Yes. All core features are free. Exports and advanced planners may become pro in the future.",
-  },
-  {
-    q: "Can I save workouts?",
-    a: "Yes. You can pin exercises and save/restore plans via local storage. Roadmap includes richer history.",
-  },
-  {
-    q: "Will there be mobile app?",
-    a: "Planned PWA will make GymMaster installable and offline-ready.",
-  },
-  // --- new ---
-  {
-    q: "How accurate is the Workout Generator?",
-    a: "It ranks exercises by goal, level, location, equipment, and muscle balance. Treat it as a smart starting point—adjust volume and loads to your recovery.",
-  },
-  {
-    q: "Do you track or sell my data?",
-    a: "No. Privacy-first. Your choices live in local storage on your device. We don't sell personal data.",
-  },
-  {
-    q: "Can I train without gym equipment?",
-    a: "Yes. Filter for 'Home' and select 'none' for equipment. The generator will favor bodyweight and band-friendly movements.",
-  },
-  {
-    q: "How do I substitute an exercise?",
-    a: "Pick a movement with the same primary muscle and similar pattern (e.g., barbell row → one-arm dumbbell row; back squat → goblet squat).",
-  },
-  {
-    q: "Do you include warm-up and cooldown?",
-    a: "Basic guidance is included now; full presets (ramp-ups, mobility flows) are on the roadmap under 'Weekly Split Builder'.",
-  },
-  {
-    q: "Can I use imperial units (lbs/in)?",
-    a: "Currently metric-first. Unit toggles are planned—until then, use quick conversions (1 kg ≈ 2.2 lb, 1 in ≈ 2.54 cm).",
-  },
-  {
-    q: "Will it work offline?",
-    a: "Yes once PWA is installed. Core pages and data are cached so you can browse and plan without connection.",
-  },
-  {
-    q: "Is this medical advice?",
-    a: "No. Educational only. Consult a qualified professional for medical conditions, injuries, or personalized rehab.",
-  },
-  {
-    q: "How do I report a bug or request a feature?",
-    a: "Send an email to golichbojan@gmail.com or ping me on LinkedIn. Screenshots and steps to reproduce help a ton.",
-  },
-  {
-    q: "How often is the content updated?",
-    a: "Periodically. Major drops align with the public roadmap; minor fixes and copy tweaks roll out continuously.",
-  },
-];
+const FAQ_GROUPS = {
+  General: [
+    {
+      q: "Is the library free to use?",
+      a: "Yes. All core features are free. Exports and advanced planners may become pro in the future.",
+    },
+    {
+      q: "How accurate is the Workout Generator?",
+      a: "It ranks exercises by goal, level, location, equipment, and muscle balance. Treat it as a smart starting point—adjust volume and loads to your recovery.",
+    },
+    {
+      q: "Can I train without gym equipment?",
+      a: "Yes. Choose 'Home' and select 'none' for equipment. The generator will prioritize bodyweight and band-friendly movements.",
+    },
+    {
+      q: "Is this medical advice?",
+      a: "No. Educational only. Consult a qualified professional for medical conditions or rehab.",
+    },
+  ],
+  Training: [
+    {
+      q: "How do I substitute an exercise?",
+      a: "Match the pattern and primary muscle: e.g., barbell row → one-arm dumbbell row; back squat → goblet squat.",
+    },
+    {
+      q: "Do you include warm-up and cooldown?",
+      a: "Basic tips are included; full presets arrive with Weekly Split Builder.",
+    },
+    {
+      q: "Can I use imperial units (lbs/in)?",
+      a: "Metric-first for now. Unit toggles are planned. Quick conversions: 1 kg ≈ 2.2 lb, 1 in ≈ 2.54 cm.",
+    },
+    {
+      q: "How often is content updated?",
+      a: "Periodically. Major drops align with the public roadmap; minor fixes roll out continuously.",
+    },
+  ],
+  "Tech & Privacy": [
+    {
+      q: "Do you track or sell my data?",
+      a: "Privacy-first. Choices live in local storage on your device. We don't sell personal data.",
+    },
+    {
+      q: "Will it work offline?",
+      a: "Yes—once PWA is installed. Core pages and data are cached for offline planning.",
+    },
+    {
+      q: "How do I report a bug or request a feature?",
+      a: "Email golichbojan@gmail.com or ping LinkedIn with steps to reproduce and screenshots.",
+    },
+  ],
+};
 
 const WHY = [
   {
@@ -323,6 +318,7 @@ const TimelineItem = ({ when, title, points, status = "planned" }) => {
     </div>
   );
 };
+
 const FaqItem = ({ q, a }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -350,6 +346,83 @@ const FaqItem = ({ q, a }) => {
   );
 };
 
+function FAQSection() {
+  const tabs = ["All", ...Object.keys(FAQ_GROUPS)];
+  const [active, setActive] = useState("All");
+  const [query, setQuery] = useState("");
+
+  const list = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const pool =
+      active === "All"
+        ? Object.values(FAQ_GROUPS).flat()
+        : FAQ_GROUPS[active] || [];
+    if (!q) return pool;
+    return pool.filter(
+      (x) => x.q.toLowerCase().includes(q) || x.a.toLowerCase().includes(q)
+    );
+  }, [active, query]);
+
+  return (
+    <Section id="faq" title="FAQ" subtitle="Quick answers to common questions.">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <div className="inline-flex flex-wrap gap-2">
+          {tabs.map((t) => {
+            const selected = active === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setActive(t)}
+                className={
+                  selected
+                    ? "px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/15 text-white ring-1 ring-white/20"
+                    : "px-3 py-1.5 rounded-xl text-xs text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 ring-1 ring-white/10"
+                }
+                aria-pressed={selected}
+              >
+                {t}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="relative w-full sm:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search questions…"
+            className="w-full pl-10 pr-3 py-2 rounded-xl bg-white/5 ring-1 ring-white/10 text-slate-100 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/50"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-slate-400">
+            {list.length}
+          </span>
+        </div>
+      </div>
+
+      {list.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {list.map((f, i) => (
+            <motion.div
+              key={`${f.q}-${i}`}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.25, delay: (i % 6) * 0.03 }}
+            >
+              <FaqItem q={f.q} a={f.a} />
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-6 text-sm text-slate-300">
+          No results. Try another keyword or switch a tab.
+        </div>
+      )}
+    </Section>
+  );
+}
+
 /* =================== Page =================== */
 export default function About() {
   const handleSubscribe = (e) => {
@@ -364,7 +437,6 @@ export default function About() {
   };
 
   return (
-    // no page-level bg; PageShell already provides dark gradient
     <div className="relative">
       {/* HERO */}
       <section className="relative overflow-hidden text-center py-16 sm:py-20">
@@ -415,26 +487,21 @@ export default function About() {
         </motion.div>
       </section>
 
-      {/* Founder’s Note / Why I built this app */}
+      {/* Founder’s Note */}
       <Section
         id="founder"
         title="Why I built GymMaster"
         subtitle="A focused toolset for clarity, consistency, and real-world results."
       >
         <Card className="relative overflow-hidden">
-          {/* soft gradient glow */}
           <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-2xl" />
-
           <div className="relative">
-            {/* header strip */}
             <div className="mb-5 flex items-center gap-3">
               <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold bg-white/10 ring-1 ring-white/15 text-slate-200">
                 Founder's Note
               </span>
               <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
             </div>
-
-            {/* content block with accent left border */}
             <div className="grid grid-cols-1">
               <div className="space-y-5 border-l-2 border-blue-400/40 pl-4">
                 <p className="text-slate-100 text-lg sm:text-xl leading-relaxed tracking-tight">
@@ -444,7 +511,6 @@ export default function About() {
                   guesswork—just a fast way to learn movements, plan balanced
                   weeks, and track what matters.
                 </p>
-
                 <ul className="text-slate-200 text-base sm:text-lg leading-relaxed list-disc list-inside space-y-2">
                   <li>
                     <span className="font-medium text-white/90">
@@ -465,8 +531,6 @@ export default function About() {
                 </ul>
               </div>
             </div>
-
-            {/* subtle footer underline */}
             <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
           </div>
         </Card>
@@ -560,7 +624,7 @@ export default function About() {
         </div>
       </Section>
 
-      {/* Mid-page CTA strip */}
+      {/* Mid-page CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6">
         <Card className="relative overflow-hidden">
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-2xl" />
@@ -590,13 +654,11 @@ export default function About() {
         title="Roadmap"
         subtitle="What we’re building next — based on your feedback."
       >
-        {/* Last updated badge */}
         <div className="max-w-7xl mx-auto px-1 -mt-4 mb-6">
           <span className="text-[11px] text-slate-400 bg-white/5 ring-1 ring-white/10 rounded-md px-2 py-1">
             Updated: Sep 30, 2025
           </span>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {ROADMAP.map((item, i) => (
             <motion.div
@@ -645,7 +707,7 @@ export default function About() {
         </div>
       </Section>
 
-      {/* Our Promise */}
+      {/* Promise */}
       <Section
         id="promise"
         title="Our Promise"
@@ -663,24 +725,10 @@ export default function About() {
         </div>
       </Section>
 
-      {/* FAQ */}
-      <Section id="faq" title="FAQ">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {FAQS.map((f, i) => (
-            <motion.div
-              key={f.q}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-            >
-              <FaqItem {...f} />
-            </motion.div>
-          ))}
-        </div>
-      </Section>
+      {/* FAQ (Searchable) */}
+      <FAQSection />
 
-      {/* Newsletter / Contact */}
+      {/* Contact */}
       <Section
         id="contact"
         title="Stay in the loop"
