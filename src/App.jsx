@@ -18,6 +18,11 @@ const WorkoutGenerator = lazy(() =>
 );
 const Anatomy = lazy(() => import("./components/Anatomy.jsx"));
 
+// 🧠 NEW — AI Assistant component (lazy import)
+const AIWorkoutAssistant = lazy(() =>
+  import("./components/AIWorkoutAssistant.jsx")
+);
+
 // Scroll + hash support
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -58,6 +63,9 @@ export default function App() {
             <Route path="/hub" element={<FitnessHub />} />
             <Route path="/generator" element={<WorkoutGenerator />} />
             <Route path="/about" element={<About />} />
+
+            {/* 🧠 NEW ROUTE: AI Assistant */}
+            <Route path="/assistant" element={<AIWorkoutAssistant />} />
 
             {/* Legacy redirect */}
             <Route

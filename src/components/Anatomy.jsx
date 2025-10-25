@@ -672,6 +672,35 @@ function Modal({
     const url = `${window.location.origin}${window.location.pathname}#${section.id}`;
     navigator.clipboard?.writeText(url);
     showToast("Link copied");
+
+    // Multiple quick tips per section
+    const QUICK_TIPS = {
+      nutrition: [
+        "Target protein: 1.6–2.2 g/kg/day, split across 3–5 meals (20–40 g each).",
+        "Carbs around training improve performance and recovery.",
+        "Hydrate: aim for pale-yellow urine; add electrolytes in long/hot sessions.",
+      ],
+      hypertrophy: [
+        "Progressive overload: add reps, load, or slow tempo weekly—while keeping form.",
+        "Train 5–30 reps per set; take most sets 1–3 RIR (reps in reserve).",
+        "Log your lifts; small weekly wins compound.",
+      ],
+      recovery: [
+        "Sleep 7–9 h; keep a consistent schedule and a cool, dark room.",
+        "Plan a deload every 6–8 weeks at higher volumes.",
+        "Low-intensity walks and mobility work speed recovery.",
+      ],
+      fuel: [
+        "Creatine monohydrate: 3–5 g/day supports short, high-intensity efforts.",
+        "Glycogen fuels moderate/high intensity—don’t fear carbs if performance matters.",
+        "Fats support hormones; avoid extreme long-term restriction.",
+      ],
+      training: [
+        "Track intensity, volume, and frequency for each muscle group.",
+        "Prioritize compounds; sprinkle isolations to fill gaps.",
+        "Master technique before chasing load.",
+      ],
+    };
   };
 
   return (
@@ -792,7 +821,6 @@ function Modal({
                 )}
 
                 {/* Quick tips */}
-
                 <div className="mt-3 rounded-xl bg-blue-50 text-blue-900 ring-1 ring-blue-200 dark:bg-blue-950/40 dark:text-blue-200 dark:ring-blue-900/40 p-3">
                   <p className="text-xs font-semibold uppercase tracking-wide">
                     Quick tips

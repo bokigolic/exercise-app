@@ -61,7 +61,6 @@ function DockFooter() {
                     shadow-md
                   "
                 >
-                  {/* why: svetla kapsula iza crnog transparentnog loga zbog kontrasta */}
                   <img
                     src="/icons/BG.png"
                     alt="BG logo"
@@ -81,7 +80,7 @@ function DockFooter() {
                 </div>
               </div>
 
-              {/* right: mini actions (optional) */}
+              {/* right: mini actions */}
               <div className="hidden sm:flex items-center gap-2">
                 <a
                   href="mailto:bokigolic32@gmail.com"
@@ -140,14 +139,17 @@ export default function PageShell({ children }) {
               <span className="font-extrabold tracking-tight">Gym Master</span>
             </Link>
 
+            {/* DESKTOP NAV */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/hub">Fitness Hub</NavItem>
               <NavItem to="/generator">Generator</NavItem>
               <NavItem to="/about">About</NavItem>
               <NavItem to="/anatomy">Anatomy</NavItem>
+              <NavItem to="/assistant">AI Assistant</NavItem>
             </nav>
 
+            {/* MOBILE TOGGLE */}
             <button
               onClick={() => setOpen((v) => !v)}
               className="md:hidden inline-flex items-center justify-center rounded-xl border border-white/15 text-white/90 hover:text-white hover:bg-white/10 transition"
@@ -161,7 +163,7 @@ export default function PageShell({ children }) {
           </div>
         </div>
 
-        {/* Mobile sheet */}
+        {/* MOBILE MENU */}
         <div
           id={menuId}
           className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
@@ -181,6 +183,7 @@ export default function PageShell({ children }) {
                 { to: "/generator", label: "Generator" },
                 { to: "/about", label: "About" },
                 { to: "/anatomy", label: "Anatomy" },
+                { to: "/assistant", label: "AI Assistant" },
               ].map((l) => (
                 <NavItem key={l.to} to={l.to} onClick={() => setOpen(false)}>
                   <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10">
@@ -193,7 +196,7 @@ export default function PageShell({ children }) {
         </div>
       </header>
 
-      {/* PAGE CONTENT — dodan bottom padding da dock footer ne prekriva sadržaj */}
+      {/* PAGE CONTENT */}
       <main className="pb-24 sm:pb-28">{children}</main>
 
       {/* STICKY DOCK FOOTER */}
