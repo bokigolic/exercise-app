@@ -46,15 +46,11 @@ export default function AIWorkoutAssistant() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: modePrompts[mode] },
-            ...newMessages.map((m) => ({
-              role: m.role,
-              content: m.text,
-            })),
+            { role: "system", content: "You are a fitness coach..." },
+            ...newMessages.map((m) => ({ role: m.role, content: m.text })),
           ],
         }),
       });
-
       const data = await response.json();
       const reply =
         data?.choices?.[0]?.message?.content?.trim() ||
