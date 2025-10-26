@@ -1,34 +1,18 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+import fs from "fs";
 
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      manifest: {
-        name: 'BokiGym',
-        short_name: 'BokiGym',
-        description: 'Your personal exercise app powered by ExerciseDB 💪',
-        theme_color: '#000000',
-        background_color: '#ffffff',
-        display: 'standalone',
-        start_url: '/',
-        icons: [
-          {
-            src: '/icons/icon-192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: '/icons/icon-512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
-    })
-  ]
-})
+    {
+      name: "copy-redirects",
+      closeBundle() {
+        const redirects = `/.netlify/functions/* /.netlify/functions/:splat 200
+/* /index.html 200`;
+        fs.writeFileSync(resolve(__dirname, "dist/_redirects"), redirects);
+      },
+    },
+  ],
+});

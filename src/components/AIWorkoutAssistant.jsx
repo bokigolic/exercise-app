@@ -46,7 +46,10 @@ export default function AIWorkoutAssistant() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: "You are a fitness coach..." },
+            {
+              role: "system",
+              content: "You are a professional fitness coach and nutritionist.",
+            },
             ...newMessages.map((m) => ({ role: m.role, content: m.text })),
           ],
         }),

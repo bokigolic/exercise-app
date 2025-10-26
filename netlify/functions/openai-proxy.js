@@ -1,33 +1,36 @@
-// netlify/functions/openai-proxy.js
+// ✅ Production-safe version (bez node-fetch)
 export async function handler(event) {
   try {
-    // ✅ Prikaži u Netlify logovima da li API key postoji
-    console.log("🧩 OpenAI key length:", process.env.OPENAI_API_KEY?.length || "missing");
+    console.log("✅ openai-proxy called from production");
 
     const { messages } = JSON.parse(event.body || "{}");
 
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error("Missing OPENAI_API_KEY in environment");
-    }
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "https://bokigym.netlify.app/",
+        "X-Title": "BokiGym AI Workout Assistant",
       },
       body: JSON.stringify({
-        // Koristimo stabilan model
-        model: "gpt-3.5-turbo",
+        model: "gpt-4o-mini",
         messages,
-        max_tokens: 400,
+        max_tokens: 500,
       }),
     });
 
     const data = await response.json();
 
-    // ✅ Loguj rezultat u Netlify funkciji
-    console.log("🔍 OpenAI response:", JSON.stringify(data, null, 2));
+    // Debug log
+    console.log("📩 OpenRouter response:", JSON.stringify(data).slice(0, 300));
+
+    if (data.error) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: data.error }),
+      };
+    }
 
     return {
       statusCode: 200,
