@@ -3,7 +3,7 @@ import React, { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dumbbell, Menu, X } from "lucide-react";
 
-/* --------- Nav --------- */
+/* --------- NavItem --------- */
 function NavItem({ to, children, onClick }) {
   const { pathname } = useLocation();
   const active = pathname === to;
@@ -11,20 +11,21 @@ function NavItem({ to, children, onClick }) {
     <Link
       to={to}
       onClick={onClick}
-      className={
-        active ? "text-white font-semibold" : "text-slate-300 hover:text-white"
-      }
+      className={`block text-center text-sm font-semibold rounded-lg px-3 py-2 transition-all duration-200 ${
+        active
+          ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-500"
+          : "text-slate-300 hover:text-white hover:bg-white/10"
+      }`}
     >
       {children}
     </Link>
   );
 }
 
-/* --------- Footer (sticky dock) --------- */
+/* --------- Footer (Dock) --------- */
 function DockFooter() {
   return (
     <>
-      {/* spacer za home indicator / overlaps */}
       <div style={{ height: "calc(env(safe-area-inset-bottom) + 12px)" }} />
 
       <div
@@ -38,20 +39,18 @@ function DockFooter() {
               className="
                 relative flex items-center justify-between gap-3
                 rounded-2xl sm:rounded-3xl px-3.5 sm:px-4 py-2
-                bg-gradient-to-br from-white/7 via-white/5 to-white/3
-                dark:from-white/7 dark:via-white/5 dark:to-white/3
+                bg-gradient-to-br from-white/10 via-white/5 to-white/10
                 backdrop-blur-xl ring-1 ring-white/15 shadow-2xl
               "
             >
-              {/* subtle glow ring */}
               <div
                 className="absolute inset-0 rounded-2xl sm:rounded-3xl"
                 style={{
-                  boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
+                  boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
                 }}
               />
 
-              {/* left: logo + text */}
+              {/* Left side */}
               <div className="flex min-w-0 items-center gap-3">
                 <div
                   className="
@@ -80,7 +79,7 @@ function DockFooter() {
                 </div>
               </div>
 
-              {/* right: mini actions */}
+              {/* Right side */}
               <div className="hidden sm:flex items-center gap-2">
                 <a
                   href="mailto:bokigolic32@gmail.com"
@@ -96,7 +95,6 @@ function DockFooter() {
                 </a>
               </div>
 
-              {/* hover accent underline */}
               <div
                 className="absolute -bottom-px left-2 right-2 h-px rounded-full"
                 style={{
@@ -120,7 +118,7 @@ export default function PageShell({ children }) {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100 overflow-x-hidden">
       {/* HEADER */}
       <header
         className="sticky top-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/10"
@@ -133,19 +131,21 @@ export default function PageShell({ children }) {
               className="inline-flex items-center gap-2 -ml-1 pr-2"
               style={{ minHeight: 44 }}
             >
-              <div className="h-8 w-8 rounded-xl bg-white/10 ring-1 ring-white/15 grid place-items-center">
-                <Dumbbell className="w-4.5 h-4.5 text-white/90" />
+              <div className="h-8 w-8 rounded-xl bg-blue-600/20 ring-1 ring-blue-500/40 grid place-items-center">
+                <Dumbbell className="w-4.5 h-4.5 text-blue-400" />
               </div>
-              <span className="font-extrabold tracking-tight">Gym Master</span>
+              <span className="font-extrabold tracking-tight text-white">
+                Gym Master
+              </span>
             </Link>
 
             {/* DESKTOP NAV */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/hub">Fitness Hub</NavItem>
-              <NavItem to="/generator">Generator</NavItem>
-              <NavItem to="/about">About</NavItem>
-              <NavItem to="/anatomy">Anatomy</NavItem>
+              <NavItem to="/generator">Workout Generator</NavItem>
+              <NavItem to="/about">About Us</NavItem>
+              <NavItem to="/anatomy">Body Anatomy</NavItem>
               <NavItem to="/assistant">AI Assistant</NavItem>
             </nav>
 
@@ -166,28 +166,34 @@ export default function PageShell({ children }) {
         {/* MOBILE MENU */}
         <div
           id={menuId}
-          className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
-            open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            open
+              ? "max-h-[80vh] opacity-100 overflow-y-auto"
+              : "max-h-0 opacity-0 overflow-hidden"
           }`}
         >
           <nav
-            className="mx-auto max-w-6xl px-4 sm:px-6 pb-3"
+            className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 backdrop-blur-md bg-black/70 border-t border-white/10"
             style={{
               paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)",
             }}
           >
-            <div className="grid gap-2">
+            <div className="grid gap-2 pt-2">
               {[
                 { to: "/", label: "Home" },
                 { to: "/hub", label: "Fitness Hub" },
-                { to: "/generator", label: "Generator" },
-                { to: "/about", label: "About" },
-                { to: "/anatomy", label: "Anatomy" },
+                { to: "/generator", label: "Workout Generator" },
+                { to: "/about", label: "About Us" },
+                { to: "/anatomy", label: "Body Anatomy" },
                 { to: "/assistant", label: "AI Assistant" },
-              ].map((l) => (
-                <NavItem key={l.to} to={l.to} onClick={() => setOpen(false)}>
-                  <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10">
-                    {l.label}
+              ].map((link) => (
+                <NavItem
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setOpen(false)}
+                >
+                  <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 hover:scale-[1.02] transition-all duration-200 ring-1 ring-white/10">
+                    {link.label}
                   </div>
                 </NavItem>
               ))}
@@ -196,10 +202,10 @@ export default function PageShell({ children }) {
         </div>
       </header>
 
-      {/* PAGE CONTENT */}
+      {/* MAIN CONTENT */}
       <main className="pb-24 sm:pb-28">{children}</main>
 
-      {/* STICKY DOCK FOOTER */}
+      {/* FOOTER */}
       <DockFooter />
     </div>
   );
