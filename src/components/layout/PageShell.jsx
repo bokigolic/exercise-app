@@ -1,7 +1,7 @@
 // src/components/layout/PageShell.jsx
 import React, { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Dumbbell, Menu, X, Linkedin } from "lucide-react";
+import { Dumbbell, Menu, X } from "lucide-react";
 
 /* --------- Nav Item --------- */
 function NavItem({ to, children, onClick }) {
@@ -11,7 +11,7 @@ function NavItem({ to, children, onClick }) {
     <Link
       to={to}
       onClick={onClick}
-      className={`block text-center text-sm font-semibold rounded-lg px-3 py-2 transition-all duration-200 ${
+      className={`block text-center text-[13px] font-semibold rounded-lg px-3 py-2 transition-all duration-200 truncate ${
         active
           ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-500"
           : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -22,8 +22,7 @@ function NavItem({ to, children, onClick }) {
   );
 }
 
-/* --------- Footer (Sticky Dock) --------- */
-/* --------- Footer (Sticky Dock) --------- */
+/* --------- Footer --------- */
 function DockFooter() {
   return (
     <footer
@@ -37,10 +36,8 @@ function DockFooter() {
             rounded-2xl sm:rounded-3xl px-3.5 sm:px-4 py-2
             bg-gradient-to-br from-white/10 via-white/5 to-white/10
             backdrop-blur-xl ring-1 ring-white/15 shadow-2xl
-            cursor-default
           "
         >
-          {/* Glow border inside */}
           <div
             className="absolute inset-0 rounded-2xl sm:rounded-3xl pointer-events-none"
             style={{
@@ -48,7 +45,6 @@ function DockFooter() {
             }}
           />
 
-          {/* Left: Logo + Signature */}
           <div className="flex min-w-0 items-center gap-3">
             <div
               className="
@@ -76,7 +72,6 @@ function DockFooter() {
             </div>
           </div>
 
-          {/* Right: LinkedIn + Back to top */}
           <div className="flex items-center gap-3 z-10">
             <a
               href="https://www.linkedin.com/in/bojan-golic/"
@@ -106,15 +101,6 @@ function DockFooter() {
               ↑ Back to top
             </button>
           </div>
-
-          {/* Gradient underline */}
-          <div
-            className="absolute -bottom-px left-2 right-2 h-px rounded-full"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(59,130,246,0.35), rgba(168,85,247,0.35))",
-            }}
-          />
         </div>
       </div>
     </footer>
@@ -127,19 +113,28 @@ export default function PageShell({ children }) {
   const { pathname } = useLocation();
   const menuId = useId();
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  const closeMenu = () => setOpen(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100 overflow-x-hidden">
       {/* HEADER */}
       <header
         className="sticky top-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/10"
-        style={{ paddingTop: "max(6px, env(safe-area-inset-top))" }}
+        style={{
+          paddingTop: "max(6px, env(safe-area-inset-top))",
+          overflow: "visible",
+        }}
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex items-center justify-between py-3">
+          <div className="flex items-center justify-between py-3 relative">
             <Link
               to="/"
+              onClick={closeMenu}
               className="inline-flex items-center gap-2 -ml-1 pr-2"
               style={{ minHeight: 44 }}
             >
@@ -151,7 +146,7 @@ export default function PageShell({ children }) {
               </span>
             </Link>
 
-            {/* DESKTOP NAVIGATION */}
+            {/* DESKTOP NAV */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/hub">Fitness Hub</NavItem>
@@ -162,34 +157,34 @@ export default function PageShell({ children }) {
               <NavItem to="/about">About</NavItem>
             </nav>
 
-            {/* MOBILE MENU TOGGLE */}
+            {/* MOBILE MENU BUTTON */}
             <button
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden inline-flex items-center justify-center rounded-xl border border-white/15 text-white/90 hover:text-white hover:bg-white/10 transition"
+              className={`md:hidden inline-flex items-center justify-center rounded-xl border border-white/15 text-white/90 hover:text-white hover:bg-white/10 transition mr-1.5 ${
+                open ? "shadow-[0_0_10px_rgba(59,130,246,0.6)]" : ""
+              }`}
               style={{ width: 44, height: 44 }}
               aria-label="Toggle navigation menu"
               aria-expanded={open}
               aria-controls={menuId}
             >
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* MOBILE NAVIGATION */}
+        {/* MOBILE NAV */}
         <div
           id={menuId}
-          className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
-            open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
+          className={`md:hidden origin-top transition-all duration-300 ${
+            open
+              ? "opacity-100 scale-y-100 max-h-[340px] pointer-events-auto"
+              : "opacity-0 scale-y-0 max-h-0 pointer-events-none"
           }`}
+          style={{ transformOrigin: "top" }}
         >
-          <nav
-            className="mx-auto max-w-6xl px-4 sm:px-6 pb-3"
-            style={{
-              paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)",
-            }}
-          >
-            <div className="grid gap-2">
+          <nav className="mx-auto max-w-6xl px-4 sm:px-6 pb-2">
+            <div className="grid gap-[6px]">
               {[
                 { to: "/", label: "Home" },
                 { to: "/hub", label: "Fitness Hub" },
@@ -199,12 +194,8 @@ export default function PageShell({ children }) {
                 { to: "/anatomy", label: "Body Anatomy" },
                 { to: "/about", label: "About" },
               ].map((link) => (
-                <NavItem
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10">
+                <NavItem key={link.to} to={link.to} onClick={closeMenu}>
+                  <div className="w-full px-3 py-[7px] rounded-md bg-white/5 hover:bg-white/10 ring-1 ring-white/10 text-[13px] truncate">
                     {link.label}
                   </div>
                 </NavItem>
@@ -214,7 +205,7 @@ export default function PageShell({ children }) {
         </div>
       </header>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <main className="pb-24 sm:pb-28">{children}</main>
 
       {/* FOOTER */}

@@ -1,25 +1,23 @@
-// src/components/AnatomyHub.jsx
+// src/components/Anatomy.jsx
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import Anatomy3DInteractive from "./Anatomy3DInteractive";
-import MuscleLayerMode from "./MuscleLayerMode";
 
 /* ----------------------------------------------------------
-   ANATOMY HUB — ULTIMATE EDITION
-   A complete educational system for human muscle anatomy,
-   structure, physiology, nutrition, and interactive exploration.
+   ANATOMY — SCIENTIFIC & PRACTICAL EDITION
+   Human muscle anatomy, physiology, biomechanics, and training.
+   Latin + English terms • No images • Real-world applications
 ----------------------------------------------------------- */
 
-export default function AnatomyHub() {
+export default function Anatomy() {
   const sections = {
     overview: useRef(null),
     structure: useRef(null),
     fibers: useRef(null),
-    training: useRef(null),
+    architecture: useRef(null),
+    physiology: useRef(null),
     nutrition: useRef(null),
-    supplements: useRef(null),
-    muscleatlas: useRef(null),
-    layers: useRef(null),
+    imbalances: useRef(null),
+    applied: useRef(null),
     conclusion: useRef(null),
   };
 
@@ -28,17 +26,17 @@ export default function AnatomyHub() {
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 text-slate-200 leading-relaxed">
-      {/* ==================== NAVIGATION BAR ==================== */}
+      {/* ==================== NAVBAR ==================== */}
       <nav className="sticky top-0 z-50 bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10 p-3 flex flex-wrap gap-2 justify-center text-sm sm:text-base shadow-lg">
         {[
           ["Overview", "overview"],
           ["Structure", "structure"],
           ["Fiber Types", "fibers"],
-          ["Training", "training"],
+          ["Architecture", "architecture"],
+          ["Physiology", "physiology"],
           ["Nutrition", "nutrition"],
-          ["Supplements", "supplements"],
-          ["Muscle Atlas", "muscleatlas"],
-          ["Layers", "layers"],
+          ["Imbalances", "imbalances"],
+          ["Applied Anatomy", "applied"],
           ["Conclusion", "conclusion"],
         ].map(([label, key]) => (
           <button
@@ -51,207 +49,269 @@ export default function AnatomyHub() {
         ))}
       </nav>
 
-      {/* ==================== SECTION 1: OVERVIEW ==================== */}
+      {/* ==================== 1. OVERVIEW ==================== */}
       <Section
         refObj={sections.overview}
-        title="Human Muscular System Overview"
+        title="Overview — The Muscular System"
         color="blue"
       >
-        <p className="text-slate-300 text-lg mb-6 text-center max-w-3xl mx-auto">
-          The muscular system is the dynamic engine of the human body — a living
-          network of over <strong>600 muscles</strong> working in perfect
-          synchronization to produce motion, stability, and strength.
+        <p className="text-slate-300 mb-4">
+          The human muscular system (<em>Systema Musculorum</em>) consists of
+          more than <strong>600 skeletal muscles</strong>. They allow movement,
+          maintain posture, and generate heat. Muscles are the engines of the
+          human body — converting chemical energy (ATP) into mechanical power.
         </p>
-        <p className="text-slate-400 mb-6 text-center max-w-3xl mx-auto">
-          These muscles not only move bones but also circulate blood, maintain
-          posture, and generate heat. Muscles convert chemical energy (
-          <strong>ATP</strong>) into mechanical power — the foundation of all
-          movement.
+        <p className="text-slate-400">
+          Muscles are classified into three types:
+          <ul className="list-disc ml-6 mt-2">
+            <li>
+              <strong>Skeletal (Striated, Voluntary):</strong> controls
+              conscious movements.
+            </li>
+            <li>
+              <strong>Smooth (Visceral, Involuntary):</strong> lines organs and
+              vessels.
+            </li>
+            <li>
+              <strong>Cardiac (Myocardial):</strong> unique to the heart.
+            </li>
+          </ul>
         </p>
-        <CenteredImage
-          src="/images/anatomy/full-body-muscles.png"
-          alt="Full body muscular anatomy"
-        />
-        <Quote color="blue">
-          “The muscle system is not just a collection of tissues — it’s a
-          symphony of motion directed by the brain, fueled by chemistry, and
-          perfected by repetition.”
-        </Quote>
+        <Tip>
+          💡 <strong>Fun fact:</strong> Around 40–45% of your body mass is made
+          up of muscle tissue.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 2: STRUCTURE ==================== */}
+      {/* ==================== 2. STRUCTURE ==================== */}
       <Section
         refObj={sections.structure}
-        title="Structure & Architecture of Muscles"
+        title="Structure & Layers — Muscle Anatomy"
         color="sky"
       >
-        <p className="text-slate-300 text-lg text-center mb-6 max-w-3xl mx-auto">
-          Muscles are hierarchical masterpieces of biological engineering. From
-          fibers to fascicles, each layer contributes to force, precision, and
-          coordination.
+        <p className="text-slate-300 mb-4">
+          Each skeletal muscle is composed of thousands of muscle fibers (
+          <em>myofibrillae</em>) organized into bundles called fascicles. Every
+          fiber contains <em>sarcomeres</em> — the basic functional units of
+          contraction.
         </p>
-        <ul className="list-disc ml-6 text-slate-400 space-y-3 mb-6">
+        <ul className="list-disc ml-6 text-slate-400 mb-4">
           <li>
-            <strong>Epimysium:</strong> Outer sheath maintaining structure and
-            force transmission.
+            <strong>Epimysium:</strong> outer sheath surrounding the whole
+            muscle.
           </li>
           <li>
-            <strong>Perimysium:</strong> Surrounds fascicles, creating pathways
-            for nerves and vessels.
+            <strong>Perimysium:</strong> wraps each fascicle (bundle of fibers).
           </li>
           <li>
-            <strong>Endomysium:</strong> Encloses each fiber for nutrient
-            exchange and elasticity.
+            <strong>Endomysium:</strong> surrounds individual muscle fibers.
           </li>
         </ul>
-        <CenteredImage
-          src="/images/anatomy/muscle-structure-diagram.png"
-          alt="Muscle architecture diagram"
-        />
+        <p className="text-slate-400">
+          Each muscle fiber contains proteins: <em>actin (thin filament)</em>{" "}
+          and <em>myosin (thick filament)</em>, which slide to produce
+          contraction — known as the <strong>Sliding Filament Theory</strong>.
+        </p>
+        <Tip>
+          ⚙️ <strong>Remember:</strong> calcium (Ca²⁺) and ATP are the key
+          triggers of contraction.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 3: FIBER TYPES ==================== */}
+      {/* ==================== 3. FIBER TYPES ==================== */}
       <Section
         refObj={sections.fibers}
-        title="Muscle Fiber Types & Function"
+        title="Muscle Fiber Types (Typi Fibrarum Musculorum)"
         color="violet"
       >
-        <div className="space-y-5 text-slate-400">
-          <SubBlock title="🩸 Type I – Slow Twitch (Red Fibers)">
-            Rich in mitochondria and capillaries, built for endurance and
-            fatigue resistance. Ideal for marathoners and cyclists.
-          </SubBlock>
-          <SubBlock title="⚡ Type IIa – Fast Twitch (Intermediate)">
-            Adaptable fibers for both power and endurance — trainable through
-            resistance and conditioning.
-          </SubBlock>
-          <SubBlock title="🔥 Type IIb/X – Fast Twitch (White Fibers)">
-            Explosive and powerful, but fatigue quickly. Activated during
-            sprints and heavy lifts.
-          </SubBlock>
-        </div>
-        <Quote color="purple">
-          “Every human is born with a unique fiber composition — training shapes
-          how you express it.”
-        </Quote>
+        <p className="text-slate-300 mb-4">
+          Human muscles contain a mix of different fiber types, each adapted to
+          specific functions and energy systems.
+        </p>
+        <ul className="list-disc ml-6 text-slate-400 mb-4">
+          <li>
+            <strong>Type I (Slow Twitch / Red Fibers):</strong> oxidative,
+            fatigue-resistant; rich in mitochondria. Dominant in endurance
+            athletes.
+          </li>
+          <li>
+            <strong>Type IIa (Fast Oxidative):</strong> a hybrid type — balance
+            between power and stamina. Trainable through resistance and interval
+            training.
+          </li>
+          <li>
+            <strong>Type IIb / IIx (Fast Glycolytic):</strong> explosive,
+            strong, but fatigue quickly. Used in sprints and max lifts.
+          </li>
+        </ul>
+        <Tip>
+          🧠 <strong>Training effect:</strong> With consistent resistance
+          training, some Type IIx fibers convert to Type IIa — improving
+          muscular endurance.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 4: TRAINING ==================== */}
+      {/* ==================== 4. ARCHITECTURE ==================== */}
       <Section
-        refObj={sections.training}
+        refObj={sections.architecture}
+        title="Muscle Architecture & Function"
+        color="purple"
+      >
+        <p className="text-slate-300 mb-4">
+          The arrangement of fibers affects force, speed, and movement range.
+        </p>
+        <ul className="list-disc ml-6 text-slate-400 space-y-2">
+          <li>
+            <strong>Fusiform:</strong> long, parallel fibers (e.g.,{" "}
+            <em>Biceps Brachii</em> — Arm flexor).
+          </li>
+          <li>
+            <strong>Pennate:</strong> short fibers angled to the tendon, higher
+            strength (e.g., <em>Gastrocnemius</em> — Calf).
+          </li>
+          <li>
+            <strong>Convergent:</strong> broad origin, narrow insertion (e.g.,{" "}
+            <em>Pectoralis Major</em> — Chest).
+          </li>
+          <li>
+            <strong>Circular:</strong> control openings (e.g.,{" "}
+            <em>Orbicularis Oculi</em> — Eye).
+          </li>
+        </ul>
+        <Tip>
+          🎯 <strong>Practical tip:</strong> Understand architecture to choose
+          exercises that target full movement range (e.g. incline vs flat press
+          changes fiber recruitment in the chest).
+        </Tip>
+      </Section>
+
+      {/* ==================== 5. PHYSIOLOGY ==================== */}
+      <Section
+        refObj={sections.physiology}
         title="Training Physiology & Adaptation"
         color="blue"
       >
-        <SubBlock title="🧠 Neural Adaptation">
-          Early strength gains stem from improved motor unit recruitment. The
-          nervous system learns efficiency before muscle size increases.
-        </SubBlock>
-        <SubBlock title="💪 Hypertrophy Mechanisms">
-          Growth occurs via <strong>tension</strong>,{" "}
-          <strong>metabolic stress</strong>, and <strong>microtrauma</strong>,
-          followed by recovery.
-        </SubBlock>
-        <ul className="list-disc ml-6 text-slate-400 space-y-2 mb-6">
+        <p className="text-slate-300 mb-4">
+          Muscle adaptation follows three key mechanisms:{" "}
+          <strong>tension</strong>, <strong>metabolic stress</strong>, and{" "}
+          <strong>microtrauma</strong>.
+        </p>
+        <ul className="list-disc ml-6 text-slate-400">
           <li>
-            <strong>Sarcomeric Hypertrophy:</strong> Increases contractile
-            proteins.
+            <strong>Sarcomeric Hypertrophy:</strong> increase in contractile
+            proteins → strength.
           </li>
           <li>
-            <strong>Sarcoplasmic Hypertrophy:</strong> Expands cellular glycogen
-            — “the pump”.
+            <strong>Sarcoplasmic Hypertrophy:</strong> increase in cell fluid
+            and glycogen → size and endurance.
+          </li>
+          <li>
+            <strong>Neural Adaptation:</strong> improved motor unit recruitment
+            and coordination.
           </li>
         </ul>
-        <CenteredImage
-          src="/images/anatomy/hypertrophy-cycle.png"
-          alt="Hypertrophy cycle"
-        />
-        <Quote color="blue">
-          “Muscle growth is a biological negotiation — you stress it, it adapts,
-          but only if you feed and rest it.”
-        </Quote>
+        <Tip>
+          💡 <strong>Science says:</strong> Progressive overload + sleep +
+          protein synthesis = sustainable hypertrophy.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 5: NUTRITION ==================== */}
+      {/* ==================== 6. NUTRITION ==================== */}
       <Section
         refObj={sections.nutrition}
         title="Nutrition, Hormones & Recovery"
         color="emerald"
       >
-        <ul className="list-disc ml-6 text-slate-400 space-y-2 mb-6">
+        <p className="text-slate-300 mb-4">
+          Proper nutrition supports muscular repair, energy production, and
+          hormonal balance.
+        </p>
+        <ul className="list-disc ml-6 text-slate-400">
           <li>
-            <strong>Protein:</strong> 1.8–2.2g/kg daily for repair and enzymes.
+            <strong>Protein:</strong> 1.8–2.2 g/kg body weight for growth.
           </li>
           <li>
-            <strong>Carbohydrates:</strong> Refill glycogen to prevent fatigue.
+            <strong>Carbohydrates:</strong> replenish glycogen and reduce
+            cortisol.
           </li>
           <li>
-            <strong>Healthy Fats:</strong> Maintain hormones and joint health.
+            <strong>Fats:</strong> maintain testosterone and joint health.
           </li>
           <li>
-            <strong>Sleep:</strong> 7–9h enables growth hormone peaks.
+            <strong>Micronutrients:</strong> magnesium, zinc, vitamin D, and
+            omega-3 are essential.
           </li>
         </ul>
-        <Quote color="emerald">
-          “The strongest supplement isn’t in a bottle — it’s a full night’s
-          sleep.”
-        </Quote>
+        <Tip>
+          💤 <strong>Pro Tip:</strong> Muscles grow when you rest — not during
+          training.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 6: SUPPLEMENTS ==================== */}
+      {/* ==================== 7. IMBALANCES ==================== */}
       <Section
-        refObj={sections.supplements}
-        title="Supplements & Ergogenic Aids"
+        refObj={sections.imbalances}
+        title="Muscle Imbalances & Injury Prevention"
         color="amber"
       >
-        <div className="grid sm:grid-cols-2 gap-6 mb-8">
-          <Card
-            title="Creatine Monohydrate"
-            text="Boosts ATP energy and strength — 3–5g/day is proven effective."
-          />
-          <Card
-            title="Beta-Alanine"
-            text="Buffers lactic acid, delaying fatigue during high-intensity training."
-          />
-          <Card
-            title="Whey Protein"
-            text="Fast-digesting, leucine-rich — accelerates recovery post workout."
-          />
-          <Card
-            title="Omega-3 & Vitamin D"
-            text="Reduce inflammation and support hormonal and joint health."
-          />
-        </div>
-        <p className="text-slate-400 text-center">
-          Supplements are fine-tuning tools — discipline and nutrition remain
-          the foundation.
+        <p className="text-slate-300 mb-4">
+          Repetitive patterns and poor posture can lead to asymmetry. Balanced
+          programming prevents chronic issues.
         </p>
+        <ul className="list-disc ml-6 text-slate-400 mb-4">
+          <li>Chest overpowering back → shoulder rounding.</li>
+          <li>Strong quads / weak hamstrings → knee instability.</li>
+          <li>Weak glutes / tight hip flexors → anterior pelvic tilt.</li>
+        </ul>
+        <Tip>
+          🩻 <strong>Prevention:</strong> train antagonists, stretch, and use
+          unilateral exercises to correct imbalances.
+        </Tip>
       </Section>
 
-      {/* ==================== SECTION 7: INTERACTIVE 3D ATLAS ==================== */}
-      <div ref={sections.muscleatlas}>
-        <Anatomy3DInteractive />
-      </div>
-
-      {/* ==================== SECTION 8: LAYER MODE ==================== */}
-      <div ref={sections.layers}>
-        <MuscleLayerMode />
-      </div>
-
-      {/* ==================== SECTION 9: CONCLUSION ==================== */}
+      {/* ==================== 8. APPLIED ANATOMY ==================== */}
       <Section
-        refObj={sections.conclusion}
-        title="The Human Machine"
+        refObj={sections.applied}
+        title="Applied Anatomy in Exercise Science"
         color="indigo"
       >
-        <p className="text-slate-300 text-lg text-center max-w-3xl mx-auto mb-8">
-          The body is an adaptable system — powered by discipline and refined
-          through understanding. To master it, study its design, feed it with
-          intent, and recover with respect.
+        <p className="text-slate-300 mb-4">
+          Understanding origin (<em>Origo</em>) and insertion (<em>Insertio</em>
+          ) improves form and focus.
         </p>
-        <Quote color="indigo">
-          “Knowledge turns training into art. Anatomy is the map; your effort is
-          the journey.”
-        </Quote>
+        <ul className="list-disc ml-6 text-slate-400">
+          <li>
+            <em>Pectoralis Major</em> — Clavicle & sternum → humerus → performs
+            adduction & flexion (press movements).
+          </li>
+          <li>
+            <em>Latissimus Dorsi</em> — T7–L5 → humerus → extension & adduction
+            (pull movements).
+          </li>
+          <li>
+            <em>Rectus Femoris</em> — pelvis → tibia → knee extension & hip
+            flexion (squat, leg raise).
+          </li>
+        </ul>
+        <Tip>
+          🧩 <strong>Application:</strong> Adjust grip, angle, or stance to
+          match muscle fiber direction for maximum activation.
+        </Tip>
+      </Section>
+
+      {/* ==================== 9. CONCLUSION ==================== */}
+      <Section
+        refObj={sections.conclusion}
+        title="Conclusion — The Art of Understanding the Body"
+        color="blue"
+      >
+        <p className="text-slate-300 text-lg text-center max-w-3xl mx-auto mb-8">
+          A strong body is built not only in the gym — but through knowledge of
+          its mechanisms, recovery, and balance.
+        </p>
+        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-slate-400 my-6 text-center max-w-3xl mx-auto">
+          “Knowledge of anatomy transforms exercise from repetition to mastery.”
+        </blockquote>
         <div className="flex justify-center mt-10">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -266,65 +326,31 @@ export default function AnatomyHub() {
 }
 
 /* ----------------------------------------------------------
-   REUSABLE UI COMPONENTS
+   SUBCOMPONENTS
 ----------------------------------------------------------- */
-
-const Section = React.forwardRef(({ refObj, title, color, children }, ref) => (
-  <motion.section
-    ref={refObj}
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-    className="mt-20"
-  >
-    <h2
-      className={`text-3xl font-bold text-${color}-400 text-center mb-6 capitalize`}
-    >
-      {title}
-    </h2>
-    <div>{children}</div>
-  </motion.section>
-));
-
-function SubBlock({ title, children }) {
+function Section({ refObj, title, color, children }) {
   return (
-    <div className="mb-5">
-      <h3 className="text-xl text-white font-semibold mb-1">{title}</h3>
-      <p className="text-slate-400">{children}</p>
-    </div>
-  );
-}
-
-function Quote({ children, color }) {
-  return (
-    <blockquote
-      className={`border-l-4 border-${color}-500 pl-4 italic text-slate-400 my-6 text-center max-w-3xl mx-auto`}
-    >
-      {children}
-    </blockquote>
-  );
-}
-
-function CenteredImage({ src, alt }) {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className="rounded-xl border border-white/10 shadow-md my-6 w-full max-w-3xl mx-auto"
-    />
-  );
-}
-
-function Card({ title, text }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
+    <motion.section
+      ref={refObj}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="bg-white/5 p-5 rounded-xl border border-white/10 hover:bg-white/10 transition-all"
+      transition={{ duration: 0.6 }}
+      className="mt-20"
     >
-      <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-      <p className="text-slate-400">{text}</p>
-    </motion.div>
+      <h2
+        className={`text-3xl font-bold text-${color}-400 text-center mb-6 capitalize`}
+      >
+        {title}
+      </h2>
+      <div>{children}</div>
+    </motion.section>
+  );
+}
+
+function Tip({ children }) {
+  return (
+    <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-slate-300 italic">
+      {children}
+    </div>
   );
 }
