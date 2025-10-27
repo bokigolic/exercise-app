@@ -7,7 +7,16 @@
   NODE_VERSION = "20"
 
 [dev]
-  command = "npm run dev"
+  command = "vite"
   port = 8888
   publish = "dist"
   functions = "netlify/functions"
+  framework = "#custom"
+  targetPort = 5173
+  autoLaunch = false
+
+# 🔽 OVO DODAJ NA KRAJ 🔽
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

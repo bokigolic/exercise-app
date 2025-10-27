@@ -1,9 +1,9 @@
 // src/components/layout/PageShell.jsx
 import React, { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Dumbbell, Menu, X } from "lucide-react";
+import { Dumbbell, Menu, X, Linkedin } from "lucide-react";
 
-/* --------- NavItem --------- */
+/* --------- Nav Item --------- */
 function NavItem({ to, children, onClick }) {
   const { pathname } = useLocation();
   const active = pathname === to;
@@ -22,99 +22,111 @@ function NavItem({ to, children, onClick }) {
   );
 }
 
-/* --------- Footer (Dock) --------- */
+/* --------- Footer (Sticky Dock) --------- */
+/* --------- Footer (Sticky Dock) --------- */
 function DockFooter() {
   return (
-    <>
-      <div style={{ height: "calc(env(safe-area-inset-bottom) + 12px)" }} />
+    <footer
+      className="fixed inset-x-0 bottom-0 z-[9999]"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
+    >
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div
+          className="
+            relative flex items-center justify-between gap-3
+            rounded-2xl sm:rounded-3xl px-3.5 sm:px-4 py-2
+            bg-gradient-to-br from-white/10 via-white/5 to-white/10
+            backdrop-blur-xl ring-1 ring-white/15 shadow-2xl
+            cursor-default
+          "
+        >
+          {/* Glow border inside */}
+          <div
+            className="absolute inset-0 rounded-2xl sm:rounded-3xl pointer-events-none"
+            style={{
+              boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
+            }}
+          />
 
-      <div
-        className="fixed inset-x-0 bottom-0 z-40 pointer-events-none"
-        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
-        aria-hidden="true"
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="pointer-events-auto">
+          {/* Left: Logo + Signature */}
+          <div className="flex min-w-0 items-center gap-3">
             <div
               className="
-                relative flex items-center justify-between gap-3
-                rounded-2xl sm:rounded-3xl px-3.5 sm:px-4 py-2
-                bg-gradient-to-br from-white/10 via-white/5 to-white/10
-                backdrop-blur-xl ring-1 ring-white/15 shadow-2xl
+                h-8 w-8 sm:h-9 sm:w-9 rounded-xl
+                bg-white/90 dark:bg-white
+                ring-1 ring-black/10 grid place-items-center
+                shadow-md
               "
             >
-              <div
-                className="absolute inset-0 rounded-2xl sm:rounded-3xl"
-                style={{
-                  boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
-                }}
-              />
-
-              {/* Left side */}
-              <div className="flex min-w-0 items-center gap-3">
-                <div
-                  className="
-                    h-8 w-8 sm:h-9 sm:w-9 rounded-xl
-                    bg-white/90 dark:bg-white
-                    ring-1 ring-black/10 grid place-items-center
-                    shadow-md
-                  "
-                >
-                  <img
-                    src="/icons/BG.png"
-                    alt="BG logo"
-                    className="h-6 w-6 object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="leading-tight">
-                  <p className="text-[12px] sm:text-sm text-slate-200">
-                    Design &amp; Development by{" "}
-                    <span className="font-semibold">BG</span>
-                  </p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400">
-                    © {new Date().getFullYear()} Gym Master • Built for clarity
-                    &amp; consistency
-                  </p>
-                </div>
-              </div>
-
-              {/* Right side */}
-              <div className="hidden sm:flex items-center gap-2">
-                <a
-                  href="mailto:bokigolic32@gmail.com"
-                  className="text-xs text-slate-200 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10 ring-1 ring-transparent hover:ring-white/10 transition"
-                >
-                  Contact
-                </a>
-                <a
-                  href="#top"
-                  className="text-xs text-slate-200 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10 ring-1 ring-transparent hover:ring-white/10 transition"
-                >
-                  Back to top
-                </a>
-              </div>
-
-              <div
-                className="absolute -bottom-px left-2 right-2 h-px rounded-full"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(59,130,246,0.35), rgba(168,85,247,0.35))",
-                }}
+              <img
+                src="/icons/BG.png"
+                alt="BG logo"
+                className="h-6 w-6 object-contain"
+                loading="lazy"
               />
             </div>
+            <div className="leading-tight">
+              <p className="text-[12px] sm:text-sm text-slate-200">
+                Design &amp; Development by{" "}
+                <span className="font-semibold">BG</span>
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-slate-400">
+                © {new Date().getFullYear()} Gym Master • Built for clarity
+              </p>
+            </div>
           </div>
+
+          {/* Right: LinkedIn + Back to top */}
+          <div className="flex items-center gap-3 z-10">
+            <a
+              href="https://www.linkedin.com/in/bojan-golic/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-200 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10 ring-1 ring-transparent hover:ring-white/10 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-3.5 h-3.5"
+              >
+                <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8h4.55v14H.22V8zM8.13 8h4.36v2.08h.06c.61-1.15 2.11-2.37 4.34-2.37 4.64 0 5.49 3.05 5.49 7.02V22H17.7v-6.42c0-1.53-.03-3.5-2.14-3.5-2.14 0-2.47 1.67-2.47 3.39V22h-4.42V8z" />
+              </svg>
+              LinkedIn
+            </a>
+            <button
+              onClick={() =>
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                })
+              }
+              className="text-xs text-slate-200 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10 ring-1 ring-transparent hover:ring-white/10 transition"
+            >
+              ↑ Back to top
+            </button>
+          </div>
+
+          {/* Gradient underline */}
+          <div
+            className="absolute -bottom-px left-2 right-2 h-px rounded-full"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(59,130,246,0.35), rgba(168,85,247,0.35))",
+            }}
+          />
         </div>
       </div>
-    </>
+    </footer>
   );
 }
 
-/* --------- PageShell --------- */
+/* --------- PageShell Layout --------- */
 export default function PageShell({ children }) {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const menuId = useId();
+
   useEffect(() => setOpen(false), [pathname]);
 
   return (
@@ -139,17 +151,17 @@ export default function PageShell({ children }) {
               </span>
             </Link>
 
-            {/* DESKTOP NAV */}
+            {/* DESKTOP NAVIGATION */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/hub">Fitness Hub</NavItem>
               <NavItem to="/generator">Workout Generator</NavItem>
-              <NavItem to="/about">About Us</NavItem>
-              <NavItem to="/anatomy">Body Anatomy</NavItem>
               <NavItem to="/assistant">AI Assistant</NavItem>
+              <NavItem to="/anatomy">Body Anatomy</NavItem>
+              <NavItem to="/about">About Us</NavItem>
             </nav>
 
-            {/* MOBILE TOGGLE */}
+            {/* MOBILE MENU TOGGLE */}
             <button
               onClick={() => setOpen((v) => !v)}
               className="md:hidden inline-flex items-center justify-center rounded-xl border border-white/15 text-white/90 hover:text-white hover:bg-white/10 transition"
@@ -163,37 +175,31 @@ export default function PageShell({ children }) {
           </div>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* MOBILE NAVIGATION */}
         <div
           id={menuId}
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            open
-              ? "max-h-[80vh] opacity-100 overflow-y-auto"
-              : "max-h-0 opacity-0 overflow-hidden"
+          className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
+            open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <nav
-            className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 backdrop-blur-md bg-black/70 border-t border-white/10"
+            className="mx-auto max-w-6xl px-4 sm:px-6 pb-3"
             style={{
               paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)",
             }}
           >
-            <div className="grid gap-2 pt-2">
+            <div className="grid gap-2">
               {[
                 { to: "/", label: "Home" },
                 { to: "/hub", label: "Fitness Hub" },
                 { to: "/generator", label: "Workout Generator" },
-                { to: "/about", label: "About Us" },
-                { to: "/anatomy", label: "Body Anatomy" },
                 { to: "/assistant", label: "AI Assistant" },
-              ].map((link) => (
-                <NavItem
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 hover:scale-[1.02] transition-all duration-200 ring-1 ring-white/10">
-                    {link.label}
+                { to: "/anatomy", label: "Body Anatomy" },
+                { to: "/about", label: "About Us" },
+              ].map((l) => (
+                <NavItem key={l.to} to={l.to} onClick={() => setOpen(false)}>
+                  <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10">
+                    {l.label}
                   </div>
                 </NavItem>
               ))}
