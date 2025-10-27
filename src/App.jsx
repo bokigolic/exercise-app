@@ -9,21 +9,20 @@ import {
 } from "react-router-dom";
 import PageShell from "./components/layout/PageShell";
 
-// Lazy chunks
-const Home = lazy(() => import("./components/Home"));
-const About = lazy(() => import("./components/About"));
-const FitnessHub = lazy(() => import("./components/FitnessHub"));
+// Lazy chunks — svi tvoji page-ovi
+const Home = lazy(() => import("./components/Home.jsx")); // novi landing (ako ga dodaš)
+const Exercises = lazy(() => import("./components/Exercises.jsx")); // tvoj stari Home.jsx
+const About = lazy(() => import("./components/About.jsx"));
+const FitnessHub = lazy(() => import("./components/FitnessHub.jsx"));
 const WorkoutGenerator = lazy(() =>
   import("./components/WorkoutGenerator.jsx")
 );
 const Anatomy = lazy(() => import("./components/Anatomy.jsx"));
-
-// 🧠 NEW — AI Assistant component (lazy import)
 const AIWorkoutAssistant = lazy(() =>
   import("./components/AIWorkoutAssistant.jsx")
 );
 
-// Scroll + hash support
+// 🔄 Scroll + hash support
 function ScrollManager() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -39,7 +38,7 @@ function ScrollManager() {
   return null;
 }
 
-// Minimal loader
+// ⏳ Minimal loader
 function PageLoader() {
   return (
     <div className="py-16 grid place-items-center">
@@ -54,26 +53,26 @@ export default function App() {
     <BrowserRouter>
       <ScrollManager />
 
-      {/* Global dark shell (logo, navbar, footer, bg) */}
+      {/* 🌙 Global dark shell (header + nav + footer) */}
       <PageShell>
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* Main pages */}
             <Route path="/" element={<Home />} />
-            <Route path="/anatomy" element={<Anatomy />} />
+            <Route path="/exercises" element={<Exercises />} />
             <Route path="/hub" element={<FitnessHub />} />
             <Route path="/generator" element={<WorkoutGenerator />} />
+            <Route path="/assistant" element={<AIWorkoutAssistant />} />
+            <Route path="/anatomy" element={<Anatomy />} />
             <Route path="/about" element={<About />} />
 
-            {/* 🧠 NEW ROUTE: AI Assistant */}
-            <Route path="/assistant" element={<AIWorkoutAssistant />} />
-
-            {/* Legacy redirect */}
+            {/* 🧭 Legacy redirect for old generator URL */}
             <Route
               path="/workout-generator"
               element={<Navigate to="/generator" replace />}
             />
 
-            {/* 404 → Home */}
+            {/* 🔁 404 fallback → Home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

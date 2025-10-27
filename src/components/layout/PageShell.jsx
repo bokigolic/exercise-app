@@ -155,10 +155,11 @@ export default function PageShell({ children }) {
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/hub">Fitness Hub</NavItem>
+              <NavItem to="/exercises">Exercises</NavItem>
               <NavItem to="/generator">Workout Generator</NavItem>
               <NavItem to="/assistant">AI Assistant</NavItem>
               <NavItem to="/anatomy">Body Anatomy</NavItem>
-              <NavItem to="/about">About Us</NavItem>
+              <NavItem to="/about">About</NavItem>
             </nav>
 
             {/* MOBILE MENU TOGGLE */}
@@ -192,14 +193,19 @@ export default function PageShell({ children }) {
               {[
                 { to: "/", label: "Home" },
                 { to: "/hub", label: "Fitness Hub" },
+                { to: "/exercises", label: "Exercises" },
                 { to: "/generator", label: "Workout Generator" },
                 { to: "/assistant", label: "AI Assistant" },
                 { to: "/anatomy", label: "Body Anatomy" },
-                { to: "/about", label: "About Us" },
-              ].map((l) => (
-                <NavItem key={l.to} to={l.to} onClick={() => setOpen(false)}>
+                { to: "/about", label: "About" },
+              ].map((link) => (
+                <NavItem
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setOpen(false)}
+                >
                   <div className="w-full px-3 py-3 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10">
-                    {l.label}
+                    {link.label}
                   </div>
                 </NavItem>
               ))}
