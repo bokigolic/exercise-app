@@ -153,7 +153,7 @@ export default function PageShell({ children }) {
               <NavItem to="/exercises">Exercises</NavItem>
               <NavItem to="/generator">Workout Generator</NavItem>
               <NavItem to="/assistant">AI Assistant</NavItem>
-              <NavItem to="/anatomy">Body Anatomy</NavItem>
+              <NavItem to="/profile">My Profile</NavItem>
               <NavItem to="/about">About</NavItem>
             </nav>
 
@@ -191,7 +191,7 @@ export default function PageShell({ children }) {
                 { to: "/exercises", label: "Exercises" },
                 { to: "/generator", label: "Workout Generator" },
                 { to: "/assistant", label: "AI Assistant" },
-                { to: "/anatomy", label: "Body Anatomy" },
+                { to: "/profile", label: "My Profile" },
                 { to: "/about", label: "About" },
               ].map((link) => (
                 <NavItem key={link.to} to={link.to} onClick={closeMenu}>

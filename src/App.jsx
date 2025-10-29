@@ -9,20 +9,20 @@ import {
 } from "react-router-dom";
 import PageShell from "./components/layout/PageShell";
 
-// Lazy chunks — svi tvoji page-ovi
-const Home = lazy(() => import("./components/Home.jsx")); // novi landing (ako ga dodaš)
-const Exercises = lazy(() => import("./components/Exercises.jsx")); // tvoj stari Home.jsx
+/* ---------- Lazy Chunks (Page Components) ---------- */
+const Home = lazy(() => import("./components/Home.jsx"));
+const Exercises = lazy(() => import("./components/Exercises.jsx"));
 const About = lazy(() => import("./components/About.jsx"));
 const FitnessHub = lazy(() => import("./components/FitnessHub.jsx"));
 const WorkoutGenerator = lazy(() =>
   import("./components/WorkoutGenerator.jsx")
 );
-const Anatomy = lazy(() => import("./components/Anatomy.jsx"));
 const AIWorkoutAssistant = lazy(() =>
   import("./components/AIWorkoutAssistant.jsx")
 );
+const ProfilePage = lazy(() => import("./components/ProfilePage.jsx")); // ✅ NEW PAGE
 
-// 🔄 Scroll + hash support
+/* ---------- Scroll + Hash Manager ---------- */
 function ScrollManager() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -38,7 +38,7 @@ function ScrollManager() {
   return null;
 }
 
-// ⏳ Minimal loader
+/* ---------- Minimal Loader ---------- */
 function PageLoader() {
   return (
     <div className="py-16 grid place-items-center">
@@ -48,31 +48,29 @@ function PageLoader() {
   );
 }
 
+/* ---------- Main App ---------- */
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollManager />
 
-      {/* 🌙 Global dark shell (header + nav + footer) */}
+      {/* 🌙 Global Shell (Header + Nav + Footer) */}
       <PageShell>
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Main pages */}
+            {/* 🌐 Main Pages */}
             <Route path="/" element={<Home />} />
-            <Route path="/exercises" element={<Exercises />} />
             <Route path="/hub" element={<FitnessHub />} />
+            <Route path="/exercises" element={<Exercises />} />
             <Route path="/generator" element={<WorkoutGenerator />} />
             <Route path="/assistant" element={<AIWorkoutAssistant />} />
-            <Route path="/anatomy" element={<Anatomy />} />
+            <Route path="/profile" element={<ProfilePage />} /> {/* ✅ NEW */}
             <Route path="/about" element={<About />} />
-
-            {/* 🧭 Legacy redirect for old generator URL */}
+            {/* 🔁 Redirects & Fallback */}
             <Route
               path="/workout-generator"
               element={<Navigate to="/generator" replace />}
             />
-
-            {/* 🔁 404 fallback → Home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

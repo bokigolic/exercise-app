@@ -34,6 +34,25 @@ const GOALS = [
   { key: "endurance", label: "Endurance", icon: Clock },
 ];
 
+// 📦 Save generated workout to localStorage
+const saveWorkoutToProfile = (workoutPlan) => {
+  const stored = JSON.parse(localStorage.getItem("gymUser")) || {};
+  const workouts = stored.workouts || [];
+
+  const updated = {
+    ...stored,
+    workouts: [
+      ...workouts,
+      {
+        date: new Date().toLocaleString(),
+        plan: workoutPlan,
+      },
+    ],
+  };
+
+  localStorage.setItem("gymUser", JSON.stringify(updated));
+};
+
 const LEVELS = ["beginner", "intermediate", "advanced"];
 const LOCATIONS = [
   { key: "home", label: "Home", icon: HomeIcon },
@@ -690,6 +709,33 @@ export default function WorkoutGenerator() {
               </motion.div>
             ))}
           </motion.div>
+        )}
+
+        {/* Save Workout Button */}
+        {!loading && generatedWorkout.length > 0 && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() =>
+                saveWorkoutToProfile({
+                  title: `${filters.goal || "Custom"} Plan`,
+                  filters,
+                  exercises: generatedWorkout.map((ex) => ({
+                    name: ex.name,
+                    sets: ex.sets,
+                    reps: ex.reps,
+                    rest: ex.rest,
+                    program: ex.program,
+                  })),
+                })
+              }
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-blue-500/30 transition-all duration-200"
+            >
+              💾 Save Workout to My Profile
+            </button>
+            <p className="text-slate-400 text-sm mt-2">
+              Saved workouts will appear on your Profile page.
+            </p>
+          </div>
         )}
 
         {/* empty state */}
