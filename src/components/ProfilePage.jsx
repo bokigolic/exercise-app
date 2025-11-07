@@ -1,3 +1,4 @@
+// src/components/ProfilePage.jsx
 import { useState, useEffect } from "react";
 import {
   LineChart,
@@ -7,9 +8,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Trash2 } from "lucide-react";
+import { Trash2, CloudUpload, LogOut, LogIn } from "lucide-react";
+import { auth, loginWithGoogle, logout, db } from "../firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function ProfilePage() {
+  const [firebaseUser, setFirebaseUser] = useState(null);
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("gymUser");
     return saved
@@ -27,11 +32,28 @@ export default function ProfilePage() {
           workouts: [],
         };
   });
-
   const [newWeight, setNewWeight] = useState("");
   const [editing, setEditing] = useState(false);
-  const [unitSystem, setUnitSystem] = useState("metric"); // metric | imperial
+  const [unitSystem, setUnitSystem] = useState("metric");
 
+  // 🔹 Firebase Auth listener
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
+      setFirebaseUser(currentUser);
+      if (currentUser) {
+        // pokušaj da preuzmeš podatke iz Firestore
+        const docRef = doc(db, "users", currentUser.uid);
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          setUser(snap.data());
+          localStorage.setItem("gymUser", JSON.stringify(snap.data()));
+        }
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  // 🔹 Local storage autosave
   useEffect(() => {
     localStorage.setItem("gymUser", JSON.stringify(user));
   }, [user]);
@@ -71,7 +93,18 @@ export default function ProfilePage() {
     setUser(updated);
   };
 
-  // unit conversions
+  // 🔹 Sync with Firestore
+  const syncToCloud = async () => {
+    if (!firebaseUser) return alert("Please sign in first!");
+    try {
+      await setDoc(doc(db, "users", firebaseUser.uid), user);
+      alert("✅ Profile synced to cloud!");
+    } catch (err) {
+      console.error(err);
+      alert("❌ Error syncing data.");
+    }
+  };
+
   const convertWeight = (w) =>
     unitSystem === "imperial" ? (w * 2.20462).toFixed(1) : w;
   const convertHeight = (h) =>
@@ -86,21 +119,51 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 space-y-10 text-white">
-      {/* Hero Section */}
+      {/* Header */}
       <section className="flex flex-col sm:flex-row items-center justify-between gap-6">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight">
             🏋️‍♂️ {user.name || "Your Gym Master Profile"}
           </h1>
           <p className="text-slate-400 mt-2 text-sm sm:text-base">
-            Manage your stats, track your goals, and monitor progress in one
-            place.
+            Manage your stats, track your goals, and sync your data to the
+            cloud.
           </p>
         </div>
-        <div className="rounded-full bg-gradient-to-br from-blue-700/40 to-blue-500/20 p-4 ring-1 ring-blue-500/20">
-          <div className="w-20 h-20 grid place-items-center rounded-full bg-blue-600/30 text-3xl font-bold">
-            {user.name ? user.name.charAt(0).toUpperCase() : "👤"}
-          </div>
+
+        {/* 🔹 Firebase Login Section */}
+        <div className="flex flex-col items-center gap-2">
+          {firebaseUser ? (
+            <>
+              <img
+                src={firebaseUser.photoURL}
+                alt="User Avatar"
+                className="w-14 h-14 rounded-full"
+              />
+              <p className="text-sm">{firebaseUser.displayName}</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={syncToCloud}
+                  className="bg-blue-600 px-3 py-1 rounded-lg flex items-center gap-1 hover:bg-blue-700"
+                >
+                  <CloudUpload size={16} /> Sync
+                </button>
+                <button
+                  onClick={logout}
+                  className="bg-red-500 px-3 py-1 rounded-lg flex items-center gap-1 hover:bg-red-600"
+                >
+                  <LogOut size={16} /> Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <button
+              onClick={loginWithGoogle}
+              className="bg-blue-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+            >
+              <LogIn size={18} /> Sign in with Google
+            </button>
+          )}
         </div>
       </section>
 
@@ -127,141 +190,6 @@ export default function ProfilePage() {
         >
           Imperial (lbs/in)
         </button>
-      </section>
-
-      {/* Summary Cards */}
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white/10 p-4 rounded-xl text-center">
-          <h3 className="text-sm text-slate-400">Daily Calories</h3>
-          <p className="text-2xl font-bold text-blue-400">
-            {user.calories || "—"}
-          </p>
-        </div>
-        <div className="bg-white/10 p-4 rounded-xl text-center">
-          <h3 className="text-sm text-slate-400">Weekly Workouts</h3>
-          <p className="text-2xl font-bold text-blue-400">
-            {user.workoutsPerWeek || "—"}
-          </p>
-        </div>
-        <div className="bg-white/10 p-4 rounded-xl text-center">
-          <h3 className="text-sm text-slate-400">Current Weight</h3>
-          <p className="text-2xl font-bold text-blue-400">
-            {convertWeight(user.weight) || "—"}{" "}
-            {unitSystem === "imperial" ? "lbs" : "kg"}
-          </p>
-        </div>
-        <div className="bg-white/10 p-4 rounded-xl text-center">
-          <h3 className="text-sm text-slate-400">Goal</h3>
-          <p className="text-2xl font-bold text-blue-400">{user.goal || "—"}</p>
-        </div>
-      </section>
-
-      {/* Edit / Profile Info */}
-      <section className="bg-white/5 p-6 rounded-2xl space-y-4 ring-1 ring-white/10">
-        <h2 className="text-xl font-semibold">Personal Information</h2>
-        {editing ? (
-          <div className="grid gap-3 sm:grid-cols-2">
-            <input
-              placeholder="Name"
-              value={user.name}
-              onChange={(e) => setUser({ ...user, name: e.target.value })}
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <input
-              placeholder="Age"
-              type="number"
-              value={user.age}
-              onChange={(e) => setUser({ ...user, age: e.target.value })}
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <input
-              placeholder={`Height (${
-                unitSystem === "imperial" ? "in" : "cm"
-              })`}
-              type="number"
-              value={user.height}
-              onChange={(e) => setUser({ ...user, height: e.target.value })}
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <input
-              placeholder={`Weight (${
-                unitSystem === "imperial" ? "lbs" : "kg"
-              })`}
-              type="number"
-              value={user.weight}
-              onChange={(e) => setUser({ ...user, weight: e.target.value })}
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <input
-              placeholder="Goal"
-              value={user.goal}
-              onChange={(e) => setUser({ ...user, goal: e.target.value })}
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <select
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-              value={user.activityLevel}
-              onChange={(e) =>
-                setUser({ ...user, activityLevel: e.target.value })
-              }
-            >
-              <option value="">Activity Level</option>
-              <option value="low">Low</option>
-              <option value="moderate">Moderate</option>
-              <option value="high">High</option>
-            </select>
-            <input
-              placeholder="Workouts per week"
-              type="number"
-              value={user.workoutsPerWeek}
-              onChange={(e) =>
-                setUser({ ...user, workoutsPerWeek: e.target.value })
-              }
-              className="bg-white/10 border border-white/20 rounded-lg p-2"
-            />
-            <button
-              onClick={handleSave}
-              className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
-            >
-              Save
-            </button>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 gap-3">
-            <p>
-              <strong>Name:</strong> {user.name}
-            </p>
-            <p>
-              <strong>Age:</strong> {user.age}
-            </p>
-            <p>
-              <strong>Height:</strong> {convertHeight(user.height)}{" "}
-              {unitSystem === "imperial" ? "in" : "cm"}
-            </p>
-            <p>
-              <strong>Weight:</strong> {convertWeight(user.weight)}{" "}
-              {unitSystem === "imperial" ? "lbs" : "kg"}
-            </p>
-            <p>
-              <strong>Goal:</strong> {user.goal}
-            </p>
-            <p>
-              <strong>Activity:</strong> {user.activityLevel}
-            </p>
-            <p>
-              <strong>Workouts/week:</strong> {user.workoutsPerWeek}
-            </p>
-            <p>
-              <strong>Calories/day:</strong> {user.calories}
-            </p>
-            <button
-              onClick={() => setEditing(true)}
-              className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
-            >
-              Edit
-            </button>
-          </div>
-        )}
       </section>
 
       {/* Progress Tracker */}
