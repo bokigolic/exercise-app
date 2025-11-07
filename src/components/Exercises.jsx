@@ -1,6 +1,3 @@
-// src/components/Home.jsx  (ako koristiš /pages/, prilagodi import u App.jsx)
-// why: moderniji tamni hero + responsive kontrole; zadržana kompletna logika
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import exercisesData from "../data/exercises.json";
 import Loader from "./Loader";
@@ -133,10 +130,7 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
     [exercise]
   );
 
-  // reset index kad se promeni vežba
   useEffect(() => setIndex(0), [exercise]);
-
-  // ESC + strelice
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
@@ -149,13 +143,9 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, images.length, onClose]);
-
-  // fokus na Close
   useEffect(() => {
     if (open) setTimeout(() => closeBtnRef.current?.focus(), 0);
   }, [open]);
-
-  // lock scroll kad je modal otvoren
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -165,7 +155,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
     };
   }, [open]);
 
-  // swipe za slike
   const onPointerDown = (e) => {
     startX.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
     deltaX.current = 0;
@@ -203,14 +192,11 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
           exit={{ opacity: 0 }}
           aria-live="polite"
         >
-          {/* overlay */}
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
-
-          {/* dialog */}
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -225,7 +211,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
             exit={{ y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
           >
-            {/* header */}
             <div className="flex items-center justify-between gap-2 px-4 sm:px-5 py-3 border-b border-white/10 bg-white/5">
               <div className="min-w-0">
                 <h3 className="text-base sm:text-lg font-semibold truncate">
@@ -245,10 +230,7 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                 ✕
               </button>
             </div>
-
-            {/* content */}
             <div className="grid grid-cols-1 md:grid-cols-2">
-              {/* media / carousel */}
               <div
                 className="relative bg-white/5 md:border-r border-white/10"
                 onPointerDown={onPointerDown}
@@ -273,8 +255,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                     />
                   )}
                 </div>
-
-                {/* arrows + dots */}
                 {images.length > 1 && (
                   <>
                     <button
@@ -307,8 +287,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                   </>
                 )}
               </div>
-
-              {/* details */}
               <div className="p-4 sm:p-6 overflow-y-auto max-h-[70vh] md:max-h-[80vh]">
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   <div className="truncate">
@@ -346,7 +324,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                     </div>
                   )}
                 </dl>
-
                 {Array.isArray(exercise.instructions) &&
                   exercise.instructions.length > 0 && (
                     <div className="mt-4">
@@ -360,7 +337,6 @@ function QuickViewModal({ open, onClose, exercise, onAdd, isSelected }) {
                       </ul>
                     </div>
                   )}
-
                 <div className="mt-6 flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => onAdd(exercise)}
