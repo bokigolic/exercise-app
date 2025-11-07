@@ -9,9 +9,18 @@ export default defineConfig({
     {
       name: "copy-redirects",
       closeBundle() {
+        const distDir = resolve(__dirname, "dist");
         const redirects = `/.netlify/functions/* /.netlify/functions/:splat 200
 /* /index.html 200`;
-        fs.writeFileSync(resolve(__dirname, "dist/_redirects"), redirects);
+
+        // ✅ Ako ne postoji dist, napravi ga
+        if (!fs.existsSync(distDir)) {
+          fs.mkdirSync(distDir, { recursive: true });
+        }
+
+        // ✅ Zapiši _redirects fajl u dist
+        fs.writeFileSync(resolve(distDir, "_redirects"), redirects);
+        console.log("✅ _redirects file created in dist/");
       },
     },
   ],
